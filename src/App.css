@@ -1,0 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=Kalam:wght@700&family=Sigmar&family=The+Nautigal:wght@700&family=Yatra+One&display=swap");
+.container {
+  height: 98vh;
+  width: 100vw;
+  max-width: 100%;
+}
+.info {
+  font-family: "Kalam", cursive;
+  font-family: "Sigmar", cursive;
+  font-family: "The Nautigal", cursive;
+  font-family: "Yatra One", cursive;
+}
