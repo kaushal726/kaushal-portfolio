@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/kaushal-portfolio/static/css/main.4ebc4879.css",
-    "main.js": "/kaushal-portfolio/static/js/main.0c41db75.js",
+    "main.css": "/kaushal-portfolio/static/css/main.61255733.css",
+    "main.js": "/kaushal-portfolio/static/js/main.dbcd9c5e.js",
     "static/js/787.1ed0c42c.chunk.js": "/kaushal-portfolio/static/js/787.1ed0c42c.chunk.js",
     "static/media/menu.jpg": "/kaushal-portfolio/static/media/menu.c8785285cc0005005dfe.jpg",
     "static/media/bg-8.jpg": "/kaushal-portfolio/static/media/bg-8.aeef062faf296e19b60c.jpg",
@@ -12,12 +12,12 @@
     "static/media/instagram (1).png": "/kaushal-portfolio/static/media/instagram (1).e80dd0bf91b7be13ec82.png",
     "static/media/github.png": "/kaushal-portfolio/static/media/github.22cfdd1cba253783ce51.png",
     "index.html": "/kaushal-portfolio/index.html",
-    "main.4ebc4879.css.map": "/kaushal-portfolio/static/css/main.4ebc4879.css.map",
-    "main.0c41db75.js.map": "/kaushal-portfolio/static/js/main.0c41db75.js.map",
+    "main.61255733.css.map": "/kaushal-portfolio/static/css/main.61255733.css.map",
+    "main.dbcd9c5e.js.map": "/kaushal-portfolio/static/js/main.dbcd9c5e.js.map",
     "787.1ed0c42c.chunk.js.map": "/kaushal-portfolio/static/js/787.1ed0c42c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.4ebc4879.css",
-    "static/js/main.0c41db75.js"
+    "static/css/main.61255733.css",
+    "static/js/main.dbcd9c5e.js"
   ]
 }
