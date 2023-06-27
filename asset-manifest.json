@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/kaushal-portfolio/static/css/main.f1c40b63.css",
-    "main.js": "/kaushal-portfolio/static/js/main.a8b6691b.js",
+    "main.css": "/kaushal-portfolio/static/css/main.b74b1edb.css",
+    "main.js": "/kaushal-portfolio/static/js/main.888af669.js",
     "static/js/787.1ed0c42c.chunk.js": "/kaushal-portfolio/static/js/787.1ed0c42c.chunk.js",
     "static/media/menu.jpg": "/kaushal-portfolio/static/media/menu.c8785285cc0005005dfe.jpg",
+    "static/media/bg-8.jpg": "/kaushal-portfolio/static/media/bg-8.aeef062faf296e19b60c.jpg",
     "static/media/todo.png": "/kaushal-portfolio/static/media/todo.81bcfc83faaa00159c98.png",
-    "static/media/bg-5.jpg": "/kaushal-portfolio/static/media/bg-5.a606750d1aeffef248e9.jpg",
     "static/media/weather.png": "/kaushal-portfolio/static/media/weather.b31454ddfc5e63f60bf9.png",
     "static/media/drum-set.png": "/kaushal-portfolio/static/media/drum-set.f1eccc088d18ad88160b.png",
     "static/media/stopwatch.jpg": "/kaushal-portfolio/static/media/stopwatch.81b4f1b86376c81aeeec.jpg",
     "static/media/instagram (1).png": "/kaushal-portfolio/static/media/instagram (1).e80dd0bf91b7be13ec82.png",
     "static/media/github.png": "/kaushal-portfolio/static/media/github.22cfdd1cba253783ce51.png",
     "index.html": "/kaushal-portfolio/index.html",
-    "main.f1c40b63.css.map": "/kaushal-portfolio/static/css/main.f1c40b63.css.map",
-    "main.a8b6691b.js.map": "/kaushal-portfolio/static/js/main.a8b6691b.js.map",
+    "main.b74b1edb.css.map": "/kaushal-portfolio/static/css/main.b74b1edb.css.map",
+    "main.888af669.js.map": "/kaushal-portfolio/static/js/main.888af669.js.map",
     "787.1ed0c42c.chunk.js.map": "/kaushal-portfolio/static/js/787.1ed0c42c.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f1c40b63.css",
-    "static/js/main.a8b6691b.js"
+    "static/css/main.b74b1edb.css",
+    "static/js/main.888af669.js"
   ]
 }
