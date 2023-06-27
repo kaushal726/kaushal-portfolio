@@ -15,6 +15,9 @@ module.exports = {
         'desktop': '1280px',
         // => @media (min-width: 1280px) { ... }
       },
+      backgroundImage: {
+        "banner-bg": "url('/src/assets/Background/bg-8.jpg')",
+      }
     },
   },
   plugins: [],
