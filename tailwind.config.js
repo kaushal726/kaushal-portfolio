@@ -19,6 +19,7 @@ module.exports = {
         "banner-bg": "url('/src/assets/Background/bg-8.jpg')",
       }
     },
+
   },
   plugins: [],
 }

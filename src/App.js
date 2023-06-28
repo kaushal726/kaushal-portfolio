@@ -8,6 +8,7 @@ import Particles from 'react-tsparticles'
 // import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import { useCallback } from 'react';
+import Readme from './components/readme';
 
 
 
@@ -86,7 +87,7 @@ function App() {
                 enable: true,
                 area: 800,
               },
-              value: 70,
+              value: 30,
             },
             opacity: {
               value: 0.5,
@@ -105,6 +106,7 @@ function App() {
       {/* <CarouselComponent /> */}
       <Body />
       <About />
+      <Readme />
       <Connect />
     </div>
   );
