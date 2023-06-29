@@ -2,11 +2,11 @@ import React from "react";
 import readmeImg from "../assets/readme.jpg"
 let Readme = () => {
     return (
-        <div className="relative grid md:grid-cols-3 bg-slate-500 z-40">
+        <div className="relative grid md:grid-cols-3 rounded-3xl z-40 background  m-5">
             <div className="flex items-center justify-center">
                 <img className="p-4 rounded-full md:w-3/4 w-1/2" src={readmeImg} alt=""></img>
             </div>
-            <div className=" flex justify-center items-center flex-col md:col-span-2 p-10">
+            <div className=" flex justify-center items-center flex-col md:col-span-2 md:p-10 p-3">
                 <h1 className="flex md:justify-start md:items-start justify-center  w-full p-2 text-4xl italic text-white">About Me!</h1>
                 <p className="text-white text-gray-200 md:text-base text-xs">
                     <p className="p-2">My name is Kaushal Raj, and I completed my 10th grade from Bishop's School Ranchi. I opted for the science stream and pursued my intermediate education at Oxford Public School Ranchi, focusing on the same field. Later, I graduated with a Bachelor's degree in Computer Applications (BCA). Currently, I have been working at MapmyIndia for the past year, primarily in the field of artificial intelligence.</p>

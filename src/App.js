@@ -14,7 +14,6 @@ import Readme from './components/readme';
 
 function App() {
   const particlesInit = useCallback(async engine => {
-    console.log(engine);
     // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
     // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
     // starting from v2 you can add only the features you need reducing the bundle size
@@ -22,11 +21,10 @@ function App() {
   }, []);
 
   const particlesLoaded = useCallback(async container => {
-    await console.log(container);
   }, []);
 
   return (
-    <div className="App bg-banner-bg">
+    <div className="App background">
       <Particles
         id="tsparticles"
         init={particlesInit}
@@ -39,7 +37,7 @@ function App() {
           interactivity: {
             events: {
               onClick: {
-                enable: true,
+                enable: false,
                 mode: "push",
               },
               onHover: {
@@ -93,7 +91,7 @@ function App() {
               value: 0.5,
             },
             shape: {
-              type: "circle",
+              type: "polygon",
             },
             size: {
               value: { min: 1, max: 5 },

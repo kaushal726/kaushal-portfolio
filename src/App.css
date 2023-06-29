@@ -14,3 +14,9 @@
   max-height: 100%;
   max-width: 100%;
 }
+.background {
+  /* background-image: url("./assets/Background/bg-11.jpg");
+  background-size: cover;
+  background-position: center; */
+  background-image: linear-gradient(to bottom right, #0b0361, #460221);
+}

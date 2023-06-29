@@ -11,7 +11,7 @@ export const Body = () => {
                 <h1 className='md:text-5xl italic font-medium p-2 text-1xl  py-0  text-white'>Frontend Developer </h1>
             </div>
             <div className='relative flex-col top-0 flex justify-center items-center w-full md:h-96 h-40'>
-                <img className='rounded-full md:h-72 md:w-80 h-32 w-36' src={displayPicture} alt=''></img>
+                <img className='rounded-full md:w-96  w-36' src={displayPicture} alt=''></img>
             </div>
         </div>
 
