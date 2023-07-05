@@ -9,6 +9,7 @@ import Particles from 'react-tsparticles'
 import { loadFull } from "tsparticles";
 import { useCallback } from 'react';
 import Readme from './components/readme';
+import Contact from './components/contact';
 
 
 
@@ -105,6 +106,7 @@ function App() {
       <Body />
       <About />
       <Readme />
+      <Contact />
       <Connect />
     </div>
   );
