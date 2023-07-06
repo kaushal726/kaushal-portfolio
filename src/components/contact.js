@@ -5,18 +5,18 @@ let Contact = () => {
     let [email, setEmail] = useState("");
     let [summary, setSummary] = useState("");
     let [popUp, setpopUp] = useState(false);
-    let [details, setdetails] = useState([]);
+    let [details, setDetails] = useState([]);
     let [message, setMessage] = useState("");
 
 
 
     let updateName = (e) => {
         setName(e.target.value);
-        setdetails(oldArray => [...oldArray, "name"]);
+        setDetails(oldArray => [...oldArray, "name"]);
     }
     let updateEmail = (e) => {
         setEmail(e.target.value);
-        setdetails(oldArray => [...oldArray, "email"]);
+        setDetails(oldArray => [...oldArray, "email"]);
     }
     let updateSummary = (e) => {
         setSummary(e.target.value);
@@ -46,8 +46,7 @@ let Contact = () => {
         setpopUp(false);
         enableBodyScroll(document.body);
         setMessage("");
-        setdetails([])
-        // Perform any desired changes in the website here
+        setDetails([])
     };
     return (
         <div className="p-5 bg-white m-5 rounded-lg">
