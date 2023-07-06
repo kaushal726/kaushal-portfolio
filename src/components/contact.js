@@ -62,7 +62,7 @@ let Contact = () => {
                 <button className=" bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 mt-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" onClick={upload}>Submit</button>
             </form>
             {popUp && (
-                <div className=" fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50">
+                <div className="z-40 fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-black bg-opacity-50">
                     <div className="flex flex-col bg-white p-4 rounded-lg">
                         <div className="flex items-end justify-end">
                             <button className="mb-4 text-gray-600 hover:text-gray-900" onClick={handleDismiss}>
