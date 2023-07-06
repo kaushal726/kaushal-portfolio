@@ -70,7 +70,6 @@ let Contact = () => {
                             </button>
                         </div>
                         <h2 className="text-2xl italic font-bold mb-4">{message}</h2>
-                        {/* Additional success message or content */}
                     </div>
                 </div>
             )}
