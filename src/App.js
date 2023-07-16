@@ -10,10 +10,18 @@ import { loadFull } from "tsparticles";
 import { useCallback } from 'react';
 import Readme from './components/readme';
 import Contact from './components/contact';
+import { animateScroll as scroll } from 'react-scroll';
+import scrollImage from './assets/Social Icons/right.png'
 
 
 
 function App() {
+  const scrollToTop = () => {
+    scroll.scrollToTop({
+      smooth: true,
+      duration: 500,
+    });
+  };
   const particlesInit = useCallback(async engine => {
     // you can initiate the tsParticles instance (engine) here, adding custom shapes or presets
     // this loads the tsparticles package bundle, it's the easiest method for getting everything ready
@@ -25,7 +33,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App background">
+    <div className="App background relative">
       <Particles
         id="tsparticles"
         init={particlesInit}
@@ -101,6 +109,12 @@ function App() {
           detectRetina: true,
         }}
       />
+      <div className=''>
+        <button onClick={scrollToTop} className=" h-10 w-10 m-3 scroll-to-top text-white fixed z-50 bottom-0 right-0">
+          <img src={scrollImage} alt=''></img>
+
+        </button>
+      </div>
       <Navbar />
       {/* <CarouselComponent /> */}
       <Body />
