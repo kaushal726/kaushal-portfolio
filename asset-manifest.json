@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/kaushal-portfolio/static/css/main.4de86eb0.css",
-    "main.js": "/kaushal-portfolio/static/js/main.ea233099.js",
-    "static/js/787.1ed0c42c.chunk.js": "/kaushal-portfolio/static/js/787.1ed0c42c.chunk.js",
-    "static/media/menu.jpg": "/kaushal-portfolio/static/media/menu.c8785285cc0005005dfe.jpg",
-    "static/media/readme.jpg": "/kaushal-portfolio/static/media/readme.bdc37a8a17c90d45e827.jpg",
-    "static/media/dp.jpg": "/kaushal-portfolio/static/media/dp.2f8ebad1cfac991e0bf3.jpg",
-    "static/media/todo.png": "/kaushal-portfolio/static/media/todo.81bcfc83faaa00159c98.png",
-    "static/media/weather.png": "/kaushal-portfolio/static/media/weather.b31454ddfc5e63f60bf9.png",
-    "static/media/drum-set.png": "/kaushal-portfolio/static/media/drum-set.f1eccc088d18ad88160b.png",
-    "static/media/stopwatch.jpg": "/kaushal-portfolio/static/media/stopwatch.81b4f1b86376c81aeeec.jpg",
-    "static/media/instagram (1).png": "/kaushal-portfolio/static/media/instagram (1).e80dd0bf91b7be13ec82.png",
-    "static/media/github.png": "/kaushal-portfolio/static/media/github.22cfdd1cba253783ce51.png",
-    "static/media/right.png": "/kaushal-portfolio/static/media/right.69465cecf59c853713f8.png",
-    "index.html": "/kaushal-portfolio/index.html",
-    "main.4de86eb0.css.map": "/kaushal-portfolio/static/css/main.4de86eb0.css.map",
-    "main.ea233099.js.map": "/kaushal-portfolio/static/js/main.ea233099.js.map",
-    "787.1ed0c42c.chunk.js.map": "/kaushal-portfolio/static/js/787.1ed0c42c.chunk.js.map"
+    "main.css": "/static/css/main.4de86eb0.css",
+    "main.js": "/static/js/main.070b7c9d.js",
+    "static/js/787.1ed0c42c.chunk.js": "/static/js/787.1ed0c42c.chunk.js",
+    "static/media/menu.jpg": "/static/media/menu.c8785285cc0005005dfe.jpg",
+    "static/media/readme.jpg": "/static/media/readme.bdc37a8a17c90d45e827.jpg",
+    "static/media/dp.jpg": "/static/media/dp.2f8ebad1cfac991e0bf3.jpg",
+    "static/media/todo.png": "/static/media/todo.81bcfc83faaa00159c98.png",
+    "static/media/weather.png": "/static/media/weather.b31454ddfc5e63f60bf9.png",
+    "static/media/drum-set.png": "/static/media/drum-set.f1eccc088d18ad88160b.png",
+    "static/media/stopwatch.jpg": "/static/media/stopwatch.81b4f1b86376c81aeeec.jpg",
+    "static/media/instagram (1).png": "/static/media/instagram (1).e80dd0bf91b7be13ec82.png",
+    "static/media/github.png": "/static/media/github.22cfdd1cba253783ce51.png",
+    "static/media/right.png": "/static/media/right.69465cecf59c853713f8.png",
+    "index.html": "/index.html",
+    "main.4de86eb0.css.map": "/static/css/main.4de86eb0.css.map",
+    "main.070b7c9d.js.map": "/static/js/main.070b7c9d.js.map",
+    "787.1ed0c42c.chunk.js.map": "/static/js/787.1ed0c42c.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.4de86eb0.css",
-    "static/js/main.ea233099.js"
+    "static/js/main.070b7c9d.js"
   ]
 }
