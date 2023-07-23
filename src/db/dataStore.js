@@ -1,8 +1,8 @@
-import Todolist from "../assets/dbImage/todo.png"
+import Todolist from "../assets/dbImage/todo.jpg"
 import Menu from "../assets/dbImage/menu.jpg"
 import StopWatch from "../assets/dbImage/stopwatch.jpg"
-import Drum from "../assets/dbImage/drum-set.png"
-import Weather from "../assets/dbImage/weather.png"
+import Drum from "../assets/dbImage/drum-set.jpg"
+import Weather from "../assets/dbImage/weather.jpg"
 
 let dataStore = [
     {

@@ -1,8 +1,8 @@
 // import React, { useEffect, useState } from "react";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
-import leftArrow from "../assets/Social Icons/left-arrow.png"
-import rightArrow from "../assets/Social Icons/right-arrow.png"
+import leftArrow from "../assets/Social Icons/left-arrow.jpg"
+import rightArrow from "../assets/Social Icons/right-arrow.jpg"
 
 let CarouselComponent = () => {
 
