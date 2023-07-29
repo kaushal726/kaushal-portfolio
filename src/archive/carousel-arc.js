@@ -8,7 +8,7 @@ let CarouselComponent = () => {
 
 
     return (
-            <Carousel autoPlay={true} infiniteLoop={true} showArrows={false} showStatus={false} width={100}>
+        <Carousel autoPlay={true} infiniteLoop={true} showArrows={false} showStatus={false} width={100}>
             <div>
                 <img className="carousel-image" src={leftArrow} alt="" />
                 <p className="legend">Legend 1</p>

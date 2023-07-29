@@ -1,9 +1,9 @@
 import React from 'react'
-import github from '../assets/Social Icons/github.png'
-import linkedin from "../assets/Social Icons/linkedin.png"
-import facebook from "../assets/Social Icons/facebook.png"
-import snapchat from "../assets/Social Icons/snapchat.png"
-import instagram from "../assets/Social Icons/instagram (1).png"
+import github from '../../assets/Social Icons/github.png'
+import linkedin from "../../assets/Social Icons/linkedin.png"
+import facebook from "../../assets/Social Icons/facebook.png"
+import snapchat from "../../assets/Social Icons/snapchat.png"
+import instagram from "../../assets/Social Icons/instagram (1).png"
 import { Element } from 'react-scroll';
 const Connect = () => {
     return (

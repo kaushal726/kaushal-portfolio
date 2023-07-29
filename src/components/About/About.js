@@ -1,5 +1,5 @@
 import React from "react";
-import readmeImg from "../assets/readme.jpg"
+import readmeImg from "../../assets/readme.jpg"
 import { Element } from 'react-scroll';
 
 let Readme = () => {

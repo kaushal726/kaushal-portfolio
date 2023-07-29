@@ -8,8 +8,6 @@ let Contact = () => {
     let [details, setDetails] = useState([]);
     let [message, setMessage] = useState("");
 
-
-
     let updateName = (e) => {
         setName(e.target.value);
         setDetails(oldArray => [...oldArray, "name"]);

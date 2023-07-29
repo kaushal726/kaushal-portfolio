@@ -1,6 +1,6 @@
 import React from 'react'
 // import image2 from '../assets/Background/bg-5.jpg'
-import displayPicture from '../assets/dp.jpg'
+import displayPicture from '../../assets/dp.jpg'
 import { Element } from 'react-scroll'
 export const Body = () => {
     return (
@@ -20,3 +20,4 @@ export const Body = () => {
 
     )
 }
+
