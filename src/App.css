@@ -20,3 +20,6 @@
   background-position: center; */
   background-image: linear-gradient(to bottom right, #0b0361, #460221);
 }
+.active {
+  color: red;
+}
