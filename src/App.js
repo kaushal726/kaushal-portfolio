@@ -107,7 +107,7 @@ function App() {
           <img src={scrollImage} alt=''></img>
         </button>
       </div>
-      <BrowserRouter>
+      <BrowserRouter hashType="slash">
         <Routes>
           <Route path="/" element={<Mainnav />}>
             <Route index element={<Index />} />
