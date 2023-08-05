@@ -1,10 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 // import image2 from '../assets/Background/bg-5.jpg'
 // import displayPicture from '../../assets/dp.jpg'
 import { Time, Day } from './Time'
-import { Value } from './Quotes';
+import Quotes from './Quotes'
 export const Body = () => {
-    let quotes = Value[0]
+    const [quote, setQuote] = useState();
+    const [author, setAuthor] = useState();
+    useEffect(() => {
+        
+        Quotes().then(
+            data => {
+                setAuthor(data[0].author)
+                setQuote(data[0].quote)
+            }
+        )
+    }, [])
     return (
         <div className='top-0 flex flex-col justify-center items-center  h-screen overflow-x-auto'>
             <div className=' pb-24 relative flex-col top-0 flex justify-center items-start  md:h-96  md:pl-16 pl-9'>
@@ -16,8 +26,8 @@ export const Body = () => {
             <div className=" w-full absolute flex flex-col justify-center items-center z-10 md:top-20 top-12">
                 <h2 className="text-white font-mono md:text-xl text-xs w-full text-left">{Time()}</h2>
                 <h2 className="text-white font-mono md:text-xl text-xs w-full text-left">{Day()}</h2>
-                <h2 className="text-white font-mono md:text-xl text-xs w-full text-left">{quotes.author}</h2>
-                <h2 className="text-white font-mono md:text-xl text-xs w-full text-left">{quotes.quote}</h2>
+                <h2 className="text-white font-mono md:text-xl text-xs w-full text-left">{quote ? quote : ''}</h2>
+                <h2 className="text-white font-mono md:text-xl text-xs w-full text-left">{author ? author : ''}</h2>
 
             </div>
             {/* <div className='relative flex-col top-0 flex justify-center items-center w-full md:h-96 h-40'>
