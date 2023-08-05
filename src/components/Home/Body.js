@@ -6,14 +6,15 @@ import Quotes from './Quotes'
 export const Body = () => {
     const [quote, setQuote] = useState();
     const [author, setAuthor] = useState();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
-
         Quotes().then(
             data => {
                 setAuthor(data[0].author)
                 setQuote(data[0].quote)
             }
         )
+
     }, [])
     return (
         <div className='top-0 flex flex-col justify-center items-center  h-screen overflow-x-auto'>
@@ -24,10 +25,10 @@ export const Body = () => {
                 <h1 className='md:text-5xl italic font-medium p-2 text-1xl  py-0  text-white'>Full Stack Developer </h1>
             </div>
             <div className=" w-full absolute flex flex-col justify-center items-center z-10 md:top-20 top-12">
-                {/* <h2 className="text-white font-mono md:text-xl text-xs w-full text-left">{Time()}</h2>
+                <h2 className="text-white font-mono md:text-xl text-xs w-full text-left">{Time()}</h2>
                 <h2 className="text-white font-mono md:text-xl text-xs w-full text-left">{Day()}</h2>
                 <h2 className="text-white font-mono md:text-xl text-xs w-full text-left">{quote ? quote : ''}</h2>
-                <h2 className="text-white font-mono md:text-xl text-xs w-full text-left">{author ? author : ''}</h2> */}
+                <h2 className="text-white font-mono md:text-xl text-xs w-full text-left">{author ? author : ''}</h2>
 
             </div>
             {/* <div className='relative flex-col top-0 flex justify-center items-center w-full md:h-96 h-40'>
