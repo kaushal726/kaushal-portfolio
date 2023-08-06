@@ -16,9 +16,9 @@ const Time = () => {
     // eslint-disable-next-line
     const [time, setTime] = useState(new Date().toLocaleTimeString());
     // console.log(currDate);
-    // setInterval(() => {
-    //     setTime(new Date().toLocaleTimeString())
-    // }, 1000);
+    setInterval(() => {
+        setTime(new Date().toLocaleTimeString())
+    }, 1000);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     return time
 }
