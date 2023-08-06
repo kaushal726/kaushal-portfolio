@@ -4,21 +4,22 @@ const Day = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const [weekDay, setWeekDay] = useState("")
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
         const d = new Date();
         let day = d.getDay();
-        // console.log(day);
         setWeekDay(days[day])
-    }, [days])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     return weekDay
 }
 const Time = () => {
+    // eslint-disable-next-line
     const [time, setTime] = useState(new Date().toLocaleTimeString());
     // console.log(currDate);
     setInterval(() => {
         setTime(new Date().toLocaleTimeString())
     }, 1000);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     return time
 }
 // const date = () => {

@@ -4,7 +4,7 @@ import Connect from './Connect/Connect'
 
 const Index = () => {
     return (
-        <div >
+        <div className="">
             {<Body />}
             {<Connect />}
         </div>

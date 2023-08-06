@@ -23,3 +23,6 @@
 .active {
   color: red;
 }
+.App {
+  height: 100%;
+}
