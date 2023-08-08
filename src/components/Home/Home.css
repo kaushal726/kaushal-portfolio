@@ -1,0 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Oleo+Script&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Eater&family=Fasthand&family=Mogra&family=Piedra&family=Ribeye&family=Ruslan+Display&family=Slackey&display=swap");
+
+.heading {
+  /* font-family: "Dancing Script", cursive; */
+  /* font-family: "Oleo Script", cursive; */
+  /* font-family: "Mouse Memoirs", sans-serif; */
+  /* font-family: "Eater", cursive; */
+  /* font-family: "Fasthand", cursive; */
+  /* font-family: "Mogra", cursive; */
+  /* font-family: "Piedra", cursive; */
+  /* font-family: "Ribeye", cursive; */
+  /* font-family: "Ruslan Display", cursive; */
+  font-family: "Slackey", cursive;
+  color: lightblue;
+}
+.headingName {
+  font-family: "Shadows Into Light", cursive;
+  font-style: italic;
+  font-weight: 700;
+}

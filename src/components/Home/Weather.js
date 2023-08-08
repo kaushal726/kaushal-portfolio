@@ -1,13 +1,8 @@
 
 const Weather = async (city) => {
-
-    let apiKey = "PCMLJa7rNbfnWd9DThpryQ==xKZS9WPXe3ODF3UK";
-    let url = `https://api.api-ninjas.com/v1/weather?city=${city ? city : 'Ranchi'}`
-    return fetch(url, {
-        headers: {
-            'X-Api-Key': apiKey
-        },
-    }).then(res => res.json())
+    console.log(city);
+    let url = `https://api.openweathermap.org/data/2.5/weather?q=${city ? city : "Ranchi"}&appid=3172ea7b1cec32a905b6e73a3dfe25df`
+    return fetch(url).then(res => res.json())
         .then(data => {
             console.log(data);
             return data

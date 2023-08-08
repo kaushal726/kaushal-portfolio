@@ -12,7 +12,6 @@ import Index from './components/Index';
 import Project from './components/Projects/Project';
 
 function App() {
-  console.log("XYZ");
   const scrollToTop = () => {
     scroll.scrollToTop({
       smooth: true,
