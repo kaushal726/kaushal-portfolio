@@ -3,7 +3,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Oleo+Script&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Eater&family=Fasthand&family=Mogra&family=Piedra&family=Ribeye&family=Ruslan+Display&family=Slackey&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Caprasimo&family=Satisfy&display=swap");
 p {
   /* font-family: "Oleo Script", cursive; */
   /* font-family: "Ruslan Display", cursive; */
@@ -12,4 +12,7 @@ p {
 }
 .contain {
   height: 100%;
+}
+.data {
+  font-family: "Caprasimo", cursive;
 }

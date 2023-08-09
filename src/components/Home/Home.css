@@ -3,7 +3,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Oleo+Script&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Eater&family=Fasthand&family=Mogra&family=Piedra&family=Ribeye&family=Ruslan+Display&family=Slackey&display=swap");
-
+@import url("https://fonts.googleapis.com/css2?family=Satisfy&display=swap");
 .heading {
   /* font-family: "Dancing Script", cursive; */
   /* font-family: "Oleo Script", cursive; */
@@ -21,4 +21,9 @@
   font-family: "Shadows Into Light", cursive;
   font-style: italic;
   font-weight: 700;
+}
+.time {
+  font-family: "Ribeye", cursive;
+  /* font-weight: 700; */
+  /* font-size: x-large; */
 }

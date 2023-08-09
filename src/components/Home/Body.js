@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import './Home.css'
-// import image2 from '../assets/Background/bg-5.jpg'
-// import displayPicture from '../../assets/dp.jpg'
-// import quoteImg from '../../assets/quoteimg.jpeg'
-import { Time, Day } from './Time'
 import Quotes from './Quotes'
 // eslint-disable-next-line
-import Weather from './Weather'
 import AQI from './AQI'
-import Crypto from './CryptoCurreny'
-import Covid from './Covid'
 export const Body = () => {
     const [city, setCity] = useState('');
-    const [weatherIcon, setWeatherIcon] = useState('');
+    // const [weatherIcon, setWeatherIcon] = useState('');
     const [quote, setQuote] = useState();
     const [author, setAuthor] = useState();
     // eslint-disable-next-line
@@ -20,13 +13,14 @@ export const Body = () => {
     // eslint-disable-next-line
     const [aqi, setAqi] = useState();
     // eslint-disable-next-line
-    const [crypto, setCrypto] = useState();
+    const [time, setTime] = useState();
     // eslint-disable-next-line
-    const [covid, setCovid] = useState();
-    // eslint-disable-next-line
-    const [time, SetTime] = useState(Time());
-    // eslint-disable-next-line
-    const [date, SetDate] = useState(Day());
+    useEffect(() => {
+        setInterval(() => {
+            setTime(new Date().toLocaleTimeString())
+        }, 1000);
+
+    }, [time])
     useEffect(() => {
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(
@@ -51,14 +45,9 @@ export const Body = () => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => {
-        Crypto().then(data => {
-            setCrypto(data)
-        })
-        Covid().then(data => {
-            setCovid(data)
-        })
         Quotes().then(
             data => {
                 setAuthor(data[0]?.author)
@@ -69,17 +58,21 @@ export const Body = () => {
     }, [])
     useEffect(() => {
         const fetchData = async () => {
-            let apiKey = "3172ea7b1cec32a905b6e73a3dfe25df"
-            let url = `https://api.openweathermap.org/data/2.5/weather?q=${city ? city : ""}&appid=${apiKey}`
+            let apiKey = "PCMLJa7rNbfnWd9DThpryQ==xKZS9WPXe3ODF3UK"
+            let url = `https://api.api-ninjas.com/v1/weather?city=${city ? city : ""}`
             // debugger 
-            let response = await fetch(url);
+            let response = await fetch(url, {
+                headers: {
+                    'X-Api-Key': apiKey
+                },
+            });
             let data = await response.json();
-            setWeather(data);
-            if ("weather" in data) {
-                if (Array.isArray(data.weather)) {
-                    setWeatherIcon(data.weather[0].main);
-                }
+            console.log(data);
+            if (city) {
+                setWeather(data);
             }
+            console.log(weathers);
+
         }
 
         AQI(city).then(data => {
@@ -99,15 +92,19 @@ export const Body = () => {
                 <h1 className='heading w-full md:text-5xl italic font-medium p-2 text-3xl text-center py-0  text-white'>Full Stack Developer </h1>
             </div>
             <div className=" w-full absolute flex flex-row justify-center items-center z-10 md:top-20 top-12">
-                <div className='flex flex-row justify-center items-center'>
+                <div className='flex flex-col justify-center items-center w-full'>
                     <div className='text-white'>
-                        <i className={`pl-2 text-xl fa-solid fa-${weatherIcon.toLowerCase()}`}></i>
+                        <h2 className="md:text-3xl text-xl text-white time md:font-semibold font-bold text-center">{time}</h2>
                     </div>
-                    <div className='text-white'>{aqi ? aqi : ""}</div>
-                    <div className='text-white'></div>
+                    <div className='flex flex-rows justify-between items-center w-full'>
+                        <div className='text-white flex mr-1'>
+                            <h3 className='data md:ml-72 ml-16  md:text-3xl text-xl '>{weathers ? weathers.temp : ""}°C</h3>
+                        </div>
+                        <div className='data md:mr-72  mr-16 md:text-3xl text-xl text-white ml-1'>AQI :{aqi ? aqi : ""}</div>
+                    </div>
+
                 </div>
-                <h2 className="text-white font-mono md:text-xl text-xs  text-center">{time}</h2>
-                <h2 className="text-white font-mono md:text-xl text-xs  text-center">{date}</h2>
+                {/* <h2 className="text-white font-mono md:text-xl text-xs  text-center">{date}</h2> */}
             </div>
             <div className="bg-blue-300 quote p-3 w-3/4 rounded-xl   ">
                 <div>
@@ -122,9 +119,6 @@ export const Body = () => {
                     <h6 className='pr-4 text-right text-xs md:text-sm'>{author ? author : ''}</h6>
                 </div>
             </div>
-            {/* <div className='relative flex-col top-0 flex justify-center items-center w-full md:h-96 h-40'>
-                    <img className='rounded-full md:w-96  w-36' src={displayPicture} alt=''></img>
-                </div> */}
         </div >
     )
 }
