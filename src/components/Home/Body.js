@@ -98,9 +98,9 @@ export const Body = () => {
                     </div>
                     <div className='flex flex-rows justify-between items-center w-full'>
                         <div className='text-white flex mr-1'>
-                            <h3 className='data md:ml-72 ml-16  md:text-3xl text-xl '>{weathers ? weathers.temp : ""}°C</h3>
+                            <h3 className='data md:ml-72 ml-16  md:text-3xl text-xl '>{weathers ? `${weathers.temp}°C` : ""}</h3>
                         </div>
-                        <div className='data md:mr-72  mr-16 md:text-3xl text-xl text-white ml-1'>AQI :{aqi ? aqi : ""}</div>
+                        <div className='data md:mr-72  mr-16 md:text-3xl text-xl text-white ml-1'>{aqi ? `AQI : ${aqi}` : ""}</div>
                     </div>
 
                 </div>
