@@ -46,7 +46,7 @@ function App() {
                 enable: true,
                 mode: "repulse",
               },
-              resize: true,
+              resize: false,
             },
             modes: {
               push: {
@@ -79,7 +79,7 @@ function App() {
                 default: "bounce",
               },
               random: false,
-              speed: 6,
+              speed: 2,
               straight: false,
             },
             number: {
@@ -87,7 +87,7 @@ function App() {
                 enable: true,
                 area: 800,
               },
-              value: 30,
+              value: 20,
             },
             opacity: {
               value: 0.5,
