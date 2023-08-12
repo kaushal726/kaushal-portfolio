@@ -5,7 +5,7 @@ import Quotes from './Quotes'
 import AQI from './AQI'
 export const Body = () => {
     const [city, setCity] = useState('');
-    // const [weatherIcon, setWeatherIcon] = useState('');
+    const [weatherIcon, setWeatherIcon] = useState('');
     const [quote, setQuote] = useState();
     const [author, setAuthor] = useState();
     // eslint-disable-next-line
@@ -19,7 +19,6 @@ export const Body = () => {
         setInterval(() => {
             setTime(new Date().toLocaleTimeString())
         }, 1000);
-
     }, [time])
     useEffect(() => {
         if ("geolocation" in navigator) {
@@ -58,25 +57,25 @@ export const Body = () => {
     }, [])
     useEffect(() => {
         const fetchData = async () => {
-            let apiKey = "PCMLJa7rNbfnWd9DThpryQ==xKZS9WPXe3ODF3UK"
-            let url = `https://api.api-ninjas.com/v1/weather?city=${city ? city : ""}`
-            // debugger 
-            let response = await fetch(url, {
-                headers: {
-                    'X-Api-Key': apiKey
-                },
-            });
+            let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=a3f94ace917ff857f870c65f2ce22245`
+            let response = await fetch(url);
             let data = await response.json();
-            console.log(data);
-            if (city) {
-                setWeather(data);
+            if (data) {
+                if (data.main) {
+                    setWeather(data.main.temp)
+                }
+                if (data.weather) {
+                    setWeatherIcon(data.weather[0].main)
+                }
             }
-            console.log(weathers);
+
+            // console.log(weathers);
 
         }
 
         AQI(city).then(data => {
             if ("overall_aqi" in data) {
+
                 setAqi(data.overall_aqi);
             }
         })
@@ -98,7 +97,8 @@ export const Body = () => {
                     </div>
                     <div className='flex flex-rows justify-between items-center w-full'>
                         <div className='text-white flex mr-1'>
-                            <h3 className='data md:ml-72 ml-16  md:text-3xl text-xl '>{weathers ? `${weathers.temp}°C` : ""}</h3>
+                            <h3 className='data md:ml-72 ml-16  md:text-3xl text-xl '>{weathers ? `${(weathers - 273).toFixed(1)}°C` : ""}</h3>
+                            {weatherIcon ? <i class="fa-solid fa-smog"></i> : ""}
                         </div>
                         <div className='data md:mr-72  mr-16 md:text-3xl text-xl text-white ml-1'>{aqi ? `AQI : ${aqi}` : ""}</div>
                     </div>
