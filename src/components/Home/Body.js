@@ -68,9 +68,6 @@ export const Body = () => {
                     setWeatherIcon(data.weather[0].main)
                 }
             }
-
-            // console.log(weathers);
-
         }
 
         AQI(city).then(data => {
@@ -98,7 +95,20 @@ export const Body = () => {
                     <div className='flex flex-rows justify-between items-center w-full'>
                         <div className='text-white flex mr-1'>
                             <h3 className='data md:ml-72 ml-16  md:text-3xl text-xl '>{weathers ? `${(weathers - 273).toFixed(1)}°C` : ""}</h3>
-                            {weatherIcon ? <i class="fa-solid fa-smog"></i> : ""}
+                            <div className='flex justify-center items-center'>
+                                {weatherIcon === "Mist" ? <i className="fa-solid fa-smog"></i> : ""}
+                                {weatherIcon === "Smoke" ? <i className="fa-solid fa-smog"></i> : ""}
+                                {weatherIcon === "Haze" ? <i className="fa-solid fa-smog"></i> : ""}
+                                {weatherIcon === "Dust" ? <i className="fa-solid fa-smog"></i> : ""}
+                                {weatherIcon === "Fog" ? <i className="fa-solid fa-smog"></i> : ""}
+                                {weatherIcon === "Thunderstorm" ? <i className="fa-solid fa-cloud-bolt"></i> : ""}
+                                {weatherIcon === "Rain" ? <i className="fa-solid fa-cloud-rain"></i> : ""}
+                                {weatherIcon === "broken clouds" ? <i className="fa-solid fa-cloud-showers-heavy"></i> : ""}
+                                {weatherIcon === "scattered clouds" ? <i className="fa-solid fa-cloudflare"></i> : ""}
+                                {weatherIcon === "clear sky" ? <i className="fa-solid fa-sun"></i> : ""}
+                            </div>
+
+
                         </div>
                         <div className='data md:mr-72  mr-16 md:text-3xl text-xl text-white ml-1'>{aqi ? `AQI : ${aqi}` : ""}</div>
                     </div>

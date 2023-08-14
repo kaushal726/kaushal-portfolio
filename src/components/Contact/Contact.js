@@ -24,7 +24,6 @@ let Contact = () => {
         setName("");
         setEmail("");
         setSummary("");
-        console.log(details);
         setpopUp(true);
         if (details.includes("name") && details.includes("email")) {
             setMessage("Successfully Submitted ! ");

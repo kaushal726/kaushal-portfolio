@@ -18,7 +18,38 @@
   /* background-image: url("./assets/Background/bg-11.jpg");
   background-size: cover;
   background-position: center; */
-  background-image: linear-gradient(to bottom right, #0b0361, #460221);
+  /* background-image: linear-gradient(to bottom right, #0b0361, #460221); */
+  /* position: fixed; */
+  margin-left: auto;
+  margin-right: auto;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1000;
+  background-position: top center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background: #0653b8; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(
+    top,
+    #1d4777,
+    #0c6485
+  ); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(
+    bottom,
+    #134659,
+    #595a01
+  ); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(
+    top,
+    #134659,
+    #2b7692
+  ); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(
+    to bottom,
+    #134659,
+    #430257
+  ); /* Standard syntax */
 }
 .active {
   color: red;
