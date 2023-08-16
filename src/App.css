@@ -6,14 +6,7 @@
   font-family: "The Nautigal", cursive;
   font-family: "Yatra One", cursive;
 }
-#root {
-  background-image: "../assets/Background/bg-2.jpg";
-}
-.carousel-image {
-  object-fit: contain;
-  max-height: 100%;
-  max-width: 100%;
-}
+
 .background {
   /* background-image: url("./assets/Background/bg-11.jpg");
   background-size: cover;
@@ -25,11 +18,7 @@
   top: 0;
   width: 100%;
   height: 100%;
-  z-index: -1000;
-  background-position: top center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-color: #000002;
+  /* z-index: -1000; */
   background-image: linear-gradient(
     168deg,
     #111113 0%,
