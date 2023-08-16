@@ -116,7 +116,7 @@ export const Body = () => {
                 </div>
                 {/* <h2 className="text-white font-mono md:text-xl text-xs  text-center">{date}</h2> */}
             </div>
-            <div className="bg-blue-300 quote p-3 w-3/4 rounded-xl   ">
+            {/* <div className="bg-blue-300 quote p-3 w-3/4 rounded-xl  ">
                 <div>
                     <h2 className='text-center mb-2 text-sm md:text-lg'>Quotes</h2>
                 </div>
@@ -127,6 +127,31 @@ export const Body = () => {
                 </div>
                 <div className="mt-4 ">
                     <h6 className='pr-4 text-right text-xs md:text-sm'>{author ? author : ''}</h6>
+                </div>
+            </div> */}
+            <div className='w-full'>
+                <div className=" curved-div upper ">
+                    {/* <h1 className=' top-[55%] absolute w-full items-center justify-center text-center text-white bg-[#044f66] mt-0 pt-0 top-0'>Quotes</h1> */}
+                    <svg className='' viewBox="0 0 1440 319">
+                        {/* <text x="10" y="40" fontFamily="Arial" fontSize="14" fill="black">Hello, SVG!</text> */}
+                        <path className="relative" fill="#044f66" d="M0,32L48,80C96,128,192,224,288,224C384,224,480,128,576,90.7C672,53,768,75,864,96C960,117,1056,139,1152,149.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                    </svg>
+                </div>
+                <div className="curved-div lower w-full">
+                    <div className="flex justify-center items-center w-full">
+                        {/* <i className="pl-2 text-xl fa-solid fa-quote-left"></i> */}
+                        <h4 className='mb-5 text-center text-lg md:text-2xl font-bold w-[70%] '>"{quote ? quote : ''}"</h4>
+                        {/* <i className="pr-2 text-xl fa-solid fa-quote-right flex justify-end"></i> */}
+                    </div>
+                    <div className="">
+                        <h6 className='italic text-center mb-8 md:mb-16 md:text-base text-base'>{author ? author : ''}</h6>
+                    </div>
+                    <div className='bottom'>
+                        <svg className='' viewBox="0 0 1440 319">
+                            <path fill="" d="M0,32L48,80C96,128,192,224,288,224C384,224,480,128,576,90.7C672,53,768,75,864,96C960,117,1056,139,1152,149.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                        </svg>
+                    </div>
+
                 </div>
             </div>
         </div >

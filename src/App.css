@@ -29,27 +29,13 @@
   background-position: top center;
   background-size: cover;
   background-repeat: no-repeat;
-  background: #0653b8; /* For browsers that do not support gradients */
-  background: -webkit-linear-gradient(
-    top,
-    #1d4777,
-    #0c6485
-  ); /* For Safari 5.1 to 6.0 */
-  background: -o-linear-gradient(
-    bottom,
-    #134659,
-    #595a01
-  ); /* For Opera 11.1 to 12.0 */
-  background: -moz-linear-gradient(
-    top,
-    #134659,
-    #2b7692
-  ); /* For Firefox 3.6 to 15 */
-  background: linear-gradient(
-    to bottom,
-    #134659,
-    #430257
-  ); /* Standard syntax */
+  background-color: #000002;
+  background-image: linear-gradient(
+    168deg,
+    #111113 0%,
+    #200363 26%,
+    #050807 100%
+  );
 }
 .active {
   color: red;
@@ -61,3 +47,34 @@
 /* .quote {
   background-image: url(../src/assets/quoteimg.jpeg);
 } */
+
+.curved-div {
+  /* position: relative; */
+  background: #044f66;
+  color: #fff;
+
+  text-align: center;
+  /* overflow: hidden; */
+}
+.curved-div svg {
+  /* display: block; */
+}
+.upper {
+  background: transparent;
+}
+.curved-div h1 {
+  font-size: 6rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  margin-top: 0rem;
+}
+.curved-div p {
+  font-size: 1rem;
+  margin: 0 5rem 0rem 5rem;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.lower svg {
+  /* background-color: transparent; */
+}

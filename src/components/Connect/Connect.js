@@ -6,7 +6,7 @@ import snapchat from "../../assets/Social Icons/snapchat.png"
 import instagram from "../../assets/Social Icons/instagram (1).png"
 const Connect = () => {
     return (
-        <div className=''>
+        <div className=' flex  flex-col w-full items-center justify-center'>
             <h1 className='text-center text-white font-bold text-2xl p-1 m-1'>Let's Connect? </h1>
             <div className='flex justify-center items-center p-4'>
                 <a className='bg-white rounded-2xl text-black w-7 m-1 ' href='https://github.com/kaushal726' target=''><img src={github} alt='github' /></a>
