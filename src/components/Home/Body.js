@@ -49,8 +49,11 @@ export const Body = () => {
     useEffect(() => {
         Quotes().then(
             data => {
-                setAuthor(data[0]?.author)
-                setQuote(data[0]?.quote)
+                if (data) {
+                    setAuthor(data[0]?.author)
+                    setQuote(data[0]?.quote)
+                }
+
             }
         )
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -138,13 +141,13 @@ export const Body = () => {
                     </svg>
                 </div>
                 <div className="curved-div lower w-full">
-                    <div className="flex justify-center items-center w-full">
+                    <div className="flex flex-col justify-center items-center w-full">
                         {/* <i className="pl-2 text-xl fa-solid fa-quote-left"></i> */}
-                        <h4 className='mb-5 text-center text-lg md:text-2xl font-bold w-[70%] '>"{quote ? quote : ''}"</h4>
+                        <h4 className='mb-5 font-mono text-center text-lg md:text-2xl font-bold w-[70%] '>"{quote ? quote : ''}"</h4>
                         {/* <i className="pr-2 text-xl fa-solid fa-quote-right flex justify-end"></i> */}
-                    </div>
-                    <div className="">
-                        <h6 className='italic text-center mb-8 md:mb-16 md:text-base text-base'>{author ? author : ''}</h6>
+                        <div className="flex items-end justify-end  w-[60%]">
+                            <h6 className='italic text-center mb-8 md:mb-16 md:text-base text-base'>{author ? author : ''}</h6>
+                        </div>
                     </div>
                     <div className='bottom'>
                         <svg className='' viewBox="0 0 1440 319">
