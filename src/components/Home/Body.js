@@ -17,8 +17,18 @@ export const Body = () => {
     // eslint-disable-next-line
     useEffect(() => {
         setInterval(() => {
-            setTime(new Date().toLocaleTimeString())
+            // setTime((new Date().toLocaleTimeString().toLocaleTimeString('en-US')))
+            let date = new Date();
+            let hh = date.getHours();
+            let mm = date.getMinutes();
+            hh = hh.toString().length === 1 ? `0${hh}` : hh;
+            mm = mm.toString().length === 1 ? `0${mm}` : mm;
+            let final = `${hh}:${mm}`
+            setTime(final)
         }, 1000);
+
+        // let ss = date.getSeconds();
+
     }, [time])
     useEffect(() => {
         if ("geolocation" in navigator) {
@@ -60,7 +70,7 @@ export const Body = () => {
     }, [])
     useEffect(() => {
         const fetchData = async () => {
-            let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=a3f94ace917ff857f870c65f2ce22245`
+            let url = `https://api.openweathermap.org/data/2.5/weather?q=${city ? city : "Ranchi"}&appid=a3f94ace917ff857f870c65f2ce22245`
             let response = await fetch(url);
             let data = await response.json();
             if (data) {
@@ -95,30 +105,32 @@ export const Body = () => {
                     <div className='text-white'>
                         <h2 className="md:text-lg text-base text-white time md:font-semibold font-bold text-center">{time}</h2>
                     </div>
-                    <div className='flex flex-rows justify-between items-center w-full'>
-                        <div className='text-white flex flex-col mr-1 md:ml-24 ml-10'>
-                            <div className='flex  justify-center items-center md:text-4xl  text-xl '>
-                                {weatherIcon === "Mist" ? <i className="  text-blue-300 fa-solid fa-smog"></i> : ""}
-                                {weatherIcon === "Smoke" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
-                                {weatherIcon === "Haze" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
-                                {weatherIcon === "Dust" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
-                                {weatherIcon === "Fog" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
-                                {weatherIcon === "Thunderstorm" ? <i className=" text-blue-300 fa-solid fa-cloud-bolt"></i> : ""}
-                                {weatherIcon === "Rain" ? <i className=" text-blue-300 fa-solid fa-cloud-rain"></i> : ""}
-                                {weatherIcon === "broken clouds" ? <i className=" text-blue-300 fa-solid fa-cloud-showers-heavy"></i> : ""}
-                                {weatherIcon === "scattered clouds" ? <i className=" text-blue-300 fa-solid fa-cloudflare"></i> : ""}
-                                {weatherIcon === "clear sky" ? <i className=" text-blue-300 fa-solid fa-sun"></i> : ""}
-                            </div>
-                            <div>
-                                <h3 className='data  text-center md:text-lg text-base '>{weathers ? `${(weathers - 273).toFixed(1)}` : ""}<sup>°</sup>C</h3>
-                            </div>
+                    {city ?
+                        <div className='flex flex-rows justify-between items-center w-full'>
+                            <div className='text-white flex flex-col mr-1 md:ml-24 ml-10'>
+                                <div className='flex  justify-center items-center md:text-4xl  text-xl '>
+                                    {weatherIcon === "Mist" ? <i className="  text-blue-300 fa-solid fa-smog"></i> : ""}
+                                    {weatherIcon === "Smoke" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
+                                    {weatherIcon === "Haze" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
+                                    {weatherIcon === "Dust" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
+                                    {weatherIcon === "Fog" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
+                                    {weatherIcon === "Thunderstorm" ? <i className=" text-blue-300 fa-solid fa-cloud-bolt"></i> : ""}
+                                    {weatherIcon === "Rain" ? <i className=" text-blue-300 fa-solid fa-cloud-rain"></i> : ""}
+                                    {weatherIcon === "broken clouds" ? <i className=" text-blue-300 fa-solid fa-cloud-showers-heavy"></i> : ""}
+                                    {weatherIcon === "scattered clouds" ? <i className=" text-blue-300 fa-solid fa-cloudflare"></i> : ""}
+                                    {weatherIcon === "clear sky" ? <i className=" text-blue-300 fa-solid fa-sun"></i> : ""}
+                                </div>
+                                <div>
+                                    <h3 className='data  text-center md:text-lg text-base '>{weathers ? `${(weathers - 273).toFixed(1)}` : ""}<sup>°</sup>C</h3>
+                                </div>
 
+                            </div>
+                            <div className='flex flex-col justify-center items-center md:mr-24 mr-10 '>
+                                <i className="md:text-4xl text-center text-xl text-blue-300 fa-solid fa-wind"></i>
+                                <div className='data text-center md:text-lg text-base text-white ml-1'>{aqi ? `AQI : ${aqi}` : ""}</div>
+                            </div>
                         </div>
-                        <div className='flex flex-col justify-center items-center md:mr-24 mr-10 '>
-                            <i className="md:text-4xl text-center text-xl text-blue-300 fa-solid fa-wind"></i>
-                            <div className='data text-center md:text-lg text-base text-white ml-1'>{aqi ? `AQI : ${aqi}` : ""}</div>
-                        </div>
-                    </div>
+                        : ""}
 
                 </div>
                 {/* <h2 className="text-white font-mono md:text-xl text-xs  text-center">{date}</h2> */}
