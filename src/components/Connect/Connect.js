@@ -9,7 +9,7 @@ import { socialIcons } from '../Style/Style'
 const Connect = () => {
     return (
         <div className=' flex  flex-col w-full items-center justify-center'>
-            <h1 className='text-center text-white font-bold text-2xl p-1 m-1'>Let's Connect? </h1>
+            <h1 className='text-center text-white font-bold md:text-2xl text-lg p-1 m-1'>Let's Connect? </h1>
             <div className='flex justify-center items-center p-4'>
                 <a className={socialIcons} href='https://github.com/kaushal726' target=''><img src={github} alt='github' /></a>
                 <a className={socialIcons} href='https://www.linkedin.com/in/kaushal-raj-074673213' target=''><img src={linkedin} alt='linkedin' /></a>
