@@ -110,7 +110,7 @@ export const Body = () => {
                                 {weatherIcon === "clear sky" ? <i className=" text-blue-300 fa-solid fa-sun"></i> : ""}
                             </div>
                             <div>
-                                <h3 className='data  text-center md:text-lg text-base '>{weathers ? `${(weathers - 273).toFixed(1)}°C` : ""}</h3>
+                                <h3 className='data  text-center md:text-lg text-base '>{weathers ? `${(weathers - 273).toFixed(1)}` : ""}<sup>°</sup>C</h3>
                             </div>
 
                         </div>
