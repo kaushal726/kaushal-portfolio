@@ -93,27 +93,31 @@ export const Body = () => {
             <div className=" w-full absolute flex flex-row justify-center items-center z-10 md:top-20 top-12">
                 <div className='flex flex-col justify-center items-center w-full'>
                     <div className='text-white'>
-                        <h2 className="md:text-3xl text-xl text-white time md:font-semibold font-bold text-center">{time}</h2>
+                        <h2 className="md:text-lg text-base text-white time md:font-semibold font-bold text-center">{time}</h2>
                     </div>
                     <div className='flex flex-rows justify-between items-center w-full'>
-                        <div className='text-white flex mr-1'>
-                            <h3 className='data md:ml-72 ml-16  md:text-3xl text-xl '>{weathers ? `${(weathers - 273).toFixed(1)}°C` : ""}</h3>
-                            <div className='flex justify-center items-center'>
-                                {weatherIcon === "Mist" ? <i className="fa-solid fa-smog"></i> : ""}
-                                {weatherIcon === "Smoke" ? <i className="fa-solid fa-smog"></i> : ""}
-                                {weatherIcon === "Haze" ? <i className="fa-solid fa-smog"></i> : ""}
-                                {weatherIcon === "Dust" ? <i className="fa-solid fa-smog"></i> : ""}
-                                {weatherIcon === "Fog" ? <i className="fa-solid fa-smog"></i> : ""}
-                                {weatherIcon === "Thunderstorm" ? <i className="fa-solid fa-cloud-bolt"></i> : ""}
-                                {weatherIcon === "Rain" ? <i className="fa-solid fa-cloud-rain"></i> : ""}
-                                {weatherIcon === "broken clouds" ? <i className="fa-solid fa-cloud-showers-heavy"></i> : ""}
-                                {weatherIcon === "scattered clouds" ? <i className="fa-solid fa-cloudflare"></i> : ""}
-                                {weatherIcon === "clear sky" ? <i className="fa-solid fa-sun"></i> : ""}
+                        <div className='text-white flex flex-col mr-1 md:ml-24 ml-10'>
+                            <div className='flex  justify-center items-center md:text-4xl  text-xl '>
+                                {weatherIcon === "Mist" ? <i className="  text-blue-300 fa-solid fa-smog"></i> : ""}
+                                {weatherIcon === "Smoke" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
+                                {weatherIcon === "Haze" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
+                                {weatherIcon === "Dust" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
+                                {weatherIcon === "Fog" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
+                                {weatherIcon === "Thunderstorm" ? <i className=" text-blue-300 fa-solid fa-cloud-bolt"></i> : ""}
+                                {weatherIcon === "Rain" ? <i className=" text-blue-300 fa-solid fa-cloud-rain"></i> : ""}
+                                {weatherIcon === "broken clouds" ? <i className=" text-blue-300 fa-solid fa-cloud-showers-heavy"></i> : ""}
+                                {weatherIcon === "scattered clouds" ? <i className=" text-blue-300 fa-solid fa-cloudflare"></i> : ""}
+                                {weatherIcon === "clear sky" ? <i className=" text-blue-300 fa-solid fa-sun"></i> : ""}
+                            </div>
+                            <div>
+                                <h3 className='data  text-center md:text-lg text-base '>{weathers ? `${(weathers - 273).toFixed(1)}°C` : ""}</h3>
                             </div>
 
-
                         </div>
-                        <div className='data md:mr-72  mr-16 md:text-3xl text-xl text-white ml-1'>{aqi ? `AQI : ${aqi}` : ""}</div>
+                        <div className='flex flex-col justify-center items-center md:mr-24 mr-10 '>
+                            <i className="md:text-4xl text-center text-xl text-blue-300 fa-solid fa-wind"></i>
+                            <div className='data text-center md:text-lg text-base text-white ml-1'>{aqi ? `AQI : ${aqi}` : ""}</div>
+                        </div>
                     </div>
 
                 </div>
