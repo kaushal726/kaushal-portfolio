@@ -116,8 +116,8 @@ export const Body = () => {
                                     {weatherIcon === "Fog" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
                                     {weatherIcon === "Thunderstorm" ? <i className=" text-blue-300 fa-solid fa-cloud-bolt"></i> : ""}
                                     {weatherIcon === "Rain" ? <i className=" text-blue-300 fa-solid fa-cloud-rain"></i> : ""}
-                                    {weatherIcon === "broken clouds" ? <i className=" text-blue-300 fa-solid fa-cloud-showers-heavy"></i> : ""}
-                                    {weatherIcon === "scattered clouds" ? <i className=" text-blue-300 fa-solid fa-cloudflare"></i> : ""}
+                                    {weatherIcon === "www" ? <i className=" text-blue-300 fa-solid fa-cloud-showers-heavy"></i> : ""}
+                                    {weatherIcon === "Clouds" ? <i className=" text-blue-300 fa-solid  fa-cloud-sun"></i> : ""}
                                     {weatherIcon === "clear sky" ? <i className=" text-blue-300 fa-solid fa-sun"></i> : ""}
                                 </div>
                                 <div>
