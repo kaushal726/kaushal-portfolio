@@ -46,7 +46,7 @@ let Contact = () => {
         setDetails([])
     };
     return (
-        <div className='h-screen'>
+        <div className='h-fit pt-1 md:pb-11 pb-14'>
             <div className=" p-5 bg-white m-5 rounded-lg">
                 <h2 className="text-center text-3xl font-semibold italic">Contact Us</h2>
                 <form className=" grid grid-rows-3">

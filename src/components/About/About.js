@@ -4,7 +4,7 @@ import "./About.css"
 
 let Readme = () => {
     return (
-        <div className="contain md:h-full h-screen relative grid md:grid-cols-3 rounded-3xl z-40 background  ">
+        <div className="contain  relative grid md:grid-cols-3 rounded-3xl z-40  ">
             <div className="flex items-center justify-center">
                 <img className="p-4 rounded-full md:w-3/4 w-1/2" src={readmeImg} alt=""></img>
             </div>
