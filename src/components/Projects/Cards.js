@@ -9,7 +9,6 @@ function Cards(props) {
             </div>
         </a>
 
-
     )
 }
 export default Cards
