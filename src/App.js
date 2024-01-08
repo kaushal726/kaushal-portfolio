@@ -102,7 +102,7 @@ function App() {
           detectRetina: true,
         }}
       />
-      <div className=''>
+      <div className='flex'>
         <button onClick={scrollToTop} className=" h-10 w-10 m-3 scroll-to-top text-white fixed z-50 bottom-0 right-0">
           <img src={scrollImage} alt=''></img>
         </button>

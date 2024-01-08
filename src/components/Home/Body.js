@@ -3,18 +3,54 @@ import './Home.css'
 import Quotes from './Quotes'
 // eslint-disable-next-line
 import AQI from './AQI'
+import TextTransition, { presets } from 'react-text-transition';
+import { motion, useAnimation } from 'framer-motion';
+import Kaushal from '../../assets/Kaushal.png'
+const TEXTS = ['Mern Stack Developer', 'Photographer', 'Editor'];
+let render = true;
 export const Body = () => {
     const [city, setCity] = useState('');
+    // eslint-disable-next-line
     const [weatherIcon, setWeatherIcon] = useState('');
     const [quote, setQuote] = useState();
     const [author, setAuthor] = useState();
+    // const [isFirstRender, setFirstRender] = useState(true);
     // eslint-disable-next-line
     const [weathers, setWeather] = useState();
     // eslint-disable-next-line
     const [aqi, setAqi] = useState();
     // eslint-disable-next-line
     const [time, setTime] = useState();
+    const [index, setIndex] = React.useState(0);
     // eslint-disable-next-line
+    const [showNormalContent, setShowNormalContent] = useState(false);
+    const controls = useAnimation();
+
+    useEffect(() => {
+        if (render) {
+            controls.start({ opacity: 1, y: 0, scale: 1, transition: { duration: 1, ease: 'easeInOut' } });
+            const timeout = setTimeout(() => {
+                setShowNormalContent(true);
+                controls.start({ opacity: 0, y: -20, scale: 0.8, transition: { duration: 0.5, ease: 'easeIn' } });
+            }, 5000);
+            render = false;
+            return () => clearTimeout(timeout);
+        }
+        else {
+            setShowNormalContent(true);
+            controls.start({ opacity: 0, y: -20, scale: 0.8, transition: { duration: 0.5, ease: 'easeIn' } });
+            // return () => clearTimeout;
+        }
+    }, [controls]);
+
+    useEffect(() => {
+        const intervalId = setInterval(
+            () => setIndex((index) => index + 1),
+            3000,
+        );
+        return () => clearTimeout(intervalId);
+    }, []);
+
     useEffect(() => {
         setInterval(() => {
             // setTime((new Date().toLocaleTimeString().toLocaleTimeString('en-US')))
@@ -93,87 +129,62 @@ export const Body = () => {
         // eslint-disable-next-line
     }, [city])
     return (
-        <div className='top-0 flex flex-col justify-center items-center min-h-screen'>
-            <div className='  relative flex-col top-0 flex justify-center items-start h-screen md:pb-28 pb-32'>
-                <h1 className='heading  w-full md:text-5xl italic font-medium p-2 text-3xl text-center py-0 text-white'>Hi There,</h1>
-                <h1 className='heading  w-full md:text-5xl italic font-medium p-2 text-3xl text-center py-0 text-white'>I'm <span
-                    className=' headingName text-orange-400'>Kaushal Raj</span></h1>
-                <h1 className='heading w-full md:text-5xl italic font-medium p-2 text-3xl text-center py-0  text-white'>Full Stack Developer </h1>
-            </div>
-            <div className=" w-full absolute flex flex-row justify-center items-center z-10 md:top-20 top-12">
-                <div className='flex flex-col justify-center items-center w-full'>
-                    <div className='text-white'>
-                        <h2 className="md:text-lg text-base text-white time md:font-semibold font-bold text-center">{time}</h2>
+        <div style={{ position: '', height: '100vh', overflow: 'hidden' }}>
+            <motion.div
+                className='flex items-center justify-center'
+                initial={{ opacity: 0 }}
+                animate={controls}
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100vh',
+                    background: 'rgba(0, 0, 0, 0.8)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 80,
+                }}
+            >
+                <div style={{ textAlign: 'center', color: 'white' }}>
+                    <img src={Kaushal} width={400} alt='hello' />
+                </div>
+            </motion.div>
+            {showNormalContent && (
+                <div className='top-0 flex flex-col justify-center items-center min-h-screen'>
+                    <div className='  relative flex-col top-0 flex justify-center items-start h-screen '>
+                        <h1 className='heading  w-full md:text-5xl italic font-medium p-2 text-3xl text-center py-0 text-white'>Hey There,</h1>
+                        <h1 className='heading  w-full md:text-5xl italic font-medium p-2 text-3xl text-center py-0 text-white'>I'm <span
+                            className=' headingName text-orange-400'>Kaushal Raj</span></h1>
+                        <h1 className='heading w-full md:text-5xl italic font-medium p-2 text-3xl text-center py-0  text-white'><TextTransition className='flex items-center justify-center' delay={30} springConfig={presets.molasses}>{TEXTS[index % TEXTS.length]}</TextTransition> </h1>
                     </div>
-                    {city ?
-                        <div className='flex flex-rows justify-between items-center w-full'>
-                            <div className='text-white flex flex-col mr-1 md:ml-24 ml-10'>
-                                <div className='flex  justify-center items-center md:text-4xl  text-xl '>
-                                    {weatherIcon === "Mist" ? <i className="  text-blue-300 fa-solid fa-smog"></i> : ""}
-                                    {weatherIcon === "Smoke" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
-                                    {weatherIcon === "Haze" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
-                                    {weatherIcon === "Dust" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
-                                    {weatherIcon === "Fog" ? <i className=" text-blue-300 fa-solid fa-smog"></i> : ""}
-                                    {weatherIcon === "Thunderstorm" ? <i className=" text-blue-300 fa-solid fa-cloud-bolt"></i> : ""}
-                                    {weatherIcon === "Rain" ? <i className=" text-blue-300 fa-solid fa-cloud-rain"></i> : ""}
-                                    {weatherIcon === "www" ? <i className=" text-blue-300 fa-solid fa-cloud-showers-heavy"></i> : ""}
-                                    {weatherIcon === "Clouds" ? <i className=" text-blue-300 fa-solid  fa-cloud-sun"></i> : ""}
-                                    {weatherIcon === "clear sky" ? <i className=" text-blue-300 fa-solid fa-sun"></i> : ""}
+                    <div className='w-full'>
+                        <div className=" curved-div upper ">
+                            <svg className='' viewBox="0 0 1440 319">
+                                <path className="relative" fill="#044f66" d="M0,32L48,80C96,128,192,224,288,224C384,224,480,128,576,90.7C672,53,768,75,864,96C960,117,1056,139,1152,149.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                            </svg>
+                        </div>
+                        <div className="curved-div lower w-full">
+                            <div className="flex flex-col justify-center items-center w-full">
+                                {/* <i className="pl-2 text-xl fa-solid fa-quote-left"></i> */}
+                                <h4 className='mb-5 font-mono text-center text-lg md:text-2xl font-bold w-[70%] '>"{quote ? quote : ''}"</h4>
+                                {/* <i className="pr-2 text-xl fa-solid fa-quote-right flex justify-end"></i> */}
+                                <div className="flex items-end justify-end  w-[60%]">
+                                    <h6 className='italic text-center mb-8 md:mb-16 md:text-base text-base'>{author ? author : ''}</h6>
                                 </div>
-                                <div>
-                                    <h3 className='data  text-center md:text-lg text-base '>{weathers ? `${(weathers - 273).toFixed(1)}` : ""}<sup>°</sup>C</h3>
-                                </div>
-
                             </div>
-                            <div className='flex flex-col justify-center items-center md:mr-24 mr-10 '>
-                                <i className="md:text-4xl text-center text-xl text-blue-300 fa-solid fa-wind"></i>
-                                <div className='data text-center md:text-lg text-base text-white ml-1'>{aqi ? `AQI : ${aqi}` : ""}</div>
+                            <div className='bottom'>
+                                <svg className='' viewBox="0 0 1440 319">
+                                    <path fill="" d="M0,32L48,80C96,128,192,224,288,224C384,224,480,128,576,90.7C672,53,768,75,864,96C960,117,1056,139,1152,149.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+                                </svg>
                             </div>
                         </div>
-                        : ""}
-
-                </div>
-                {/* <h2 className="text-white font-mono md:text-xl text-xs  text-center">{date}</h2> */}
-            </div>
-            {/* <div className="bg-blue-300 quote p-3 w-3/4 rounded-xl  ">
-                <div>
-                    <h2 className='text-center mb-2 text-sm md:text-lg'>Quotes</h2>
-                </div>
-                <div className=" bg-slate-400 rounded-2xl  px-6 md:px-12 shadow-[rgba(0,_0,_0,_0.4)_0px_30px_90px]">
-                    <i className="pl-2 text-xl fa-solid fa-quote-left"></i>
-                    <h4 className=' text-center text-xs md:text-sm'>{quote ? quote : ''}</h4>
-                    <i className="pr-2 text-xl fa-solid fa-quote-right flex justify-end"></i>
-                </div>
-                <div className="mt-4 ">
-                    <h6 className='pr-4 text-right text-xs md:text-sm'>{author ? author : ''}</h6>
-                </div>
-            </div> */}
-            <div className='w-full'>
-                <div className=" curved-div upper ">
-                    {/* <h1 className=' top-[55%] absolute w-full items-center justify-center text-center text-white bg-[#044f66] mt-0 pt-0 top-0'>Quotes</h1> */}
-                    <svg className='' viewBox="0 0 1440 319">
-                        {/* <text x="10" y="40" fontFamily="Arial" fontSize="14" fill="black">Hello, SVG!</text> */}
-                        <path className="relative" fill="#044f66" d="M0,32L48,80C96,128,192,224,288,224C384,224,480,128,576,90.7C672,53,768,75,864,96C960,117,1056,139,1152,149.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-                    </svg>
-                </div>
-                <div className="curved-div lower w-full">
-                    <div className="flex flex-col justify-center items-center w-full">
-                        {/* <i className="pl-2 text-xl fa-solid fa-quote-left"></i> */}
-                        <h4 className='mb-5 font-mono text-center text-lg md:text-2xl font-bold w-[70%] '>"{quote ? quote : ''}"</h4>
-                        {/* <i className="pr-2 text-xl fa-solid fa-quote-right flex justify-end"></i> */}
-                        <div className="flex items-end justify-end  w-[60%]">
-                            <h6 className='italic text-center mb-8 md:mb-16 md:text-base text-base'>{author ? author : ''}</h6>
-                        </div>
                     </div>
-                    <div className='bottom'>
-                        <svg className='' viewBox="0 0 1440 319">
-                            <path fill="" d="M0,32L48,80C96,128,192,224,288,224C384,224,480,128,576,90.7C672,53,768,75,864,96C960,117,1056,139,1152,149.3C1248,160,1344,160,1392,160L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-                        </svg>
-                    </div>
+                </div >
+            )}
+        </div>
 
-                </div>
-            </div>
-        </div >
     )
 }
 
