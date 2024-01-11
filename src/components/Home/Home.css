@@ -29,3 +29,34 @@
   /* font-size: x-large; */
   font-family: "Lora", serif;
 }
+
+.animate__animated.animate__hinge {
+  --animate-duration: 3s;
+}
+
+.fancy-scrollbar::-webkit-scrollbar {
+  width: 8px;
+}
+
+.fancy-scrollbar::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgb(0, 0, 0);
+  border-radius: 16px;
+}
+
+.fancy-scrollbar::-webkit-scrollbar-thumb {
+  border-radius: 15px;
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.952);
+}
+
+/* Add vendor prefixes for other browsers if needed */
+.fancy-scrollbar::-moz-scrollbar {
+  width: 8px;
+}
+
+.label-tag {
+  border: 2px solid #06152b;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(6, 21, 43, 0.4) !important;
+  flex-direction: column;
+  font-weight: 600;
+}

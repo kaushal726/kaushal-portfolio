@@ -10,6 +10,7 @@ import scrollImage from './assets/Social Icons/right.png'
 import Mainnav from './components/Navbar/Mainnav';
 import Index from './components/Index';
 import Project from './components/Projects/Project';
+import './fonts/AmsterdamBright-DOPmD.woff'
 
 function App() {
   const scrollToTop = () => {

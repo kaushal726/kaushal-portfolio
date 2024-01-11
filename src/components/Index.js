@@ -4,7 +4,7 @@ import Connect from './Connect/Connect'
 
 const Index = () => {
     return (
-        <div className="">
+        <div className=" h-full fancy-scrollbar">
             {<Body />}
             {<Connect />}
         </div>
