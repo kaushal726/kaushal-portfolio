@@ -53,9 +53,9 @@ My technical expertise spans both the frontend and backend, allowing me to creat
 
 Feel free to connect with me on the following platforms:
 
-- **LinkedIn:** [https://github.com/kaushal726]
-- **GitHub:** [https://github.com/kaushal726]
-- **Email:** [guddu797976@gmail.com]
+- **LinkedIn:** (LinkedIn)[https://github.com/kaushal726]
+- **GitHub:** (GitHub)[https://github.com/kaushal726]
+- **Email:** (Email)[guddu797976@gmail.com]
 
 I'm excited about the opportunities ahead and looking forward to sharing my passion for web development with the world. Thanks for visiting!
 
