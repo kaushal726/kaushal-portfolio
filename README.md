@@ -1,6 +1,6 @@
 # My Portfolio
 
-Welcome to my portfolio! I'm a MERN stack developer passionate about creating web applications that deliver seamless user experiences. This portfolio showcases my skills, projects, and a glimpse into my journey as a developer.
+Welcome to my portfolio! I'm Kaushal Raj a MERN stack developer passionate about creating web applications that deliver seamless user experiences. This portfolio showcases my skills, projects, and a glimpse into my journey as a developer.
 
 ## Sections
 
