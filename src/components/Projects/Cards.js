@@ -1,14 +1,50 @@
 import React from "react";
-function Cards(props) {
-    return (
-        <a href={props.href} target="_blank" rel="noreferrer" className="flex flex-col items-center justify-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-            <img className="object-cover w-full h-96 md:h-auto md:w-48 md:rounded-none md:rounded-s-lg" src={props.src} alt="" />
-            <div className="flex flex-col justify-between p-4 leading-normal">
-                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{props.Heading}</h5>
-                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{props.Paragraph}</p>
-            </div>
-        </a>
+import "./Card.css";
+import Tilt from 'react-parallax-tilt';
+import { motion } from "framer-motion";
 
-    )
+const cardVariants = {
+    offscreen: {
+        y: 300
+    },
+    onscreen: {
+        y: 50,
+        rotate: -10,
+        transition: {
+            type: "spring",
+            bounce: 0.4,
+            duration: 0.8
+        }
+    }
+};
+
+const hue = (h) => `hsl(${h}, 100%, 50%)`;
+
+function Card(props) {
+    let hueA =  Math.floor(Math.random() * (400 - 100 + 1)) + 100;
+    let hueB = Math.floor(Math.random() * (100 - 0 + 1)) + 0;
+
+    const background = `linear-gradient(306deg, ${hue(hueA)}, ${hue(hueB)})`;
+
+    return (
+        <Tilt reset={false} tiltAngleXInitial={10} tiltAngleYInitial={10}>
+            <motion.div
+                className="card-container p-14 md:pd-28 "
+                initial="offscreen"
+                whileInView="onscreen"
+                viewport={{ once: true, amount: 0.8 }}
+            >
+                <div className="splash" style={{ background }} />
+                <motion.div className="card parallax-effect" variants={cardVariants}>
+                    <div className="flex inner-element flex-col items-center justify-center p-2">
+                        <img alt="" className=" w-44 md:w-56" src={props.src} />
+                        <a target="_blank" rel="noreferrer" className="text-lg text-black font-semibold italic text-center" href={props.href}>{props.heading}</a>
+                        <p className=" text-center text-sm text-black font-light ">{props.paragraph}</p>
+                    </div>
+                </motion.div>
+            </motion.div>
+        </Tilt >
+    );
 }
-export default Cards
+
+export default Card

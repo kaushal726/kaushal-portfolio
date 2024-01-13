@@ -27,13 +27,20 @@
   );
 }
 
-.active {
-  color: red;
-  background-color: white;
+.active * {
+  color: rgb(236, 114, 13);
+  transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
+
+/* .icons :hover {
+  background-color: white;
+  transition: all 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+} */
 
 .App {
   height: 100%;
+  cursor: url(../src/assets/cursor.png);
 }
 
 .curved-div {

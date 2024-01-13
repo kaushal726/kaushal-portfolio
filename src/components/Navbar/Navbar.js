@@ -29,7 +29,7 @@ const Navbar = () => {
     };
 
 
-    const anchorNav = 'inline-block text-lg md:text-2xl w-8 md:w-4 md:mx-4 my-2 md:my-0 text-white hover:text-gray-300';
+    const anchorNav = 'icons inline-block text-lg md:text-2xl w-8 md:w-4 md:mx-4 my-2 md:my-0 text-white hover:text-gray-300';
 
     return (
         <nav style={navbarStyle} className={`${scrolling ? "border-transparent border-gradient" : ""} p-3 w-full flex fixed right-0 items-center justify-end text-white md:py-4 py-3 z-40`}>
