@@ -100,8 +100,8 @@ export const Body = () => {
                 initial={{ opacity: 0 }}
                 animate={controls} animate__hinge
             >
-                <div className='mb-24' style={{ textAlign: 'center', color: 'white' }}>
-                    <h1 className='text-9xl md:text-[9rem] animate__animated animate__hinge ' style={{ fontFamily: "Amsterdam-2" }}  >Kaushal Raj</h1>
+                <div className='mb-24 flex justify-center items-center text-center text-white'>
+                    <h1 className='text-6xl sm:text-4xl md:text-[9rem] animate__animated animate__hinge ' style={{ fontFamily: "Amsterdam-2" }}  >Kaushal Raj</h1>
                 </div>
             </motion.div>
             {showNormalContent && (
@@ -112,7 +112,7 @@ export const Body = () => {
                             className=' headingName text-orange-400'>Kaushal Raj</span></h1>
                         <h1 className='heading w-full md:text-5xl italic font-medium p-2 text-3xl text-center py-0  text-white'><TextTransition className='flex items-center justify-center' delay={30} springConfig={presets.molasses}>{TEXTS[index % TEXTS.length]}</TextTransition> </h1>
                     </div>
-                    <Tilt tiltAngleXInitial={10} tiltAngleYInitial={10}>
+                    <Tilt reset={false} tiltAngleXInitial={10} tiltAngleYInitial={10}>
                         <section className='w-full h-[30rem] flex justify-center items-center '>
                             <section className='w-4/5 md:w-3/5 h-4/5 bg-yellow-200 flex justify-between flex-col rounded-md'>
                                 <section className='relative h-1/4'>

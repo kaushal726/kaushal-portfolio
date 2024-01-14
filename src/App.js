@@ -1,4 +1,5 @@
 import './App.css';
+import React, { useState, useEffect } from 'react';
 import { useCallback } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { animateScroll as scroll } from 'react-scroll';
@@ -6,13 +7,14 @@ import { loadFull } from "tsparticles";
 import Particles from 'react-tsparticles'
 import About from './components/About/About';
 import Contact from './components/Contact/Contact';
-import scrollImage from './assets/Social Icons/right.png'
+import scrollImage from './assets/arrowA.png'
 import Mainnav from './components/Navbar/Mainnav';
 import Index from './components/Index';
 import Project from './components/Projects/Project';
 import './fonts/AmsterdamBright-DOPmD.woff'
 
 function App() {
+  const [scrolling, setScrolling] = useState(false);
   const scrollToTop = () => {
     scroll.scrollToTop({
       smooth: true,
@@ -25,6 +27,23 @@ function App() {
 
   const particlesLoaded = useCallback(async container => {
   }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setScrolling(true);
+      } else {
+        setScrolling(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
 
   return (
     <div className="App background relative">
@@ -104,7 +123,7 @@ function App() {
         }}
       />
       <div className='flex'>
-        <button onClick={scrollToTop} className=" h-10 w-10 m-3 scroll-to-top text-white fixed z-50 bottom-0 right-0">
+        <button onClick={scrollToTop} className={`${scrolling ? 'animate-bounce w-10 md:w-14 m-3 scroll-to-top text-white fixed z-50 bottom-0 right-0' : 'hidden'}`}>
           <img src={scrollImage} alt=''></img>
         </button>
       </div>

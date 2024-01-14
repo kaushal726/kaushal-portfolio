@@ -32,15 +32,9 @@
   transition: all 0.3s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
 
-/* .icons :hover {
-  background-color: white;
-  transition: all 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
-
-} */
-
 .App {
   height: 100%;
-  cursor: url(../src/assets/cursor.png);
+  /* cursor: url(../src/assets/cursorSvg.svg), pointer; */
 }
 
 .curved-div {
