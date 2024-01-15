@@ -1,27 +1,42 @@
 import React from "react";
-import readmeImg from "../../assets/readme.jpg"
+import readmeImg from "../../assets/sky.gif"
+import Resume from '../../assets/resume.pdf'
 import "./About.css"
+// import { Message } from 'chat-bubble';
+// import { ChatItem, MessageBox } from 'react-chat-elements';
+
 
 let Readme = () => {
     return (
-        <div className="contain  relative grid md:grid-cols-3 rounded-3xl z-40  ">
-            <div className="flex items-center justify-center">
-                <img className="p-4 rounded-full md:w-3/4 w-1/2" src={readmeImg} alt=""></img>
-            </div>
-            <div className=" flex justify-center items-center flex-col md:col-span-2 md:p-10 p-3">
-                <h1 className="flex md:justify-start md:items-start justify-center  w-full p-2 text-4xl italic text-white">About Me!</h1>
-                <div className="text-white text-gray-200 md:text-base text-xs">
-                    <p className="p-2">My name is Kaushal Raj, and I completed my 10th grade from Bishop's School Ranchi. I opted for the science stream and pursued my intermediate education at Oxford Public School Ranchi, focusing on the same field. Later, I graduated with a Bachelor's degree in Computer Applications (BCA). Currently, I have been working at MapmyIndia for the past year, primarily in the field of artificial intelligence.</p>
-
-                    <p className="p-2">In parallel with my professional commitments, I am pursuing my Master's in Computer Applications (MCA) through LPU Online University. I possess a strong foundation in various technologies such as HTML, CSS, JavaScript, React, and Java. Additionally, I am familiar with Node.js and Angular, which further enhance my proficiency in web development.</p>
-
-                    <p className="p-2">Beyond my technical pursuits, I have a range of interests and hobbies. Photography and video editing allow me to explore my creative side, while photo editing allows me to enhance and transform images. Playing cricket is a passion of mine, providing an outlet for physical activity and teamwork. I also have an interest in the stock market, constantly seeking to expand my knowledge in this field. Cooking is another area where I find joy and the opportunity to experiment with different flavors and recipes.</p>
-
-                    <p className="p-2">In summary, I am a dedicated individual with a solid educational background and professional experience in AI. My skill set encompasses web development technologies, and I am continuously expanding my knowledge base through ongoing studies. Alongside my technical pursuits, I engage in photography, video editing, playing cricket, exploring the stock market, and honing my culinary skills.</p>
+        <div className="flex flex-col h-full w-full mt-16">
+            <div className="flex flex-col items-center justify-center w-full h-full mb-5 mt-3">
+                <p className="text-white font-semibold text-center w-full p-1 text-lg md:text-3xl">Web Developer by Day, Superhero by Night</p>
+                <p className="text-white text-center w-full p-1 text-5xl font-bold leading-none md:text-7.5xl">Here I am!</p>
+                <p className="text-black font-semibold  text-nowrap rounded-md  text-center w-4/5 bg-white p-3 my-5 text-[1.1rem]  text-gray-550 md:text-[1.4rem] md:leading-8 " style={{ boxShadow: "inset 0 0 10px rgba(0, 0, 0, 0.5)" }}>Hello, I'm Kaushal, and I'm passionate about crafting digital experiences that thrive on the internet – encompassing websites, applications, and everything in between. Since my initial encounter with a computer, its intricate workings have fascinated me, sparking my curiosity. Throughout my journey, I've dedicated myself to refining my technical skills, driven by the aspiration to create something truly unique. This journey has led me to choose a career path as a web developer.</p>
+                <img fetchpriority="high" width={250} className=" animate__bounce" src={readmeImg} alt="" />
+                <a className="text-black btnTheme bg-white py-2 md:py-2 px-5 rounded-xl md:text-2xl" rel="noreferrer" download="Kaushal Resume" target='_blank' href={Resume}>
+                    <button className=" ">Hire Me!</button>
+                </a>
+                <div>
+                    {/* <ChatItem
+                        className="text-white"
+                        avatar={'https://example.com/avatar.jpg'}
+                        alt={'Reactjs'}
+                        title={'ReactJS'}
+                    />
+                    <MessageBox
+                        className="text-white"
+                        position={'left'}
+                        type={'text'}
+                        text={'Hello, how can I help you?'}
+                    /> */}
+                    {/* Add more ChatItem and MessageBox components as needed */}
                 </div>
             </div>
+            <div className="text-center ">
+                <p className='text-xs text-white'>&copy; 2023 Kaushal Raj. All rights reserved.</p>
+            </div>
         </div>
-
     )
 }
-export default Readme;
+export default Readme; 

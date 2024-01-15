@@ -18,14 +18,7 @@ const cardVariants = {
     }
 };
 
-// const hue = (h) => `hsl(${h}, 100%, 50%)`;
-
 function Card(props) {
-    // let hueA = Math.floor(Math.random() * (400 - 100 + 1)) + 100;
-    // let hueB = Math.floor(Math.random() * (100 - 0 + 1)) + 0;
-
-    // const background = `linear-gradient(306deg, ${hue(hueA)}, ${hue(hueB)})`;
-
     return (
         <Tilt tiltAngleXInitial={10} tiltAngleYInitial={10}>
             <motion.div

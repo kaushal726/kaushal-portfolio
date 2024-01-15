@@ -38,7 +38,7 @@ export const Body = () => {
             const timeout = setTimeout(() => {
                 setShowNormalContent(true);
                 controls.start({ opacity: 0, y: -20, scale: 0.8, transition: { duration: 0.5, ease: 'easeIn' } });
-            }, 5000);
+            }, 3000);
             render = false;
             return () => clearTimeout(timeout);
         }

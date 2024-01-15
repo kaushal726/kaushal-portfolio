@@ -16,3 +16,10 @@ p {
 .data {
   font-family: "Caprasimo", cursive;
 }
+
+.btnClass {
+  position: relative;
+  color: #fff;
+  opacity: 0.95;
+  transition: 0.2s ease-in-out;
+}
