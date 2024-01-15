@@ -94,18 +94,18 @@ export const Body = () => {
     }, [])
 
     return (
-        <div className='h-full overflow-hidden fancy-scrollbar'>
+        <div className='h-full overflow-hidden '>
             <motion.div
-                className='flex items-center justify-center bg-black absolute top-0 left-0 w-full h-screen md:h-screen z-50'
+                className='flex items-center justify-center bg-black absolute top-0 left-0 w-full h-screen md:h-screen z-50 overflow-hidden'
                 initial={{ opacity: 0 }}
-                animate={controls} animate__hinge
+                animate={controls}
             >
                 <div className='mb-24 flex justify-center items-center text-center text-white'>
-                    <h1 className='text-6xl sm:text-4xl md:text-[9rem] animate__animated animate__hinge ' style={{ fontFamily: "Amsterdam-2" }}  >Kaushal Raj</h1>
+                    <h1 className='text-7xl sm:text-4xl md:text-[9rem] animate__animated animate__hinge ' style={{ fontFamily: "Amsterdam-2" }}  >Kaushal Raj</h1>
                 </div>
             </motion.div>
             {showNormalContent && (
-                <div className='flex flex-col justify-center items-center h-full fancy-scrollbar'>
+                <div className='flex flex-col justify-center items-center h-full '>
                     <div className='   flex-col top-0 flex justify-center items-start h-screen '>
                         <h1 className='heading  w-full md:text-5xl italic font-medium p-2 text-3xl text-center py-0 text-white'>Hey There,</h1>
                         <h1 className='heading  w-full md:text-5xl italic font-medium p-2 text-3xl text-center py-0 text-white'>I'm <span

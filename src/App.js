@@ -46,7 +46,7 @@ function App() {
 
 
   return (
-    <div className="App background relative">
+    <div className="App background relative ">
       <Particles
         id="tsparticles"
         init={particlesInit}
