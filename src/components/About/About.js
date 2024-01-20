@@ -8,7 +8,7 @@ import "./About.css"
 
 let Readme = () => {
     return (
-        <div className="flex flex-col items-center justify-between h-full w-full mt-16">
+        <div className="flex flex-col items-center justify-between h-[calc(100vh-4rem)] md:h-full w-full mt-16">
             <div className="flex flex-col items-center justify-center w-full h-full mb-5 mt-3">
                 <p className="text-white font-semibold text-center w-full p-1 text-lg md:text-3xl">Web Developer by Day, Superhero by Night</p>
                 <p className="text-white text-center w-full p-1 text-5xl font-bold leading-none md:text-7.5xl">Here I am!</p>
