@@ -1,26 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import emailjs from '@emailjs/browser';
 let Contact = () => {
     const form = useRef();
-    let [data, setData] = useState({
-        name: "",
-        email: "",
-        message: "",
-    });
-
-    useEffect(() => {
-
-    }, [data])
-
 
     let handleSubmit = (event) => {
         event.preventDefault();
-        let obj = {
-            name: event.target.user_name.value,
-            email: event.target.user_email.value,
-            message: event.target.user_message.value,
-        }
-        setData(obj);
         emailjs.sendForm('service_86joc1d', 'template_16sp5v4', form.current, 'Iq8MAMWZJQD1KCqT_')
             .then((result) => {
                 console.log(result.text);
