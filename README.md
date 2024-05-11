@@ -4,6 +4,8 @@ Welcome to my portfolio! I'm Kaushal Raj a MERN stack developer passionate about
 
 ## Sections
 
+-
+
 1. **Home**: Get to know me and my skills at a glance.
 2. **About**: Learn more about my background, interests, and what drives my passion for web development.
 3. **Projects**: Explore some of the exciting projects I've worked on. Each project comes with a brief description and links to view the code or live demo.
@@ -48,7 +50,6 @@ My technical expertise spans both the frontend and backend, allowing me to creat
 
 - **Tools:** I am well-versed in utilizing tools such as Visual Studio Code for efficient coding, Postman for API testing, and npm for package management.
 
-
 ### Connect With Me
 
 Feel free to connect with me on the following platforms:
@@ -58,4 +59,3 @@ Feel free to connect with me on the following platforms:
 - **Email:** [Email](mailto:guddu797976@gmail.com)
 
 I'm excited about the opportunities ahead and looking forward to sharing my passion for web development with the world. Thanks for visiting!
-
