@@ -85,8 +85,8 @@ export const Body = () => {
         Quotes().then(
             data => {
                 if (data) {
-                    setAuthor(data[0]?.author)
-                    setQuote(data[0]?.quote)
+                    setAuthor(data?.author)
+                    setQuote(data?.quote)
                 }
             }
         )

@@ -12,7 +12,7 @@ import Mainnav from './components/Navbar/Mainnav';
 import Index from './components/Index';
 import Project from './components/Projects/Project';
 import './fonts/AmsterdamBright-DOPmD.woff'
-import  { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const [scrolling, setScrolling] = useState(false);
