@@ -1,18 +1,18 @@
-import './App.css';
-import React, { useState, useEffect } from 'react';
-import { useCallback } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { animateScroll as scroll } from 'react-scroll';
+import "./App.css";
+import React, { useState, useEffect } from "react";
+import { useCallback } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { animateScroll as scroll } from "react-scroll";
 import { loadFull } from "tsparticles";
-import Particles from 'react-tsparticles'
-import About from './components/About/About';
-import Contact from './components/Contact/Contact';
-import scrollImage from './assets/arrowA.png'
-import Mainnav from './components/Navbar/Mainnav';
-import Index from './components/Index';
-import Project from './components/Projects/Project';
-import './fonts/AmsterdamBright-DOPmD.woff'
-import { Toaster } from 'react-hot-toast';
+import Particles from "react-tsparticles";
+import About from "./components/About/About";
+import Contact from "./components/Contact/Contact";
+import scrollImage from "./assets/arrowA.png";
+import Mainnav from "./components/Navbar/Mainnav";
+import Index from "./components/Index";
+import Project from "./components/Projects/Project";
+import "./fonts/AmsterdamBright-DOPmD.woff";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const [scrolling, setScrolling] = useState(false);
@@ -22,12 +22,11 @@ function App() {
       duration: 500,
     });
   };
-  const particlesInit = useCallback(async engine => {
+  const particlesInit = useCallback(async (engine) => {
     await loadFull(engine);
   }, []);
 
-  const particlesLoaded = useCallback(async container => {
-  }, []);
+  const particlesLoaded = useCallback(async (container) => {}, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,13 +37,12 @@ function App() {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
 
   return (
     <div className="App background relative ">
@@ -55,78 +53,66 @@ function App() {
         loaded={particlesLoaded}
         options={{
           background: {
-
+            color: {
+              value: "transparent",
+            },
           },
-          fpsLimit: 120,
+          fullScreen: {
+            enable: true,
+            zIndex: 0,
+          },
+          fpsLimit: 60,
           interactivity: {
             events: {
-              onClick: {
-                enable: false,
-                mode: "push",
-              },
               onHover: {
                 enable: true,
-                mode: "repulse",
+                mode: "grab",
               },
-              resize: false,
+              resize: true,
             },
             modes: {
-              push: {
-                quantity: 4,
-              },
-              repulse: {
-                distance: 200,
-                duration: 0.4,
+              grab: {
+                distance: 120,
+                links: {
+                  opacity: 0.4,
+                },
               },
             },
           },
           particles: {
             color: {
-              value: "#ffff",
+              value: "#ffffff",
             },
             links: {
-              color: "#fff",
+              color: "#ffffff",
               distance: 150,
               enable: true,
-              opacity: 0.5,
+              opacity: 0.15,
               width: 1,
             },
-            collisions: {
-              enable: true,
-            },
             move: {
-              direction: "none",
               enable: true,
-              outModes: {
-                default: "bounce",
-              },
-              random: false,
-              speed: 2,
-              straight: false,
+              speed: 0.5,
             },
             number: {
-              density: {
-                enable: true,
-                area: 800,
-              },
               value: 20,
             },
             opacity: {
-              value: 0.5,
-            },
-            shape: {
-              type: "polygon",
+              value: 0.4,
             },
             size: {
-              value: { min: 1, max: 5 },
+              value: 3,
             },
           },
           detectRetina: true,
         }}
       />
-      <div className='flex'>
-        <button onClick={scrollToTop} className={`${scrolling ? 'animate-bounce w-10 md:w-14 m-3 scroll-to-top text-white fixed z-50 bottom-0 right-0' : 'hidden'}`}>
-          <img src={scrollImage} alt=''></img>
+      <div className="flex">
+        <button
+          onClick={scrollToTop}
+          className={`${scrolling ? "animate-bounce w-10 md:w-14 m-3 scroll-to-top text-white fixed z-50 bottom-0 right-0" : "hidden"}`}
+        >
+          <img src={scrollImage} alt=""></img>
         </button>
       </div>
       <BrowserRouter>

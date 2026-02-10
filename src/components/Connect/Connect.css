@@ -5,3 +5,48 @@
 .link:hover {
   background-color: #0baf7e;
 }
+
+/* Social Icon Link */
+.social-icon-link {
+  position: relative;
+  display: inline-block;
+  outline: none;
+}
+
+.social-icon-link:focus {
+  outline: none;
+}
+
+.social-tooltip {
+  z-index: 50;
+}
+
+/* Quote Card Styles */
+.quote-card-container {
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(139, 92, 246, 0.2);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.quote-card-container:hover {
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(139, 92, 246, 0.4);
+  transform: translateY(-5px);
+}
+
+/* Time Card Styles */
+.time-card-container {
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(59, 130, 246, 0.2);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.time-card-container:hover {
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(59, 130, 246, 0.4);
+  transform: translateY(-5px);
+}
