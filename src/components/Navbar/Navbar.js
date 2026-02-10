@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 
 const Navbar = () => {
   const [scrolling, setScrolling] = useState(false);
+  // eslint-disable-next-line no-unused-vars
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {

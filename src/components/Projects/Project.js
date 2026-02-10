@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "./Cards";
 import dataStore from "../../db/dataStore";
 import { motion } from "framer-motion";
 
 const Project = () => {
+  // eslint-disable-next-line no-unused-vars
+  const [hoveredIndex, setHoveredIndex] = useState(null);
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
