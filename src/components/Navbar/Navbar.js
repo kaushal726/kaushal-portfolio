@@ -8,7 +8,6 @@ import { motion } from "framer-motion";
 
 const Navbar = () => {
   const [scrolling, setScrolling] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {

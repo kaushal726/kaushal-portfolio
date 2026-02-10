@@ -1,11 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import Card from "./Cards";
 import dataStore from "../../db/dataStore";
 import { motion } from "framer-motion";
 
 const Project = () => {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

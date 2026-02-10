@@ -1,6 +1,5 @@
 import React from "react";
 import "./Card.css";
-import Tilt from "react-parallax-tilt";
 import { motion } from "framer-motion";
 
 const cardVariants = {

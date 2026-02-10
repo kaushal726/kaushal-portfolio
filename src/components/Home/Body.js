@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.css";
-import Marquee from "react-fast-marquee";
 import Quotes from "./Quotes";
 import "animate.css";
 import Javascript from "../../assets/Skills/javascript.png";
@@ -19,7 +18,6 @@ import SAAS from "../../assets/Skills/saas.png";
 import TailwindLogo from "../../assets/Skills/tailwind.png";
 import TextTransition, { presets } from "react-text-transition";
 import { motion, useAnimation } from "framer-motion";
-import Tilt from "react-parallax-tilt";
 const TEXTS = ["Mern Stack Developer", "Photographer", "Editor"];
 let render = true;
 export const Body = () => {
