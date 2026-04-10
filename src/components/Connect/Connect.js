@@ -1,248 +1,353 @@
-import React from "react";
+import { useRef } from "react";
 import "./Connect.css";
 import github from "../../assets/Social Icons/github.png";
 import linkedin from "../../assets/Social Icons/linkedin.png";
 import facebook from "../../assets/Social Icons/facebook.png";
 import snapchat from "../../assets/Social Icons/snapchat.png";
 import instagram from "../../assets/Social Icons/instagram (1).png";
-import { motion } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
+import { useMood } from "../../context/MoodContext";
+import OrganicBlobBackground from "../Common/OrganicBlobBackground";
 
 const Connect = () => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const { mood } = useMood();
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+
+  const bgY = useTransform(scrollYProgress, [0, 1], [-30, 30]);
+  const contentY = useTransform(scrollYProgress, [0, 1], [20, -20]);
+
   const socialLinks = [
-    {
-      icon: github,
-      alt: "GitHub",
-      href: "https://github.com/kaushal726",
-      color: "from-gray-600 to-gray-800",
-    },
-    {
-      icon: linkedin,
-      alt: "LinkedIn",
-      href: "https://www.linkedin.com/in/kaushal-raj-074673213",
-      color: "from-blue-600 to-blue-800",
-    },
-    {
-      icon: facebook,
-      alt: "Facebook",
-      href: "https://www.facebook.com/kaushal.927?mibextid=TQi3BacyrYqMRoHa",
-      color: "from-blue-500 to-blue-700",
-    },
-    {
-      icon: instagram,
-      alt: "Instagram",
-      href: "https://instagram.com/kaushal_726?igshid=MzNlNGNkZWQ4Mg==",
-      color: "from-pink-600 to-purple-600",
-    },
-    {
-      icon: snapchat,
-      alt: "Snapchat",
-      href: "https://www.snapchat.com/add/kaushal_7266?share_id=dH5yoA2AUd0&locale=en-IN",
-      color: "from-yellow-400 to-yellow-600",
-    },
+    { icon: github, alt: "GitHub", href: "https://github.com/kaushal726", color: "#ffffff" },
+    { icon: linkedin, alt: "LinkedIn", href: "https://www.linkedin.com/in/kaushal-raj-074673213", color: "#0077b5" },
+    { icon: facebook, alt: "Facebook", href: "https://www.facebook.com/kaushal.927", color: "#1877f2" },
+    { icon: instagram, alt: "Instagram", href: "https://instagram.com/kaushal_726", color: "#e1306c" },
+    { icon: snapchat, alt: "Snapchat", href: "https://snapchat.com/add/kaushal_7266", color: "#fffc00" },
   ];
 
   return (
-    <motion.div
-      className="flex flex-col w-full items-center justify-center min-h-screen py-24 px-4 relative overflow-hidden bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900"
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
+    <motion.section
+      ref={ref}
+      className="relative py-24 px-4 overflow-hidden"
+      style={{ backgroundColor: mood.colors.background }}
     >
-      {/* Animated SVG Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <svg
-          className="absolute w-full h-full"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <defs>
-            <linearGradient
-              id="connect-grad-1"
-              x1="0%"
-              y1="0%"
-              x2="100%"
-              y2="100%"
-            >
-              <animate
-                attributeName="x1"
-                values="0%;100%;0%"
-                dur="20s"
-                repeatCount="indefinite"
-              />
-              <animate
-                attributeName="y1"
-                values="0%;100%;0%"
-                dur="15s"
-                repeatCount="indefinite"
-              />
-              <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.2" />
-              <stop offset="50%" stopColor="#ec4899" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.2" />
-            </linearGradient>
-          </defs>
-          <circle
-            cx="10%"
-            cy="20%"
-            r="300"
-            fill="url(#connect-grad-1)"
-            opacity="0.3"
-          >
-            <animate
-              attributeName="cx"
-              values="10%;90%;10%"
-              dur="25s"
-              repeatCount="indefinite"
-            />
-            <animate
-              attributeName="cy"
-              values="20%;80%;20%"
-              dur="30s"
-              repeatCount="indefinite"
-            />
-          </circle>
-          <circle
-            cx="90%"
-            cy="70%"
-            r="250"
-            fill="url(#connect-grad-1)"
-            opacity="0.25"
-          >
-            <animate
-              attributeName="cx"
-              values="90%;10%;90%"
-              dur="20s"
-              repeatCount="indefinite"
-            />
-            <animate
-              attributeName="cy"
-              values="70%;30%;70%"
-              dur="25s"
-              repeatCount="indefinite"
-            />
-          </circle>
-        </svg>
+      {/* Parallax blob background */}
+      <motion.div style={{ y: bgY }} className="absolute inset-0">
+        <OrganicBlobBackground variant="connect" />
+      </motion.div>
+
+      {/* Floating decorative elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {[...Array(6)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-2 h-2 rounded-full"
+            style={{
+              backgroundColor: mood.colors.primary,
+              left: `${15 + i * 15}%`,
+              top: `${20 + (i % 3) * 25}%`,
+            }}
+            animate={{
+              y: [0, -20, 0],
+              opacity: [0.2, 0.5, 0.2],
+              scale: [1, 1.5, 1],
+            }}
+            transition={{
+              duration: 3 + i * 0.5,
+              repeat: Infinity,
+              delay: i * 0.3,
+            }}
+          />
+        ))}
       </div>
 
-      {/* Header */}
-      <div className="text-center mb-20 relative z-10">
+      {/* Main content */}
+      <motion.div
+        className="relative max-w-2xl mx-auto text-center"
+        style={{ y: contentY }}
+      >
+        {/* Header with premium animation */}
         <motion.div
-          initial={{ scale: 0, rotate: -180 }}
-          whileInView={{ scale: 1, rotate: 0 }}
-          viewport={{ once: true }}
-          transition={{
-            delay: 0.2,
-            type: "spring",
-            stiffness: 150,
-            damping: 10,
-          }}
-          className="inline-block mb-8"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, type: "spring", stiffness: 50 }}
         >
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-full blur-3xl opacity-60 animate-pulse"></div>
-            <span className="text-8xl relative z-10 drop-shadow-2xl">🤝</span>
-          </div>
+          {/* Glowing accent */}
+          <motion.div
+            className="w-20 h-20 mx-auto mb-6 rounded-full"
+            style={{
+              background: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
+            }}
+            animate={{
+              boxShadow: [
+                `0 0 20px ${mood.colors.primary}40`,
+                `0 0 40px ${mood.colors.primary}60`,
+                `0 0 20px ${mood.colors.primary}40`,
+              ],
+            }}
+            transition={{ duration: 3, repeat: Infinity }}
+          >
+            {/* Hand wave icon */}
+            <motion.div
+              className="w-full h-full flex items-center justify-center text-3xl"
+              animate={{ rotate: [0, 10, -5, 10, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+            >
+              👋
+            </motion.div>
+          </motion.div>
+
+          {/* Heading with gradient */}
+          <h2
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
+            style={{ letterSpacing: "-0.03em" }}
+          >
+            Let's{" "}
+            <span
+              className="text-transparent bg-clip-text"
+              style={{
+                backgroundImage: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
+              }}
+            >
+              Connect
+            </span>
+          </h2>
+
+          <p
+            className="text-base md:text-lg mb-10 max-w-md mx-auto"
+            style={{ color: mood.colors.textMuted }}
+          >
+            Open for collaborations, opportunities, and new adventures
+          </p>
         </motion.div>
-        <motion.h1
-          className="text-6xl md:text-8xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-purple-300 via-pink-300 to-blue-300 drop-shadow-lg"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
+
+        {/* Social Icons - Premium card style */}
+        <motion.div
+          className="relative mb-10"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.2, duration: 0.8 }}
         >
-          Let's Connect
-        </motion.h1>
-        <motion.p
-          className="text-gray-300 text-xl md:text-2xl font-light max-w-2xl mx-auto"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-        >
-          Find me on social media and let's collaborate on amazing projects
-        </motion.p>
-      </div>
+          {/* Glow behind the card */}
+          <motion.div
+            className="absolute -inset-8 rounded-3xl blur-2xl"
+            style={{
+              background: `radial-gradient(ellipse at center, ${mood.colors.primary}30, transparent 70%)`,
+            }}
+            animate={{
+              opacity: [0.3, 0.6, 0.3],
+              scale: [0.95, 1.05, 0.95],
+            }}
+            transition={{ duration: 4, repeat: Infinity }}
+          />
 
-      {/* Social Icons Container - Full Width Modern Design */}
-      <div className="relative w-full max-w-6xl mb-20">
-        <div className="relative bg-gradient-to-br from-slate-900/70 via-blue-900/50 to-slate-900/70 backdrop-blur-3xl border border-purple-500/30 rounded-3xl overflow-hidden shadow-2xl p-12 md:p-20">
-          {/* Mesh Gradient Background */}
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-transparent to-blue-600/10"></div>
+          {/* Main card */}
+          <div
+            className="relative px-8 py-8 rounded-3xl"
+            style={{
+              background: `${mood.colors.surface}95`,
+              backdropFilter: 'blur(20px)',
+              border: `1px solid ${mood.colors.surfaceLight}`,
+            }}
+          >
+            {/* Top border gradient */}
+            <div
+              className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl"
+              style={{
+                background: `linear-gradient(90deg, transparent, ${mood.colors.primary}, ${mood.colors.secondary}, transparent)`,
+              }}
+            />
 
-          {/* 3D Floating Social Icons Grid */}
-          <div className="relative z-10 flex flex-wrap justify-center items-center gap-8 md:gap-12 lg:gap-16">
-            {socialLinks.map((social, index) => (
-              <motion.a
-                key={social.alt}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-icon-link group"
-                initial={{ opacity: 0, scale: 0, y: 30 }}
-                whileInView={{ opacity: 1, scale: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{
-                  delay: index * 0.15,
-                  type: "spring",
-                  stiffness: 150,
-                }}
-                whileHover={{ scale: 1.15, y: -15, rotateZ: 5 }}
-                whileTap={{ scale: 0.9 }}
-                style={{ transformStyle: "preserve-3d" }}
-              >
-                <div className="relative p-8 md:p-10 rounded-3xl bg-gradient-to-br from-slate-800/60 to-slate-900/60 backdrop-blur-lg border border-purple-400/30 transition-all duration-500 group-hover:from-slate-700/80 group-hover:to-slate-800/80 group-hover:border-purple-400/60 shadow-xl group-hover:shadow-purple-500/40">
-                  {/* 3D Layer Effect */}
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-500/0 to-blue-500/0 group-hover:from-purple-500/25 group-hover:to-blue-500/25 transition-all duration-500 pointer-events-none"></div>
-
-                  <img
-                    src={social.icon}
-                    alt={social.alt}
-                    className="w-16 h-16 md:w-20 md:h-20 object-contain relative z-10 drop-shadow-2xl transition-transform duration-300 group-hover:drop-shadow-[0_0_20px_rgba(139,92,246,0.6)]"
-                    style={{ transform: "translateZ(25px)" }}
+            <div className="flex justify-center items-center gap-4 md:gap-6 flex-wrap">
+              {socialLinks.map((social, i) => (
+                <motion.a
+                  key={social.alt}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative group"
+                  whileHover={{ scale: 1.15, y: -5 }}
+                  whileTap={{ scale: 0.9 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{
+                    delay: 0.3 + i * 0.08,
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 15,
+                  }}
+                >
+                  {/* Glow effect */}
+                  <motion.div
+                    className="absolute -inset-3 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    style={{
+                      background: `radial-gradient(ellipse at center, ${social.color}30, transparent 70%)`,
+                    }}
+                    animate={{ rotate: [0, 360] }}
+                    transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
                   />
 
-                  {/* Colored Glow Effect */}
+                  {/* Icon container */}
                   <div
-                    className={`absolute -inset-4 rounded-3xl bg-gradient-to-br ${social.color} opacity-0 group-hover:opacity-30 transition-all duration-500 blur-2xl pointer-events-none`}
-                  ></div>
+                    className="relative w-14 h-14 md:w-16 md:h-16 rounded-2xl flex items-center justify-center overflow-hidden"
+                    style={{
+                      background: `linear-gradient(135deg, ${mood.colors.surface}, ${mood.colors.surfaceLight})`,
+                      border: `1px solid ${mood.colors.surfaceLight}`,
+                      boxShadow: `0 4px 20px rgba(0,0,0,0.3)`,
+                    }}
+                  >
+                    {/* Shimmer effect on hover */}
+                    <div
+                      className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                      style={{
+                        background: `linear-gradient(135deg, transparent, ${social.color}30, transparent)`,
+                      }}
+                    />
 
-                  {/* Icon Label */}
-                  <div className="absolute -bottom-10 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
-                    <span className="text-white text-sm font-bold whitespace-nowrap bg-gradient-to-r from-purple-600/90 to-pink-600/90 px-4 py-2 rounded-full backdrop-blur-sm border border-purple-400/40">
-                      {social.alt}
-                    </span>
+                    <img
+                      src={social.icon}
+                      alt={social.alt}
+                      className="w-7 h-7 md:w-8 md:h-8 object-contain relative z-10"
+                      style={{
+                        filter: `drop-shadow(0 0 8px ${social.color}50)`,
+                      }}
+                    />
                   </div>
-                </div>
-              </motion.a>
-            ))}
-          </div>
 
-          {/* Grid Pattern Overlay */}
-          <div className="absolute inset-0 opacity-10">
-            <div
+                  {/* Platform name on hover */}
+                  <motion.div
+                    className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity"
+                    style={{ color: mood.colors.textMuted }}
+                  >
+                    {social.alt}
+                  </motion.div>
+                </motion.a>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* CTA Button - Extra premium */}
+        <motion.div
+          initial={{ opacity: 0, y: 30, scale: 0.9 }}
+          animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+          transition={{ delay: 0.5, duration: 0.8, type: "spring", stiffness: 100 }}
+        >
+          <motion.a
+            href="mailto:kaushal@example.com"
+            className="relative inline-flex items-center gap-3 px-10 py-5 rounded-full font-semibold text-white overflow-hidden"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            {/* Animated gradient background */}
+            <motion.div
               className="absolute inset-0"
               style={{
-                backgroundImage: `linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px)`,
-                backgroundSize: "50px 50px",
+                background: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary}, ${mood.colors.primary})`,
+                backgroundSize: '200% 200%',
               }}
-            ></div>
-          </div>
-        </div>
-      </div>
+              animate={{
+                backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+              }}
+              transition={{ duration: 3, repeat: Infinity }}
+            />
 
-      {/* Footer with animated line */}
-      <motion.footer
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.8 }}
-        className="relative z-10 w-full max-w-6xl text-center"
-      >
-        <div className="w-full h-px bg-gradient-to-r from-transparent via-purple-500/40 to-transparent mb-8"></div>
-        <p className="text-sm text-gray-400 font-light">
-          &copy; 2026 Kaushal Raj. All rights reserved.
-        </p>
-      </motion.footer>
-    </motion.div>
+            {/* Shine effect */}
+            <motion.div
+              className="absolute inset-0 opacity-0 group-hover:opacity-100"
+              style={{
+                background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)',
+              }}
+              animate={{ x: ['-100%', '200%'] }}
+              transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
+            />
+
+            {/* Glow */}
+            <motion.div
+              className="absolute -inset-4 rounded-full opacity-50"
+              style={{
+                background: `radial-gradient(ellipse at center, ${mood.colors.primary}60, transparent 70%)`,
+              }}
+              animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            />
+
+            {/* Button content */}
+            <span className="relative z-10 flex items-center gap-3">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+                />
+              </svg>
+              <span className="text-lg">Get In Touch</span>
+            </span>
+          </motion.a>
+        </motion.div>
+
+        {/* Footer with animation */}
+        <motion.div
+          className="mt-16"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.8, duration: 0.5 }}
+        >
+          <div className="flex items-center justify-center gap-2 mb-4">
+            {/* Decorative line */}
+            <motion.div
+              className="w-12 h-px"
+              style={{
+                background: `linear-gradient(90deg, transparent, ${mood.colors.primary})`,
+              }}
+            />
+            {/* Star */}
+            <motion.div
+              animate={{ rotate: [0, 360], scale: [1, 1.2, 1] }}
+              transition={{ duration: 4, repeat: Infinity }}
+              className="text-lg"
+            >
+              ✦
+            </motion.div>
+            {/* Decorative line */}
+            <motion.div
+              className="w-12 h-px"
+              style={{
+                background: `linear-gradient(90deg, ${mood.colors.primary}, transparent)`,
+              }}
+            />
+          </div>
+
+          <p
+            className="text-sm"
+            style={{ color: mood.colors.textMuted }}
+          >
+            &copy; 2026{" "}
+            <span
+              className="text-transparent bg-clip-text font-medium"
+              style={{
+                backgroundImage: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
+              }}
+            >
+              Kaushal Raj
+            </span>
+          </p>
+        </motion.div>
+      </motion.div>
+    </motion.section>
   );
 };
+
 export default Connect;
