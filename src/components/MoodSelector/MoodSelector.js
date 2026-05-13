@@ -21,8 +21,8 @@ const SELECTOR_STYLES = `
     position: relative;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 0.6rem 0;
+    gap: 0.75rem;
+    padding: 0.3rem 0;
     cursor: pointer;
     text-align: left;
     background: transparent;
@@ -30,56 +30,58 @@ const SELECTOR_STYLES = `
     width: 100%;
   }
   @media (min-width: 640px) {
-    .ms-row { gap: 1.5rem; padding: 0.85rem 0; }
+    .ms-row { gap: 1rem; padding: 0.4rem 0; }
   }
   .ms-row .ms-num {
     font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 600;
     color: rgba(255,255,255,0.3);
-    width: 2rem;
+    width: 1.6rem;
     flex-shrink: 0;
     transition: color 0.2s ease;
   }
-  @media (min-width: 640px) { .ms-row .ms-num { font-size: 0.85rem; } }
+  @media (min-width: 640px) { .ms-row .ms-num { font-size: 0.75rem; } }
   .ms-row .ms-label {
     font-weight: 900;
-    line-height: 0.95;
-    letter-spacing: -0.05em;
+    line-height: 1;
+    letter-spacing: -0.03em;
     color: #fff;
-    font-size: clamp(2rem, 7vw, 5.5rem);
-    transition: transform 0.3s ease, color 0.2s ease;
+    font-size: clamp(1.25rem, 4vw, 2.5rem);
+    transition: transform 0.25s ease, color 0.2s ease;
     will-change: transform;
   }
   .ms-row .ms-tag {
-    font-size: 0.7rem;
+    font-size: 0.62rem;
     text-transform: uppercase;
-    letter-spacing: 0.25em;
+    letter-spacing: 0.2em;
     color: rgba(255,255,255,0.35);
     opacity: 0;
-    transform: translateX(-12px);
-    transition: opacity 0.25s ease, transform 0.25s ease, color 0.2s ease;
-    flex-shrink: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.22s ease, transform 0.22s ease, color 0.2s ease;
+    flex-shrink: 1;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   @media (min-width: 768px) {
-    .ms-row .ms-tag { font-size: 0.8rem; }
+    .ms-row .ms-tag { font-size: 0.7rem; }
   }
-  .ms-row:hover .ms-label  { transform: translateX(14px); color: var(--p); }
+  .ms-row:hover .ms-label  { transform: translateX(8px); color: var(--p); }
   .ms-row:hover .ms-num    { color: var(--p); }
   .ms-row:hover .ms-tag    { opacity: 1; transform: translateX(0); color: var(--p); }
 
   /* Color dot beside label */
   .ms-row .ms-swatch {
-    width: 0.6rem; height: 0.6rem;
+    width: 0.55rem; height: 0.55rem;
     border-radius: 9999px;
     background: linear-gradient(135deg, var(--p), var(--s));
-    box-shadow: 0 0 12px var(--p);
+    box-shadow: 0 0 8px var(--p);
     flex-shrink: 0;
-    opacity: 0.55;
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    opacity: 0.6;
+    transition: opacity 0.22s ease, transform 0.22s ease;
   }
-  .ms-row:hover .ms-swatch { opacity: 1; transform: scale(1.25); }
+  .ms-row:hover .ms-swatch { opacity: 1; transform: scale(1.2); }
 `;
 
 const MARQUEE_TEXT =
@@ -127,18 +129,18 @@ const MoodSelector = () => {
             style={{ background: "#0a0a14" }}
           />
 
-          {/* Marquee strips */}
+          {/* Marquee strips — slim, subtle */}
           <div
             className="absolute pointer-events-none whitespace-nowrap select-none w-full"
-            style={{ top: "12%" }}
+            style={{ top: "8%" }}
           >
             <div
               className="ms-marquee font-black"
               style={{
-                fontSize: "clamp(3.5rem, 12vw, 10rem)",
-                letterSpacing: "-0.05em",
+                fontSize: "clamp(2.5rem, 8vw, 6rem)",
+                letterSpacing: "-0.04em",
                 color: "transparent",
-                WebkitTextStroke: `1px ${ambientMood.colors.primary}25`,
+                WebkitTextStroke: `1px ${ambientMood.colors.primary}20`,
                 lineHeight: 1,
                 transition: "all 0.5s ease",
               }}
@@ -149,15 +151,15 @@ const MoodSelector = () => {
           </div>
           <div
             className="absolute pointer-events-none whitespace-nowrap select-none w-full"
-            style={{ bottom: "10%" }}
+            style={{ bottom: "6%" }}
           >
             <div
               className="ms-marquee reverse font-black"
               style={{
-                fontSize: "clamp(2.5rem, 9vw, 8rem)",
-                letterSpacing: "-0.05em",
+                fontSize: "clamp(2rem, 6vw, 5rem)",
+                letterSpacing: "-0.04em",
                 color: "transparent",
-                WebkitTextStroke: `1px ${ambientMood.colors.secondary}20`,
+                WebkitTextStroke: `1px ${ambientMood.colors.secondary}18`,
                 lineHeight: 1,
                 transition: "all 0.5s ease",
               }}
@@ -195,17 +197,17 @@ const MoodSelector = () => {
             transition={{ duration: 16, repeat: Infinity }}
           />
 
-          {/* Content */}
-          <div className="relative h-full flex flex-col justify-center px-6 sm:px-12 md:px-20 max-w-7xl mx-auto">
+          {/* Content - compact, centered */}
+          <div className="relative h-full flex flex-col justify-center px-6 sm:px-10 md:px-16 max-w-2xl mx-auto">
             {/* Question */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1, duration: 0.7 }}
-              className="mb-10 sm:mb-14"
+              transition={{ delay: 0.1, duration: 0.6 }}
+              className="mb-6 sm:mb-7"
             >
               <p
-                className="text-[10px] sm:text-xs uppercase tracking-[0.5em] mb-3 sm:mb-4 font-bold"
+                className="text-[9px] sm:text-[10px] uppercase tracking-[0.5em] mb-2 font-bold"
                 style={{
                   color: ambientMood.colors.primary,
                   transition: "color 0.5s ease",
@@ -214,10 +216,10 @@ const MoodSelector = () => {
                 Welcome · Step 01
               </p>
               <h1
-                className="font-black text-white leading-[0.95]"
+                className="font-black text-white leading-[1]"
                 style={{
-                  fontSize: "clamp(2.5rem, 8vw, 6rem)",
-                  letterSpacing: "-0.04em",
+                  fontSize: "clamp(1.75rem, 5vw, 3rem)",
+                  letterSpacing: "-0.03em",
                 }}
               >
                 What's your{" "}
@@ -233,28 +235,21 @@ const MoodSelector = () => {
                   mood?
                 </span>
               </h1>
-              <p
-                className="text-sm sm:text-base mt-4 max-w-xl"
-                style={{ color: "rgba(255,255,255,0.5)" }}
-              >
-                Pick a vibe — it changes how this whole site looks and moves.
-                You can switch any time.
-              </p>
             </motion.div>
 
             {/* Mood rows */}
-            <ul className="space-y-0 max-w-3xl">
+            <ul className="space-y-0">
               {moodKeys.map((key, i) => {
                 const m = moods[key];
                 return (
                   <motion.li
                     key={key}
-                    initial={{ opacity: 0, x: -40 }}
+                    initial={{ opacity: 0, x: -30 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{
-                      delay: 0.2 + i * 0.07,
+                      delay: 0.15 + i * 0.05,
                       type: "spring",
-                      stiffness: 80,
+                      stiffness: 90,
                     }}
                   >
                     <button
@@ -267,9 +262,7 @@ const MoodSelector = () => {
                         "--s": m.colors.secondary,
                       }}
                     >
-                      <span className="ms-num">
-                        0{i + 1}
-                      </span>
+                      <span className="ms-num">0{i + 1}</span>
                       <span className="ms-swatch" />
                       <span className="ms-label">{m.name}</span>
                       <span className="ms-tag hidden sm:inline">
@@ -283,10 +276,10 @@ const MoodSelector = () => {
 
             {/* Skip / footer */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.5 }}
-              className="mt-10 sm:mt-14 flex flex-wrap items-center gap-4 text-[10px] sm:text-xs uppercase tracking-[0.4em]"
+              transition={{ delay: 0.5, duration: 0.4 }}
+              className="mt-6 sm:mt-8 flex flex-wrap items-center gap-3 text-[9px] sm:text-[10px] uppercase tracking-[0.35em]"
             >
               <button
                 onClick={handleSkip}
@@ -297,11 +290,11 @@ const MoodSelector = () => {
                   (e.currentTarget.style.color = "rgba(255,255,255,0.6)")
                 }
               >
-                Skip — Use Default
+                Skip
               </button>
               <span style={{ color: "rgba(255,255,255,0.2)" }}>·</span>
-              <span style={{ color: "rgba(255,255,255,0.35)" }}>
-                Click any mood to enter
+              <span style={{ color: "rgba(255,255,255,0.3)" }}>
+                Click to enter
               </span>
             </motion.div>
           </div>

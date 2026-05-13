@@ -41,6 +41,7 @@ import {
   FaBug,
   FaCubes,
   FaPlug,
+  FaGamepad,
 } from "react-icons/fa";
 import {
   SiTypescript,
@@ -526,6 +527,75 @@ const HeroSection = ({ mood, scrollYProgress, index, stats, heroOpacity, heroY }
       />
 
       <div className="relative z-10 max-w-5xl mx-auto text-center w-full">
+        {/* Coming soon announcement */}
+        <motion.a
+          href="#"
+          initial={{ opacity: 0, y: -10, scale: 0.9 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ delay: 0.1, type: "spring", stiffness: 120, damping: 14 }}
+          whileHover={{ y: -2 }}
+          className="relative inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full mb-7 sm:mb-8 overflow-hidden group"
+          style={{
+            background: `linear-gradient(135deg, ${mood.colors.primary}1a, ${mood.colors.secondary}10)`,
+            border: `1px solid ${mood.colors.primary}45`,
+            backdropFilter: "blur(10px)",
+          }}
+          onClick={(e) => e.preventDefault()}
+        >
+          {/* Sweep highlight */}
+          <motion.span
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              background: `linear-gradient(90deg, transparent, ${mood.colors.primary}30, transparent)`,
+              width: "40%",
+            }}
+            animate={{ x: ["-100%", "300%"] }}
+            transition={{ duration: 3.2, repeat: Infinity, repeatDelay: 1.2, ease: "easeInOut" }}
+          />
+
+          <motion.span
+            className="relative w-1.5 h-1.5 rounded-full flex-shrink-0"
+            style={{
+              background: mood.colors.primary,
+              boxShadow: `0 0 8px ${mood.colors.primary}`,
+            }}
+            animate={{ opacity: [1, 0.3, 1] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+          />
+
+          <span
+            className="relative text-[9px] sm:text-[10px] uppercase tracking-[0.3em] font-bold"
+            style={{ color: mood.colors.primary }}
+          >
+            Coming Soon
+          </span>
+
+          <span
+            className="relative w-px h-3"
+            style={{ background: `${mood.colors.primary}50` }}
+          />
+
+          <motion.span
+            className="relative"
+            style={{ color: mood.colors.primary }}
+            animate={{ rotate: [0, -8, 8, -8, 0] }}
+            transition={{ duration: 3, repeat: Infinity, repeatDelay: 1.5 }}
+          >
+            <FaGamepad className="text-sm sm:text-base" />
+          </motion.span>
+
+          <span className="relative text-xs sm:text-sm font-bold text-white whitespace-nowrap">
+            3D View Game
+          </span>
+
+          <span
+            className="relative hidden sm:inline text-[9px] uppercase tracking-[0.3em] font-bold"
+            style={{ color: "rgba(255,255,255,0.4)" }}
+          >
+            · Dropping Soon
+          </span>
+        </motion.a>
+
         <motion.p
           className="text-xs sm:text-sm uppercase tracking-[0.4em] mb-5"
           style={{ color: mood.colors.primary, y: eyebrowY }}

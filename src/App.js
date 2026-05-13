@@ -17,13 +17,34 @@ import MoodSelector from "./components/MoodSelector/MoodSelector";
 import MoodSwitcher from "./components/MoodSelector/MoodSwitcher";
 import MouseFollower from "./components/Common/MouseFollower";
 
-// Scroll to top on route change — instant + before paint to avoid the
-// "you see the bottom of the new page first, then it scrolls up" jank.
+// Scroll to top on route change — resets every possible scroll container
+// (window + html + body + any inner .fancy-scrollbar div) synchronously
+// before paint, then once more after the next frame as a safety net.
 function ScrollToTop() {
   const location = useLocation();
 
+  // Disable browser auto scroll-restoration once
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+  }, []);
+
   useLayoutEffect(() => {
-    window.scrollTo(0, 0);
+    const reset = () => {
+      window.scrollTo(0, 0);
+      if (document.documentElement) document.documentElement.scrollTop = 0;
+      if (document.body) document.body.scrollTop = 0;
+      // Body.js wraps the home page in <div class="overflow-y-auto fancy-scrollbar">
+      // which is its own scroll container — reset that too.
+      document.querySelectorAll(".fancy-scrollbar").forEach((el) => {
+        el.scrollTop = 0;
+      });
+    };
+    reset();
+    // Run again after layout in case something else nudged scroll mid-mount.
+    const raf = requestAnimationFrame(reset);
+    return () => cancelAnimationFrame(raf);
   }, [location.pathname]);
 
   return null;
