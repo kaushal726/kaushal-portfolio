@@ -1,5 +1,5 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { animateScroll as scroll } from "react-scroll";
 import Particles from "react-tsparticles";
@@ -17,12 +17,13 @@ import MoodSelector from "./components/MoodSelector/MoodSelector";
 import MoodSwitcher from "./components/MoodSelector/MoodSwitcher";
 import MouseFollower from "./components/Common/MouseFollower";
 
-// Scroll to top on route change component
+// Scroll to top on route change — instant + before paint to avoid the
+// "you see the bottom of the new page first, then it scrolls up" jank.
 function ScrollToTop() {
   const location = useLocation();
 
-  useEffect(() => {
-    scroll.scrollToTop({ smooth: true, duration: 300 });
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
   }, [location.pathname]);
 
   return null;

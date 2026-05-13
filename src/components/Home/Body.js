@@ -38,6 +38,9 @@ import {
   FaPalette,
   FaPencilRuler,
   FaMobileAlt,
+  FaBug,
+  FaCubes,
+  FaPlug,
 } from "react-icons/fa";
 import {
   SiTypescript,
@@ -70,9 +73,10 @@ const HERO_ROLES = [
 ];
 
 const HERO_STATS = [
-  { value: "3+", label: "Years Coding" },
-  { value: "50+", label: "Bugs Fixed" },
-  { value: "5+", label: "Platforms Shipped" },
+  { value: "3+", label: "Years Shipping", Icon: FaRocket },
+  { value: "50+", label: "Bugs Squashed", Icon: FaBug },
+  { value: "14", label: "Modules Built", Icon: FaCubes },
+  { value: "80+", label: "APIs Designed", Icon: FaPlug },
 ];
 
 const EXPERIENCE = [
@@ -587,39 +591,75 @@ const HeroSection = ({ mood, scrollYProgress, index, stats, heroOpacity, heroY }
 
         {/* Stats */}
         <motion.div
-          className="flex flex-wrap justify-center gap-10 sm:gap-16 md:gap-20"
+          className="flex flex-wrap justify-center items-start gap-8 sm:gap-14 md:gap-20"
           style={{ y: statsY }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.8 }}
         >
-          {stats.map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              className="text-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 + i * 0.1 }}
-            >
-              <div
-                className="text-3xl sm:text-4xl md:text-5xl font-bold"
-                style={{
-                  backgroundImage: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                }}
+          {stats.map((stat, i) => {
+            const Icon = stat.Icon;
+            return (
+              <motion.div
+                key={stat.label}
+                className="relative text-center flex flex-col items-center"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 + i * 0.1 }}
               >
-                {stat.value}
-              </div>
-              <div
-                className="text-[10px] sm:text-xs mt-1 uppercase tracking-[0.3em]"
-                style={{ color: mood.colors.textMuted }}
-              >
-                {stat.label}
-              </div>
-            </motion.div>
-          ))}
+                {/* Icon badge */}
+                <motion.div
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center mb-3"
+                  style={{
+                    background: `${mood.colors.primary}14`,
+                    border: `1px solid ${mood.colors.primary}40`,
+                    color: mood.colors.primary,
+                  }}
+                  animate={{ y: [0, -3, 0] }}
+                  transition={{
+                    duration: 3 + i * 0.4,
+                    repeat: Infinity,
+                    delay: i * 0.3,
+                    ease: "easeInOut",
+                  }}
+                >
+                  <Icon className="text-base sm:text-lg" />
+                </motion.div>
+
+                {/* Number */}
+                <div
+                  className="text-3xl sm:text-4xl md:text-5xl font-black leading-none"
+                  style={{
+                    backgroundImage: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    letterSpacing: "-0.03em",
+                  }}
+                >
+                  {stat.value}
+                </div>
+
+                {/* Label */}
+                <div
+                  className="text-[10px] sm:text-xs mt-2 uppercase tracking-[0.3em] font-bold"
+                  style={{ color: "rgba(255,255,255,0.55)" }}
+                >
+                  {stat.label}
+                </div>
+
+                {/* Vertical separator (between items, hidden on mobile/wrap) */}
+                {i < stats.length - 1 && (
+                  <span
+                    className="hidden md:block absolute top-1/2 -translate-y-1/2 -right-10 lg:-right-12 w-px h-12"
+                    style={{
+                      background: `linear-gradient(to bottom, transparent, ${mood.colors.primary}40, transparent)`,
+                    }}
+                  />
+                )}
+              </motion.div>
+            );
+          })}
         </motion.div>
 
         <motion.div
@@ -1381,27 +1421,56 @@ const GreetingSection = ({ mood, time, message, dayOfWeek }) => {
               :
             </motion.span>
             <span className="text-white">{time?.minutes || "00"}</span>
-            <span
-              className="ml-2 sm:ml-3 font-bold"
+          </div>
+        </motion.div>
+
+        {/* Seconds — separate clean badge below the big time */}
+        <motion.div
+          className="relative flex justify-center mb-8 sm:mb-10 -mt-4 sm:-mt-6"
+          initial={{ opacity: 0, y: 10 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.35, duration: 0.6 }}
+        >
+          <div
+            className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full"
+            style={{
+              background: "rgba(255,255,255,0.04)",
+              border: `1px solid ${mood.colors.primary}40`,
+              backdropFilter: "blur(10px)",
+            }}
+          >
+            <motion.span
+              className="w-1.5 h-1.5 rounded-full"
               style={{
-                fontSize: "clamp(2.5rem, 7vw, 5rem)",
-                color: mood.colors.primary,
-                textShadow: `0 0 24px ${mood.colors.primary}80, 0 0 40px ${mood.colors.primary}40`,
+                background: mood.colors.primary,
+                boxShadow: `0 0 6px ${mood.colors.primary}`,
               }}
+              animate={{ opacity: [1, 0.3, 1] }}
+              transition={{ duration: 1, repeat: Infinity }}
+            />
+            <span
+              className="text-[10px] uppercase tracking-[0.4em] font-bold"
+              style={{ color: "rgba(255,255,255,0.5)" }}
+            >
+              SEC
+            </span>
+            <div
+              className="relative w-7 h-5 overflow-hidden font-mono font-black text-sm leading-none flex items-center justify-center"
             >
               <AnimatePresence mode="popLayout">
                 <motion.span
                   key={time?.seconds}
-                  initial={{ y: 12, opacity: 0 }}
+                  initial={{ y: 14, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: -12, opacity: 0 }}
-                  transition={{ duration: 0.25 }}
-                  className="inline-block"
+                  exit={{ y: -14, opacity: 0 }}
+                  transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute"
+                  style={{ color: mood.colors.primary }}
                 >
-                  :{time?.seconds || "00"}
+                  {time?.seconds || "00"}
                 </motion.span>
               </AnimatePresence>
-            </span>
+            </div>
           </div>
         </motion.div>
 
