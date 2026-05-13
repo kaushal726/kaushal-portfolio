@@ -3,7 +3,9 @@
     "allow": [
       "Bash(npm run:*)",
       "Bash(npm start:*)",
-      "Bash(curl -s http://localhost:3000)"
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(node -e \"const i = require\\('react-icons/si'\\); console.log\\('SiChakraui:', typeof i.SiChakraui\\); console.log\\('SiSpringboot:', typeof i.SiSpringboot\\); console.log\\('SiMysql:', typeof i.SiMysql\\); console.log\\('SiAngular:', typeof i.SiAngular\\); console.log\\('SiJest:', typeof i.SiJest\\); console.log\\('SiMocha:', typeof i.SiMocha\\); console.log\\('SiHtml5:', typeof i.SiHtml5\\); console.log\\('SiCss3:', typeof i.SiCss3\\); console.log\\('SiExpress:', typeof i.SiExpress\\);\")",
+      "Bash(node -e \"const i = require\\('react-icons/si'\\); console.log\\('SiPostman:', typeof i.SiPostman\\);\")"
     ]
   }
 }

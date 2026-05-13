@@ -1,43 +1,348 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useRef, useMemo } from "react";
 import "./Home.css";
 import Quotes from "./Quotes";
 import "animate.css";
-import Javascript from "../../assets/Skills/javascript.png";
-import Typescript from "../../assets/Skills/typescript.png";
-import CSS from "../../assets/Skills/css.png";
-import Express from "../../assets/Skills/express.png";
-import GitHub from "../../assets/Skills/github.png";
-import HTML from "../../assets/Skills/html.png";
-import Java from "../../assets/Skills/java.png";
-import Linux from "../../assets/Skills/linux.png";
-import Mongo from "../../assets/Skills/mongo-db.png";
-import Node from "../../assets/Skills/node.png";
-import NPM from "../../assets/Skills/npm.png";
-import ReactLogo from "../../assets/Skills/react.png";
-import SAAS from "../../assets/Skills/saas.png";
-import TailwindLogo from "../../assets/Skills/tailwind.png";
-import { motion, useInView, useTransform, AnimatePresence } from "framer-motion";
-import { useRef } from "react";
+import {
+  motion,
+  useInView,
+  useTransform,
+  useMotionValue,
+  useSpring,
+  AnimatePresence,
+} from "framer-motion";
+import { Link } from "react-router-dom";
+import {
+  FaReact,
+  FaNodeJs,
+  FaJava,
+  FaGitAlt,
+  FaGithub,
+  FaLinux,
+  FaNpm,
+  FaLightbulb,
+  FaRocket,
+  FaMagic,
+  FaSun,
+  FaMoon,
+  FaCloudSun,
+  FaArrowRight,
+  FaUserAstronaut,
+  FaTools,
+  FaCogs,
+  FaCog,
+  FaWaveSquare,
+  FaShieldAlt,
+  FaLock,
+  FaVideo,
+  FaServer,
+  FaPalette,
+  FaPencilRuler,
+  FaMobileAlt,
+} from "react-icons/fa";
+import {
+  SiTypescript,
+  SiJavascript,
+  SiMongodb,
+  SiExpress,
+  SiTailwindcss,
+  SiChakraui,
+  SiSpringboot,
+  SiAngular,
+  SiRedux,
+  SiHtml5,
+  SiCss3,
+  SiFigma,
+  SiJest,
+  SiMocha,
+  SiMysql,
+  SiPostman,
+} from "react-icons/si";
 import { useMood } from "../../context/MoodContext";
 import { usePortfolioScroll } from "../../hooks/usePortfolioScroll";
 import CentralDottedCircle from "../Common/CentralDottedCircle";
 import OrganicBlobBackground from "../Common/OrganicBlobBackground";
 
-const TEXTS = ["MERN Stack Developer", "Photographer", "Editor"];
-
-const stats = [
-  { value: "20+", label: "Projects" },
-  { value: "3+", label: "Years" },
-  { value: "14+", label: "Technologies" },
-  { value: "100%", label: "Passion" },
+// =================== DATA ===================
+const HERO_ROLES = [
+  "Software Developer",
+  "React + Java Specialist",
+  "Full-Stack Engineer",
 ];
 
-const timelineItems = [
-  { year: "2023", title: "Full Stack Developer", desc: "Building scalable MERN applications" },
-  { year: "2022", title: "Frontend Developer", desc: "Crafting responsive UIs" },
-  { year: "2021", title: "Java Developer", desc: "Enterprise solutions" },
+const HERO_STATS = [
+  { value: "3+", label: "Years Coding" },
+  { value: "50+", label: "Bugs Fixed" },
+  { value: "5+", label: "Platforms Shipped" },
 ];
 
+const EXPERIENCE = [
+  {
+    company: "Zillout Technologies",
+    role: "Software Developer",
+    period: "Feb 2025 — Present",
+    current: true,
+    points: [
+      "Worked across Customer, Admin, Merchant, Partner, and Marketing platforms using React, Chakra UI, Java (Spring Boot), and SQL.",
+      "Owned end-to-end delivery — from feature design and implementation to testing, deployment, and maintenance.",
+      "Built and optimized Pub & Event Booking, Marketing Automation, and Analytics modules.",
+      "Implemented offline functionality via WebRTC and WebSocket for real-time communication without constant internet.",
+    ],
+    stack: ["React", "Chakra UI", "Java", "Spring Boot", "SQL", "WebRTC"],
+  },
+  {
+    company: "C.E. Info Systems (MAPPLS)",
+    role: "Software Associate",
+    period: "Aug 2022 — Feb 2025",
+    points: [
+      "Developed map plugins and micro-frontend components in React.js for location-based visualization and layered maps.",
+      "Implemented the mGIS 5.0 UI revamp — improving scalability, modularity, and user experience.",
+      "Built an Annotations Draw Platform and Compare-view module for image/video analysis and AI inferences.",
+      "Created microservices and resolved 50+ bugs across plugins and analytics.",
+    ],
+    stack: ["React", "Micro-Frontends", "Microservices", "JavaScript"],
+  },
+  {
+    company: "Bright Code",
+    role: "Software Engineer Intern",
+    period: "Jan 2022 — Mar 2022",
+    points: [
+      "Implemented a React.js component for filtering, searching, and sorting data efficiently.",
+    ],
+    stack: ["React"],
+  },
+];
+
+// Tech split into 4 marquee rows
+const TECH_ROWS = [
+  // Row 1: Frontend frameworks & languages
+  [
+    { name: "React", Icon: FaReact },
+    { name: "Angular", Icon: SiAngular },
+    { name: "Redux", Icon: SiRedux },
+    { name: "TypeScript", Icon: SiTypescript },
+    { name: "JavaScript", Icon: SiJavascript },
+    { name: "HTML5", Icon: SiHtml5 },
+    { name: "CSS3", Icon: SiCss3 },
+    { name: "Tailwind CSS", Icon: SiTailwindcss },
+    { name: "Chakra UI", Icon: SiChakraui },
+  ],
+  // Row 2: Backend & APIs
+  [
+    { name: "Node.js", Icon: FaNodeJs },
+    { name: "Express", Icon: SiExpress },
+    { name: "Java", Icon: FaJava },
+    { name: "Spring Boot", Icon: SiSpringboot },
+    { name: "REST APIs", Icon: FaServer },
+    { name: "WebSocket", Icon: FaWaveSquare },
+    { name: "WebRTC", Icon: FaVideo },
+    { name: "JWT Auth", Icon: FaShieldAlt },
+    { name: "Encryption", Icon: FaLock },
+  ],
+  // Row 3: Data & tooling
+  [
+    { name: "MongoDB", Icon: SiMongodb },
+    { name: "SQL", Icon: SiMysql },
+    { name: "Git", Icon: FaGitAlt },
+    { name: "GitHub", Icon: FaGithub },
+    { name: "NPM", Icon: FaNpm },
+    { name: "Linux", Icon: FaLinux },
+    { name: "Postman", Icon: SiPostman },
+    { name: "Figma", Icon: SiFigma },
+  ],
+  // Row 4: Architecture / concepts
+  [
+    { name: "Microservices", Icon: FaCogs },
+    { name: "Micro-Frontends", Icon: FaTools },
+    { name: "Wireframing", Icon: FaPencilRuler },
+    { name: "UI / UX Design", Icon: FaPalette },
+    { name: "Responsive Web", Icon: FaMobileAlt },
+    { name: "Middleware", Icon: FaCog },
+    { name: "Jest", Icon: SiJest },
+    { name: "Mocha", Icon: SiMocha },
+  ],
+];
+
+const VISION_STEPS = [
+  {
+    num: "01",
+    title: "Create",
+    desc: "Build solutions that solve real problems for real users — not toys, not demos.",
+    Icon: FaLightbulb,
+  },
+  {
+    num: "02",
+    title: "Iterate",
+    desc: "Ship, measure, learn, refine. Momentum beats perfection every time.",
+    Icon: FaRocket,
+  },
+  {
+    num: "03",
+    title: "Inspire",
+    desc: "Leave the interface a little more thoughtful than I found it.",
+    Icon: FaMagic,
+  },
+];
+
+// =================== GLOBAL STYLES ===================
+const GLOBAL_STYLES = `
+  /* Color sweep — ONLY used for Kaushal Raj name */
+  .color-sweep-text {
+    background: linear-gradient(
+      90deg,
+      var(--sweep-from) 0%,
+      var(--sweep-from) 25%,
+      var(--sweep-mid) 45%,
+      var(--sweep-mid2) 55%,
+      var(--sweep-from) 75%,
+      var(--sweep-from) 100%
+    );
+    background-size: 250% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: colorSweep 2.6s linear infinite;
+  }
+  @keyframes colorSweep {
+    0%   { background-position: 200% center; }
+    100% { background-position: -100% center; }
+  }
+
+  /* Tech marquee */
+  .marquee-viewport { overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+  .marquee-track { display: inline-flex; gap: 0.75rem; padding-right: 0.75rem; animation: marqueeX 35s linear infinite; }
+  .marquee-track.reverse { animation-direction: reverse; }
+  .marquee-track.fast { animation-duration: 26s; }
+  .marquee-track.slow { animation-duration: 44s; }
+  .marquee-viewport:hover .marquee-track { animation-play-state: paused; }
+  @keyframes marqueeX {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* Watermark mega text — used behind sections */
+  .watermark {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    font-weight: 900;
+    letter-spacing: -0.05em;
+    line-height: 0.85;
+    user-select: none;
+    text-transform: uppercase;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.04);
+  }
+
+  /* Time digit flicker on update */
+  @keyframes digitTick {
+    0%   { transform: translateY(0); opacity: 1; }
+    49%  { transform: translateY(-12%); opacity: 0; }
+    50%  { transform: translateY(12%); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+`;
+
+// =================== HELPERS ===================
+function SweepText({ children, mood, className = "", style = {} }) {
+  return (
+    <span
+      className={`color-sweep-text ${className}`}
+      style={{
+        "--sweep-from": "#ffffff",
+        "--sweep-mid": mood.colors.primary,
+        "--sweep-mid2": mood.colors.secondary,
+        ...style,
+      }}
+    >
+      {children}
+    </span>
+  );
+}
+
+function MagneticTilt({ children, strength = 18, className = "", style = {} }) {
+  const ref = useRef(null);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const sx = useSpring(x, { stiffness: 220, damping: 18 });
+  const sy = useSpring(y, { stiffness: 220, damping: 18 });
+
+  const onMove = (e) => {
+    const el = ref.current;
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    x.set(((e.clientX - cx) / r.width) * strength);
+    y.set(((e.clientY - cy) / r.height) * strength);
+  };
+  const onLeave = () => {
+    x.set(0);
+    y.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      style={{ x: sx, y: sy, ...style }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// Section heading — eyebrow + big word + thin underline
+function SectionHeading({ eyebrow, title, mood, accent = true }) {
+  return (
+    <div className="text-center mb-12 sm:mb-16 relative">
+      <p
+        className="text-[10px] sm:text-xs uppercase tracking-[0.5em] mb-3"
+        style={{ color: mood.colors.primary }}
+      >
+        {eyebrow}
+      </p>
+      <h2
+        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white"
+        style={{ letterSpacing: "-0.04em" }}
+      >
+        {title}
+      </h2>
+      {accent && (
+        <motion.div
+          className="h-px w-16 sm:w-20 mx-auto mt-5"
+          style={{
+            background: `linear-gradient(90deg, transparent, ${mood.colors.primary}, transparent)`,
+          }}
+          animate={{ width: [50, 90, 50] }}
+          transition={{ duration: 4, repeat: Infinity }}
+        />
+      )}
+    </div>
+  );
+}
+
+function getTimeIcon(hours) {
+  const h = parseInt(hours || "0", 10);
+  if (h >= 5 && h < 12) return FaSun;
+  if (h >= 12 && h < 18) return FaCloudSun;
+  return FaMoon;
+}
+
+function timeGreeting(hours) {
+  const h = parseInt(hours || "0", 10);
+  if (h >= 5 && h < 12) return "Morning";
+  if (h >= 12 && h < 17) return "Afternoon";
+  if (h >= 17 && h < 21) return "Evening";
+  return "Night";
+}
+
+// =================== BODY ===================
 export const Body = () => {
   const { mood } = useMood();
   const [quote, setQuote] = useState();
@@ -53,60 +358,56 @@ export const Body = () => {
     scrollYProgress,
     heroOpacity,
     heroY,
-    visionTextY1,
-    visionTextY2,
     centralScale,
     centralY,
     centralOpacity,
   } = usePortfolioScroll();
 
-  // Intro animation sequence
   useEffect(() => {
-    const timeout = setTimeout(() => {
+    const t = setTimeout(() => {
       setShowIntro(false);
-      setTimeout(() => setShowContent(true), 600);
+      setTimeout(() => setShowContent(true), 500);
     }, 3000);
-    return () => clearTimeout(timeout);
+    return () => clearTimeout(t);
   }, []);
 
-  // Text transition
   useEffect(() => {
-    const intervalId = setInterval(() => setIndex((index) => index + 1), 3000);
-    return () => clearInterval(intervalId);
+    const id = setInterval(() => setIndex((i) => i + 1), 2800);
+    return () => clearInterval(id);
   }, []);
 
-  // Clock and greeting
   useEffect(() => {
-    const updateDateTime = () => {
-      const date = new Date();
-      const hh = date.getHours();
-      const mm = date.getMinutes();
-      const ss = date.getSeconds();
-      const day = date.getDay();
-      const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
+    const update = () => {
+      const d = new Date();
+      const hh = d.getHours();
+      const mm = d.getMinutes();
+      const ss = d.getSeconds();
+      const days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+      ];
       setTime({
         hours: hh.toString().padStart(2, "0"),
         minutes: mm.toString().padStart(2, "0"),
         seconds: ss.toString().padStart(2, "0"),
       });
-      setDayOfWeek(daysOfWeek[day]);
-
-      if (hh >= 0 && hh < 12) {
-        setMessage("Good Morning. Create a positive vibe.");
-      } else if (hh >= 12 && hh < 17) {
-        setMessage("Good Afternoon. Your presence makes today amazing.");
-      } else {
-        setMessage("A Great Day is About to End.");
-      }
+      setDayOfWeek(days[d.getDay()]);
+      if (hh >= 0 && hh < 12)
+        setMessage("Good morning — make today count.");
+      else if (hh >= 12 && hh < 17)
+        setMessage("Good afternoon — keep the momentum going.");
+      else setMessage("A great day is about to end.");
     };
-
-    updateDateTime();
-    const intervalId = setInterval(updateDateTime, 1000);
-    return () => clearInterval(intervalId);
+    update();
+    const id = setInterval(update, 1000);
+    return () => clearInterval(id);
   }, []);
 
-  // Fetch quote
   useEffect(() => {
     Quotes().then((data) => {
       if (data) {
@@ -116,123 +417,100 @@ export const Body = () => {
     });
   }, []);
 
-  const skills = useMemo(() => [
-    { name: "HTML", img: HTML },
-    { name: "CSS", img: CSS },
-    { name: "JavaScript", img: Javascript },
-    { name: "TypeScript", img: Typescript },
-    { name: "React", img: ReactLogo },
-    { name: "Tailwind", img: TailwindLogo },
-    { name: "SASS", img: SAAS },
-    { name: "Node.js", img: Node },
-    { name: "Express", img: Express },
-    { name: "MongoDB", img: Mongo },
-    { name: "Java", img: Java },
-    { name: "GitHub", img: GitHub },
-    { name: "NPM", img: NPM },
-    { name: "Linux", img: Linux },
-  ], []);
-
   return (
     <div className="h-full overflow-y-auto fancy-scrollbar">
-      {/* Central Dotted Circle - BIG and Scroll Driven */}
-      <CentralDottedCircle scale={centralScale} y={centralY} opacity={centralOpacity} />
+      <style>{GLOBAL_STYLES}</style>
 
-      {/* Intro Overlay - AnimatePresence for proper exit animation */}
+      <CentralDottedCircle
+        scale={centralScale}
+        y={centralY}
+        opacity={centralOpacity}
+      />
+
       <AnimatePresence>
         {showIntro && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center"
+            className="fixed inset-0 z-50 flex items-center justify-center px-4"
             style={{ backgroundColor: mood.colors.background }}
             initial={{ opacity: 1 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 100, scale: 0.8, rotateX: -15 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0, y: 100, scale: 0.85 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="mb-24 flex justify-center items-center text-center text-white">
-              <motion.h1
-                className="text-7xl sm:text-4xl md:text-[9rem]"
-                style={{ fontFamily: "Amsterdam-2" }}
-                initial={{ y: -200, opacity: 0, rotateX: 45 }}
-                animate={{ y: 0, opacity: 1, rotateX: 0 }}
-                exit={{ y: 100, opacity: 0, rotateX: 15 }}
-                transition={{
-                  y: { type: "spring", stiffness: 80, damping: 15, duration: 1.2 },
-                  opacity: { duration: 0.6 },
-                  rotateX: { duration: 0.8 },
-                }}
-              >
-                Kaushal Raj
-              </motion.h1>
-            </div>
-
-            {/* Fade out overlay hint */}
-            <motion.div
-              className="absolute bottom-0 left-0 right-0 h-32 pointer-events-none"
-              style={{
-                background: `linear-gradient(to top, ${mood.colors.background}, transparent)`,
-              }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.4, delay: 0.3 }}
-            />
+            <motion.h1
+              className="text-6xl sm:text-7xl md:text-[9rem] text-center text-white"
+              style={{ fontFamily: "Amsterdam-2" }}
+              initial={{ y: -180, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 80, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 70, damping: 15 }}
+            >
+              <SweepText mood={mood}>Kaushal Raj</SweepText>
+            </motion.h1>
           </motion.div>
         )}
       </AnimatePresence>
 
       {showContent && (
         <div className="flex flex-col">
-          {/* ============ HERO SECTION ============ */}
           <HeroSection
             mood={mood}
             scrollYProgress={scrollYProgress}
             index={index}
-            stats={stats}
+            stats={HERO_STATS}
             heroOpacity={heroOpacity}
             heroY={heroY}
           />
-
-          {/* ============ ABOUT SECTION ============ */}
           <AboutSection mood={mood} />
-
-          {/* ============ TECH STACK SECTION ============ */}
-          <TechStackSection mood={mood} skills={skills} />
-
-          {/* ============ TIMELINE SECTION ============ */}
-          <TimelineSection mood={mood} items={timelineItems} />
-
-          {/* ============ QUOTE SECTION ============ */}
+          <TechStackSection mood={mood} />
+          <ExperienceSection mood={mood} items={EXPERIENCE} />
           <QuoteSection mood={mood} quote={quote} author={author} />
-
-          {/* ============ VISION SECTION ============ */}
-          <VisionSection mood={mood} visionTextY1={visionTextY1} visionTextY2={visionTextY2} />
-
-          {/* ============ GREETING SECTION ============ */}
-          <GreetingSection mood={mood} time={time} message={message} dayOfWeek={dayOfWeek} />
+          <VisionSection mood={mood} />
+          <GreetingSection
+            mood={mood}
+            time={time}
+            message={message}
+            dayOfWeek={dayOfWeek}
+          />
         </div>
       )}
     </div>
   );
 };
 
-// ============ HERO SECTION ============
+// =================== HERO ===================
 const HeroSection = ({ mood, scrollYProgress, index, stats, heroOpacity, heroY }) => {
-  // Parallax transforms for different elements
   const eyebrowY = useTransform(scrollYProgress, [0, 0.15], [0, -60]);
   const nameY = useTransform(scrollYProgress, [0, 0.15], [0, -30]);
   const nameScale = useTransform(scrollYProgress, [0, 0.15], [1, 1.1]);
   const roleY = useTransform(scrollYProgress, [0, 0.15], [0, -20]);
   const statsY = useTransform(scrollYProgress, [0, 0.15], [0, 40]);
 
+  const mx = useMotionValue(0);
+  const my = useMotionValue(0);
+  const onHeroMove = (e) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    mx.set(e.clientX - r.left);
+    my.set(e.clientY - r.top);
+  };
+
   return (
     <motion.section
-      className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden"
-      style={{
-        opacity: heroOpacity,
-        y: heroY,
-        backgroundColor: mood.colors.background,
-      }}
+      onMouseMove={onHeroMove}
+      className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 overflow-hidden"
+      style={{ opacity: heroOpacity, y: heroY, backgroundColor: mood.colors.background }}
     >
-      {/* Subtle gradient for text readability - only at edges, not center */}
+      <motion.div
+        className="absolute pointer-events-none rounded-full blur-3xl hidden md:block"
+        style={{
+          width: 500,
+          height: 500,
+          x: useTransform(mx, (v) => v - 250),
+          y: useTransform(my, (v) => v - 250),
+          background: `radial-gradient(circle, ${mood.colors.primary}18, transparent 60%)`,
+        }}
+      />
+
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -243,11 +521,9 @@ const HeroSection = ({ mood, scrollYProgress, index, stats, heroOpacity, heroY }
         }}
       />
 
-      {/* Central content */}
-      <div className="relative z-10 max-w-5xl mx-auto text-center">
-        {/* Eyebrow - Parallax */}
+      <div className="relative z-10 max-w-5xl mx-auto text-center w-full">
         <motion.p
-          className="text-sm uppercase tracking-[0.3em] mb-6"
+          className="text-xs sm:text-sm uppercase tracking-[0.4em] mb-5"
           style={{ color: mood.colors.primary, y: eyebrowY }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -256,237 +532,98 @@ const HeroSection = ({ mood, scrollYProgress, index, stats, heroOpacity, heroY }
           Welcome
         </motion.p>
 
-        {/* Main heading - Parallax with Splash font & light sweep */}
         <motion.h1
-          className="light-sweep-heading relative text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-4 leading-tight"
+          className="relative text-5xl sm:text-6xl md:text-7xl lg:text-8xl mb-4 leading-tight text-white"
           style={{
             letterSpacing: "-0.03em",
             y: nameY,
             scale: nameScale,
             fontFamily: "'Splash', cursive",
-            //@ts-ignore
-            "--highlight": mood.colors.primary,
           }}
-          initial={{ opacity: 0, y: 50, rotateX: 20 }}
-          animate={{ opacity: 1, y: 0, rotateX: 0 }}
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3, duration: 1, type: "spring", stiffness: 50 }}
         >
-          I'm Kaushal Raj
+          <span className="text-white">I'm </span>
+          <SweepText mood={mood}>Kaushal Raj</SweepText>
         </motion.h1>
 
-        <style>{`
-          .light-sweep-heading {
-            position: relative;
-            background: linear-gradient(
-              120deg,
-              #ffffff 0%,
-              #ffffff 30%,
-              var(--highlight) 50%,
-              #ffffff 70%,
-              #ffffff 100%
-            );
-            background-size: 200% auto;
-            background-clip: text;
-            -webkit-background-clip: text;
-            animation: lightSweep 4s ease-in-out;
-          }
-
-          .light-sweep-heading::after {
-            content: "I'm Kaushal Raj";
-            position: absolute;
-            left: 0;
-            top: 0;
-            background: linear-gradient(
-              120deg,
-              transparent 0%,
-              transparent 30%,
-              var(--highlight) 50%,
-              transparent 70%,
-              transparent 100%
-            );
-            background-size: 200% auto;
-            background-clip: text;
-            -webkit-background-clip: text;
-            filter: blur(12px);
-            opacity: 0.5;
-            z-index: -1;
-            animation: lightSweep 4s ease-in-out;
-          }
-
-          @keyframes lightSweep {
-            0% {
-              background-position: -100% center;
-            }
-            40% {
-              background-position: 100% center;
-            }
-            100% {
-              background-position: 100% center;
-            }
-          }
-        `}</style>
-
-        {/* Role text - Premium animated showcase */}
+        {/* Minimal cycling role tagline */}
         <motion.div
-          className="mb-12"
+          className="mb-14 sm:mb-16 flex items-center justify-center gap-3 sm:gap-4"
           style={{ y: roleY }}
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.5, duration: 0.8, type: "spring", stiffness: 100 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
         >
-          {/* Glowing container */}
-          <div className="relative">
-            {/* Outer glow effect */}
-            <motion.div
-              className="absolute -inset-4 rounded-2xl blur-xl"
-              style={{
-                background: `radial-gradient(ellipse at center, ${mood.colors.primary}30, transparent 70%)`,
-              }}
-              animate={{
-                opacity: [0.3, 0.6, 0.3],
-                scale: [1, 1.05, 1],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
-
-            {/* Main container */}
-            <div
-              className="relative px-8 py-4 rounded-2xl overflow-hidden"
-              style={{
-                background: `linear-gradient(135deg, ${mood.colors.surface}95, ${mood.colors.surface}80)`,
-                backdropFilter: 'blur(20px)',
-                border: `1px solid ${mood.colors.primary}30`,
-              }}
-            >
-              {/* Animated background gradient */}
-              <div
-                className="absolute inset-0 opacity-50"
-                style={{
-                  background: `linear-gradient(90deg, transparent, ${mood.colors.primary}20, transparent)`,
-                  animation: 'shimmer 3s ease-in-out infinite',
-                }}
-              />
-
-              {/* Content */}
-              <div className="relative flex items-center justify-center gap-4">
-                {/* Left icon */}
-                <motion.div
-                  className="w-10 h-10 rounded-full flex items-center justify-center"
-                  style={{
-                    background: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
-                  }}
-                  animate={{ rotate: [0, 360] }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                >
-                  <div
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: mood.colors.background }}
-                  />
-                </motion.div>
-
-                {/* Animated role text */}
-                <div className="h-12 overflow-hidden flex items-center">
-                  <motion.span
-                    key={index}
-                    className="text-2xl md:text-3xl lg:text-4xl font-bold whitespace-nowrap"
-                    initial={{ y: 80, opacity: 0, rotateX: -90 }}
-                    animate={{ y: 0, opacity: 1, rotateX: 0 }}
-                    exit={{ y: -80, opacity: 0, rotateX: 90 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 150,
-                      damping: 20,
-                      mass: 1,
-                    }}
-                  >
-                    <span
-                      className="text-transparent bg-clip-text"
-                      style={{
-                        backgroundImage: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary}, ${mood.colors.primary})`,
-                        backgroundSize: '200% auto',
-                        animation: 'gradientFlow 3s ease infinite',
-                      }}
-                    >
-                      {TEXTS[index % TEXTS.length]}
-                    </span>
-                  </motion.span>
-                </div>
-
-                {/* Right icon */}
-                <motion.div
-                  className="w-10 h-10 rounded-full flex items-center justify-center"
-                  style={{
-                    background: `linear-gradient(135deg, ${mood.colors.secondary}, ${mood.colors.primary})`,
-                  }}
-                  animate={{ rotate: [360, 0] }}
-                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                >
-                  <div
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: mood.colors.background }}
-                  />
-                </motion.div>
-              </div>
-
-              {/* Decorative lines */}
-              <div
-                className="absolute bottom-0 left-0 right-0 h-px"
-                style={{
-                  background: `linear-gradient(90deg, transparent, ${mood.colors.primary}, ${mood.colors.secondary}, transparent)`,
-                }}
-              />
-              <div
-                className="absolute top-0 left-0 right-0 h-px"
-                style={{
-                  background: `linear-gradient(90deg, transparent, ${mood.colors.secondary}, ${mood.colors.primary}, transparent)`,
-                }}
-              />
-            </div>
+          <span
+            className="h-px w-8 sm:w-12"
+            style={{
+              background: `linear-gradient(90deg, transparent, ${mood.colors.primary}80)`,
+            }}
+          />
+          <div className="h-7 sm:h-8 overflow-hidden relative min-w-[180px] sm:min-w-[260px] text-center">
+            <AnimatePresence mode="wait">
+              <motion.span
+                key={index}
+                className="absolute inset-0 flex items-center justify-center text-sm sm:text-base md:text-lg font-medium tracking-wide whitespace-nowrap"
+                style={{ color: mood.colors.primary }}
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: -20, opacity: 0 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {HERO_ROLES[index % HERO_ROLES.length]}
+              </motion.span>
+            </AnimatePresence>
           </div>
-
-          {/* Gradient animations */}
-          <style>{`
-            @keyframes shimmer {
-              0%, 100% { transform: translateX(-100%); }
-              50% { transform: translateX(100%); }
-            }
-            @keyframes gradientFlow {
-              0% { background-position: 0% center; }
-              100% { background-position: 200% center; }
-            }
-          `}</style>
+          <span
+            className="h-px w-8 sm:w-12"
+            style={{
+              background: `linear-gradient(90deg, ${mood.colors.primary}80, transparent)`,
+            }}
+          />
         </motion.div>
 
-        {/* Stats row - Parallax in opposite direction */}
+        {/* Stats */}
         <motion.div
-          className="flex flex-wrap justify-center gap-8 md:gap-16 mt-12"
+          className="flex flex-wrap justify-center gap-10 sm:gap-16 md:gap-20"
           style={{ y: statsY }}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.7, duration: 0.8 }}
         >
-          {stats.map((stat) => (
-            <div key={stat.label} className="text-center">
+          {stats.map((stat, i) => (
+            <motion.div
+              key={stat.label}
+              className="text-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 + i * 0.1 }}
+            >
               <div
-                className="text-3xl md:text-4xl font-bold text-transparent bg-clip-text"
-                style={{ backgroundImage: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})` }}
+                className="text-3xl sm:text-4xl md:text-5xl font-bold"
+                style={{
+                  backgroundImage: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
               >
                 {stat.value}
               </div>
-              <div className="text-sm mt-1" style={{ color: mood.colors.textMuted }}>
+              <div
+                className="text-[10px] sm:text-xs mt-1 uppercase tracking-[0.3em]"
+                style={{ color: mood.colors.textMuted }}
+              >
                 {stat.label}
               </div>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
 
-        {/* Scroll indicator */}
         <motion.div
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
+          className="absolute bottom-6 sm:bottom-10 left-1/2 -translate-x-1/2"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
@@ -494,7 +631,7 @@ const HeroSection = ({ mood, scrollYProgress, index, stats, heroOpacity, heroY }
           <motion.div
             className="w-6 h-10 rounded-full border flex justify-center pt-2"
             style={{ borderColor: `${mood.colors.primary}50` }}
-            animate={{ y: [0, 8, 0] }}
+            animate={{ y: [0, 6, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           >
             <motion.div
@@ -510,7 +647,7 @@ const HeroSection = ({ mood, scrollYProgress, index, stats, heroOpacity, heroY }
   );
 };
 
-// ============ ABOUT SECTION ============
+// =================== ABOUT ===================
 const AboutSection = ({ mood }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
@@ -518,107 +655,97 @@ const AboutSection = ({ mood }) => {
   return (
     <motion.section
       ref={ref}
-      className="relative py-32 px-4"
+      className="relative py-24 sm:py-32 px-4 sm:px-6"
       style={{ backgroundColor: mood.colors.background }}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
     >
       <OrganicBlobBackground variant="default" />
 
-      <div className="relative max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
-          {/* Visual side */}
+      <div className="relative max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-[auto_1fr] gap-10 md:gap-14 items-center">
           <motion.div
-            className="relative flex justify-center"
-            initial={{ opacity: 0, x: -50 }}
+            className="flex justify-center"
+            initial={{ opacity: 0, x: -40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: 0.2, duration: 0.8 }}
+            transition={{ duration: 0.8 }}
           >
-            {/* Abstract avatar representation */}
-            <div
-              className="relative w-64 h-64 md:w-80 md:h-80 rounded-full"
-              style={{
-                background: `linear-gradient(135deg, ${mood.colors.primary}30, ${mood.colors.secondary}30)`,
-                border: `2px solid ${mood.colors.primary}40`,
-              }}
-            >
-              {/* Inner gradient circle */}
-              <div
-                className="absolute inset-4 rounded-full"
-                style={{
-                  background: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
-                  opacity: 0.6,
-                }}
-              />
-
-              {/* Code bracket decoration */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span
-                  className="text-6xl font-bold"
-                  style={{ color: mood.colors.primary, opacity: 0.8 }}
-                >
-                  {"<"}
-                </span>
-              </div>
-
-              {/* Orbiting elements */}
+            <MagneticTilt strength={20}>
               <motion.div
-                className="absolute w-4 h-4 rounded-full"
-                animate={{ rotate: [0, 360] }}
-                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-3xl flex items-center justify-center"
                 style={{
-                  top: -10,
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  backgroundColor: mood.colors.primary,
+                  background: `linear-gradient(135deg, ${mood.colors.primary}20, ${mood.colors.secondary}10)`,
+                  border: `1px solid ${mood.colors.primary}25`,
                 }}
-              />
-            </div>
+              >
+                <motion.div
+                  className="absolute inset-0 rounded-3xl border-2 border-dashed"
+                  style={{ borderColor: `${mood.colors.primary}30` }}
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                />
+                <motion.div
+                  className="absolute inset-3 rounded-2xl border border-dashed"
+                  style={{ borderColor: `${mood.colors.secondary}25` }}
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+                />
+                <motion.div
+                  className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl flex items-center justify-center"
+                  style={{
+                    background: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
+                    boxShadow: `0 10px 40px ${mood.colors.primary}50`,
+                  }}
+                  animate={{ y: [0, -6, 0] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <FaUserAstronaut className="text-white text-3xl sm:text-4xl" />
+                </motion.div>
+              </motion.div>
+            </MagneticTilt>
           </motion.div>
 
-          {/* Content side */}
           <motion.div
-            initial={{ opacity: 0, x: 50 }}
+            initial={{ opacity: 0, x: 40 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: 0.4, duration: 0.8 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
           >
-            <p className="text-sm uppercase tracking-[0.2em] mb-4" style={{ color: mood.colors.primary }}>
+            <p
+              className="text-xs uppercase tracking-[0.4em] mb-3"
+              style={{ color: mood.colors.primary }}
+            >
               About Me
             </p>
-
             <h2
-              className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold mb-5 text-white"
               style={{ letterSpacing: "-0.02em" }}
             >
-              Building digital
-              <br />
-              <span style={{ color: mood.colors.primary }}>experiences</span>
+              Building{" "}
+              <span
+                style={{
+                  color: mood.colors.primary,
+                }}
+              >
+                scalable
+              </span>
+              <br className="hidden sm:block" /> web experiences
             </h2>
-
-            <p className="text-base md:text-lg leading-relaxed mb-8" style={{ color: mood.colors.textMuted }}>
-              I'm a passionate MERN Stack Developer specializing in creating modern,
-              responsive web applications. With expertise in React, Node.js, and MongoDB,
-              I transform complex problems into elegant solutions.
+            <p
+              className="text-sm sm:text-base md:text-lg leading-relaxed mb-6"
+              style={{ color: mood.colors.textMuted }}
+            >
+              React and Java developer focused on clean, responsive UIs and
+              well-structured APIs. I work across the stack — from Spring Boot
+              services to Chakra UI components — and care about how the pieces
+              fit together.
             </p>
 
-            {/* Tags */}
-            <div className="flex flex-wrap gap-3">
-              {["React", "Node.js", "MongoDB", "TypeScript", "Photography"].map((tag) => (
-                <span
-                  key={tag}
-                  className="px-4 py-2 rounded-full text-sm font-medium"
-                  style={{
-                    backgroundColor: `${mood.colors.primary}15`,
-                    color: mood.colors.primary,
-                    border: `1px solid ${mood.colors.primary}30`,
-                  }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            <Link
+              to="/about"
+              className="inline-flex items-center gap-2 text-sm font-semibold transition-all group"
+              style={{ color: mood.colors.primary }}
+            >
+              Read my full story
+              <FaArrowRight className="transition-transform group-hover:translate-x-1" />
+            </Link>
           </motion.div>
         </div>
       </div>
@@ -626,22 +753,50 @@ const AboutSection = ({ mood }) => {
   );
 };
 
-// ============ TECH STACK SECTION ============
-const TechStackSection = ({ mood, skills }) => {
+// =================== TECH STACK (marquee) ===================
+const TechChip = ({ tech, mood }) => {
+  const Icon = tech.Icon;
+  return (
+    <div
+      className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium whitespace-nowrap select-none transition-all hover:-translate-y-0.5"
+      style={{
+        background: "rgba(255,255,255,0.04)",
+        border: "1px solid rgba(255,255,255,0.1)",
+        color: "rgba(255,255,255,0.9)",
+        backdropFilter: "blur(8px)",
+      }}
+    >
+      <Icon
+        className="text-base flex-shrink-0"
+        style={{ color: mood.colors.primary }}
+      />
+      <span>{tech.name}</span>
+    </div>
+  );
+};
+
+const TechStackSection = ({ mood }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const speeds = ["", "fast", "slow", ""];
+  const dirs = ["", "reverse", "", "reverse"];
 
   return (
     <motion.section
       ref={ref}
-      className="relative py-32 px-4 overflow-hidden"
+      className="relative py-24 sm:py-32 overflow-hidden"
       style={{ backgroundColor: mood.colors.background }}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 1 }}
     >
-      {/* Subtle background glow */}
+      {/* Watermark behind */}
+      <div
+        className="watermark"
+        style={{
+          fontSize: "clamp(8rem, 22vw, 18rem)",
+        }}
+      >
+        TECH
+      </div>
+
       <motion.div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -651,125 +806,25 @@ const TechStackSection = ({ mood, skills }) => {
         transition={{ duration: 5, repeat: Infinity }}
       />
 
-      <div className="relative max-w-5xl mx-auto">
-        {/* Header */}
+      <div className="relative">
+        <div className="px-4 sm:px-6 max-w-5xl mx-auto">
+          <SectionHeading eyebrow="Toolbox" title="Tech Stack" mood={mood} />
+        </div>
+
         <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 40 }}
+          className="space-y-4 sm:space-y-5"
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, type: "spring", stiffness: 50 }}
+          transition={{ duration: 0.7 }}
         >
-          <p
-            className="text-sm uppercase tracking-[0.4em] mb-4"
-            style={{ color: mood.colors.primary }}
-          >
-            Expertise
-          </p>
-          <h2
-            className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-4"
-            style={{
-              letterSpacing: "-0.03em",
-              fontFamily: "'Irish Grover', cursive",
-            }}
-          >
-            Tech{" "}
-            <span
-              className="text-transparent bg-clip-text"
-              style={{
-                backgroundImage: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
-              }}
-            >
-              Stack
-            </span>
-          </h2>
-
-          {/* Animated line */}
-          <motion.div
-            className="w-24 h-1 mx-auto rounded-full"
-            style={{
-              background: `linear-gradient(90deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
-            }}
-            animate={{ scaleX: [0.5, 1, 0.5] }}
-            transition={{ duration: 3, repeat: Infinity }}
-          />
-        </motion.div>
-
-        {/* Skills Grid - Premium Cards */}
-        <motion.div
-          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.2, duration: 0.8 }}
-        >
-          {skills.map((skill, i) => (
-            <motion.div
-              key={skill.name}
-              className="relative group"
-              initial={{ opacity: 0, y: 30, scale: 0.8 }}
-              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-              transition={{
-                delay: 0.1 + i * 0.04,
-                type: "spring",
-                stiffness: 150,
-                damping: 15,
-              }}
-              whileHover={{ y: -8, scale: 1.05 }}
-            >
-              {/* Glow behind card */}
-              <motion.div
-                className="absolute -inset-4 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                style={{
-                  background: `radial-gradient(ellipse at center, ${mood.colors.primary}30, transparent 70%)`,
-                }}
-              />
-
-              {/* Card */}
-              <div
-                className="relative p-6 rounded-2xl flex flex-col items-center justify-center gap-3"
-                style={{
-                  background: `${mood.colors.surface}90`,
-                  backdropFilter: 'blur(20px)',
-                  border: `1px solid ${mood.colors.surfaceLight}`,
-                }}
-              >
-                {/* Icon */}
-                <div className="relative w-14 h-14 flex items-center justify-center">
-                  <motion.div
-                    className="absolute inset-0 rounded-xl opacity-20"
-                    style={{
-                      background: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
-                    }}
-                    animate={{ rotate: [0, 360] }}
-                    transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-                  />
-                  <img
-                    alt={skill.name}
-                    src={skill.img}
-                    className="w-10 h-10 object-contain relative z-10"
-                    style={{ filter: "brightness(0.9) saturate(1.1)" }}
-                  />
-                </div>
-
-                {/* Name */}
-                <span
-                  className="text-xs font-semibold text-center"
-                  style={{ color: mood.colors.textMuted }}
-                >
-                  {skill.name}
-                </span>
-
-                {/* Bottom gradient line */}
-                <motion.div
-                  className="absolute bottom-0 left-0 right-0 h-1 rounded-b-2xl"
-                  style={{
-                    background: `linear-gradient(90deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
-                  }}
-                  initial={{ scaleX: 0 }}
-                  whileHover={{ scaleX: 1 }}
-                  transition={{ duration: 0.3 }}
-                />
+          {TECH_ROWS.map((row, ri) => (
+            <div key={ri} className="marquee-viewport">
+              <div className={`marquee-track ${speeds[ri]} ${dirs[ri]}`}>
+                {[...row, ...row].map((t, i) => (
+                  <TechChip key={`${t.name}-${i}`} tech={t} mood={mood} />
+                ))}
               </div>
-            </motion.div>
+            </div>
           ))}
         </motion.div>
       </div>
@@ -777,982 +832,617 @@ const TechStackSection = ({ mood, skills }) => {
   );
 };
 
-// ============ TIMELINE SECTION ============
-const TimelineSection = ({ mood, items }) => {
+// =================== EXPERIENCE (typography timeline, no boxes) ===================
+const ExperienceSection = ({ mood, items }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <motion.section
       ref={ref}
-      className="relative py-32 px-4"
+      className="relative py-24 sm:py-32 px-4 sm:px-6 overflow-hidden"
       style={{ backgroundColor: mood.colors.background }}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
     >
+      <div
+        className="watermark"
+        style={{ fontSize: "clamp(6rem, 18vw, 14rem)" }}
+      >
+        Journey
+      </div>
+
       <OrganicBlobBackground variant="experience" />
 
-      <div className="relative max-w-4xl mx-auto">
-        {/* Header */}
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-        >
-          <p className="text-sm uppercase tracking-[0.2em] mb-4" style={{ color: mood.colors.primary }}>
-            Journey
-          </p>
-          <h2 className="text-4xl md:text-5xl font-bold text-white" style={{ letterSpacing: "-0.02em" }}>
-            Experience
-          </h2>
-        </motion.div>
+      <div className="relative max-w-3xl mx-auto">
+        <SectionHeading eyebrow="Journey" title="Experience" mood={mood} />
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Line */}
+        <div className="relative pl-8 sm:pl-12">
+          {/* Vertical rail */}
           <div
-            className="absolute left-1/2 top-0 bottom-0 w-px -translate-x-1/2"
+            className="absolute left-2 sm:left-4 top-2 bottom-0 w-px"
             style={{
-              background: `linear-gradient(to bottom, transparent, ${mood.colors.primary}, ${mood.colors.secondary}, transparent)`,
+              background: `linear-gradient(to bottom, ${mood.colors.primary}, ${mood.colors.secondary}, transparent)`,
             }}
           />
 
-          {items.map((item, i) => (
-            <motion.div
-              key={item.year}
-              className="relative flex items-center mb-12 last:mb-0"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.2 + i * 0.2, duration: 0.8 }}
-            >
-              {/* Content */}
-              <div className={`w-5/12 ${i % 2 === 0 ? "pr-8 text-right" : "ml-auto pl-8 text-left"}`}>
-                <div
-                  className="p-6 rounded-2xl backdrop-blur-md border"
+          <div className="space-y-12 sm:space-y-16">
+            {items.map((item, i) => (
+              <motion.div
+                key={item.company}
+                className="relative"
+                initial={{ opacity: 0, x: -20 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ delay: 0.15 + i * 0.15, duration: 0.7 }}
+              >
+                {/* Dot on rail */}
+                <motion.span
+                  className="absolute -left-[26px] sm:-left-[34px] top-2 w-3 h-3 rounded-full z-10"
                   style={{
-                    backgroundColor: `${mood.colors.surface}80`,
-                    borderColor: `${mood.colors.primary}20`,
+                    background: item.current
+                      ? mood.colors.primary
+                      : `${mood.colors.primary}70`,
+                    boxShadow: `0 0 0 4px ${mood.colors.background}, 0 0 18px ${mood.colors.primary}80`,
                   }}
-                >
-                  <span className="text-2xl font-bold" style={{ color: mood.colors.primary }}>
-                    {item.year}
+                  animate={item.current ? { scale: [1, 1.35, 1] } : {}}
+                  transition={item.current ? { duration: 2, repeat: Infinity } : {}}
+                />
+
+                {/* Top row: period + current */}
+                <div className="flex items-center gap-3 mb-2 flex-wrap">
+                  <span
+                    className="text-[11px] sm:text-xs uppercase tracking-[0.3em] font-semibold"
+                    style={{ color: mood.colors.primary }}
+                  >
+                    {item.period}
                   </span>
-                  <h3 className="text-xl font-semibold text-white mt-2">{item.title}</h3>
-                  <p className="text-sm mt-1" style={{ color: mood.colors.textMuted }}>
-                    {item.desc}
-                  </p>
+                  {item.current && (
+                    <span
+                      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-widest"
+                      style={{
+                        background: "rgba(34,197,94,0.14)",
+                        border: "1px solid rgba(34,197,94,0.4)",
+                        color: "#22c55e",
+                      }}
+                    >
+                      <motion.span
+                        className="w-1.5 h-1.5 rounded-full bg-green-500"
+                        animate={{ opacity: [1, 0.3, 1] }}
+                        transition={{ duration: 1.5, repeat: Infinity }}
+                      />
+                      Current
+                    </span>
+                  )}
                 </div>
-              </div>
 
-              {/* Dot */}
-              <div
-                className="absolute left-1/2 -translate-x-1/2 w-4 h-4 rounded-full border-2 z-10"
-                style={{
-                  backgroundColor: mood.colors.primary,
-                  borderColor: mood.colors.background,
-                  boxShadow: `0 0 20px ${mood.colors.primary}60`,
-                }}
-              />
+                {/* Company - big */}
+                <h3
+                  className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-1"
+                  style={{ letterSpacing: "-0.02em" }}
+                >
+                  {item.company}
+                </h3>
+                <p
+                  className="text-sm sm:text-base font-medium mb-5"
+                  style={{ color: "rgba(255,255,255,0.55)" }}
+                >
+                  {item.role}
+                </p>
 
-              {/* Spacer */}
-              <div className="w-5/12" />
-            </motion.div>
-          ))}
+                {/* Bullet points */}
+                <ul className="space-y-2.5 mb-5">
+                  {item.points.map((p, pi) => (
+                    <motion.li
+                      key={p}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={isInView ? { opacity: 1, x: 0 } : {}}
+                      transition={{
+                        delay: 0.3 + i * 0.15 + pi * 0.05,
+                        duration: 0.4,
+                      }}
+                      className="flex gap-3 text-sm sm:text-base leading-relaxed"
+                      style={{ color: "rgba(255,255,255,0.7)" }}
+                    >
+                      <span
+                        className="mt-2 sm:mt-2.5 w-1 h-1 rounded-full flex-shrink-0"
+                        style={{ background: mood.colors.primary }}
+                      />
+                      <span>{p}</span>
+                    </motion.li>
+                  ))}
+                </ul>
+
+                {/* Stack */}
+                <div className="flex flex-wrap gap-1.5">
+                  {item.stack.map((s) => (
+                    <span
+                      key={s}
+                      className="px-2.5 py-1 rounded-md text-[10px] sm:text-[11px] font-semibold uppercase tracking-wider"
+                      style={{
+                        background: "rgba(255,255,255,0.04)",
+                        color: "rgba(255,255,255,0.7)",
+                        border: "1px solid rgba(255,255,255,0.08)",
+                      }}
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </motion.section>
   );
 };
 
-// ============ QUOTE SECTION ============
+// =================== QUOTE (full-bleed, no card) ===================
 const QuoteSection = ({ mood, quote, author }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const [displayedQuote, setDisplayedQuote] = useState("");
   const [isTyping, setIsTyping] = useState(true);
-  const [charIndex, setCharIndex] = useState(0);
 
-  // Typing animation effect - restarts when section comes into view
   useEffect(() => {
     if (!quote || !isInView) return;
-
     setDisplayedQuote("");
     setIsTyping(true);
-    setCharIndex(0);
-
-    let currentIndex = 0;
+    let i = 0;
     const chars = quote.split("");
-
-    const typeInterval = setInterval(() => {
-      if (currentIndex < chars.length) {
-        setDisplayedQuote(chars.slice(0, currentIndex + 1).join(""));
-        currentIndex++;
+    const id = setInterval(() => {
+      if (i < chars.length) {
+        setDisplayedQuote(chars.slice(0, i + 1).join(""));
+        i++;
       } else {
-        clearInterval(typeInterval);
+        clearInterval(id);
         setIsTyping(false);
       }
     }, 40);
-
-    return () => clearInterval(typeInterval);
+    return () => clearInterval(id);
   }, [quote, isInView]);
 
   return (
     <motion.section
       ref={ref}
-      className="relative py-32 px-4 overflow-hidden"
+      className="relative py-32 sm:py-40 px-4 sm:px-6 overflow-hidden flex items-center justify-center"
       style={{ backgroundColor: mood.colors.background }}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 1 }}
     >
-      {/* Animated background particles */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(15)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 rounded-full"
-            style={{
-              backgroundColor: i % 2 === 0 ? mood.colors.primary : mood.colors.secondary,
-              left: `${15 + i * 6}%`,
-              top: `${25 + (i % 3) * 20}%`,
-            }}
-            animate={{
-              y: [0, -40, 0],
-              opacity: [0.1, 0.4, 0.1],
-              scale: [1, 1.8, 1],
-            }}
-            transition={{
-              duration: 4 + i * 0.4,
-              repeat: Infinity,
-              delay: i * 0.3,
-            }}
-          />
-        ))}
-      </div>
-
-      {/* Floating gradient orbs */}
-      <motion.div
-        className="absolute top-10 left-10 w-72 h-72 rounded-full blur-3xl"
+      {/* Massive watermark quote mark */}
+      <motion.span
+        className="absolute pointer-events-none font-serif select-none leading-none"
         style={{
-          background: `radial-gradient(circle, ${mood.colors.primary}25, transparent)`,
+          top: "10%",
+          left: "5%",
+          fontSize: "clamp(20rem, 50vw, 40rem)",
+          color: "transparent",
+          WebkitTextStroke: `1.5px ${mood.colors.primary}25`,
         }}
-        animate={{
-          x: [0, 60, 0],
-          y: [0, -40, 0],
-          scale: [1, 1.2, 1],
+        animate={{ y: [0, -10, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      >
+        “
+      </motion.span>
+      <motion.span
+        className="absolute pointer-events-none font-serif select-none leading-none"
+        style={{
+          bottom: "5%",
+          right: "5%",
+          fontSize: "clamp(20rem, 50vw, 40rem)",
+          color: "transparent",
+          WebkitTextStroke: `1.5px ${mood.colors.secondary}25`,
         }}
+        animate={{ y: [0, 10, 0] }}
+        transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+      >
+        ”
+      </motion.span>
+
+      {/* Ambient orbs */}
+      <motion.div
+        className="absolute top-10 left-10 w-72 h-72 rounded-full blur-3xl pointer-events-none"
+        style={{
+          background: `radial-gradient(circle, ${mood.colors.primary}15, transparent)`,
+        }}
+        animate={{ x: [0, 40, 0], y: [0, -30, 0] }}
         transition={{ duration: 12, repeat: Infinity }}
       />
       <motion.div
-        className="absolute bottom-10 right-10 w-96 h-96 rounded-full blur-3xl"
+        className="absolute bottom-10 right-10 w-80 h-80 rounded-full blur-3xl pointer-events-none"
+        style={{
+          background: `radial-gradient(circle, ${mood.colors.secondary}15, transparent)`,
+        }}
+        animate={{ x: [0, -40, 0], y: [0, 30, 0] }}
+        transition={{ duration: 14, repeat: Infinity }}
+      />
+
+      <motion.div
+        className="relative max-w-4xl mx-auto text-center"
+        initial={{ opacity: 0, y: 30 }}
+        animate={isInView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.9 }}
+      >
+        <p
+          className="text-[10px] sm:text-xs uppercase tracking-[0.5em] mb-6"
+          style={{ color: mood.colors.primary }}
+        >
+          Daily Thought
+        </p>
+
+        <blockquote
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light text-white leading-snug italic"
+          style={{ letterSpacing: "-0.02em" }}
+        >
+          {displayedQuote || "Loading inspiration..."}
+          {isTyping && (
+            <motion.span
+              className="inline-block w-0.5 h-7 sm:h-9 ml-1 align-middle"
+              style={{ backgroundColor: mood.colors.primary }}
+              animate={{ opacity: [1, 0, 1] }}
+              transition={{ duration: 0.6, repeat: Infinity }}
+            />
+          )}
+        </blockquote>
+
+        <motion.div
+          className="flex items-center justify-center gap-3 mt-10"
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ delay: 0.5, duration: 0.6 }}
+        >
+          <span
+            className="h-px w-8 sm:w-12"
+            style={{
+              background: `linear-gradient(90deg, transparent, ${mood.colors.primary})`,
+            }}
+          />
+          <cite
+            className="not-italic text-sm sm:text-base font-medium"
+            style={{ color: mood.colors.primary }}
+          >
+            {author || "Anonymous"}
+          </cite>
+          <span
+            className="h-px w-8 sm:w-12"
+            style={{
+              background: `linear-gradient(90deg, ${mood.colors.primary}, transparent)`,
+            }}
+          />
+        </motion.div>
+      </motion.div>
+    </motion.section>
+  );
+};
+
+// =================== VISION (floating circular badges) ===================
+const VisionSection = ({ mood }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  return (
+    <motion.section
+      ref={ref}
+      className="relative py-24 sm:py-32 px-4 sm:px-6 overflow-hidden"
+      style={{ backgroundColor: mood.colors.background }}
+    >
+      <div
+        className="watermark"
+        style={{ fontSize: "clamp(8rem, 22vw, 18rem)" }}
+      >
+        Vision
+      </div>
+
+      <motion.div
+        className="absolute top-20 left-20 w-64 h-64 rounded-full blur-3xl pointer-events-none"
+        style={{
+          background: `radial-gradient(circle, ${mood.colors.primary}20, transparent)`,
+        }}
+        animate={{ x: [0, 40, 0], y: [0, -20, 0] }}
+        transition={{ duration: 8, repeat: Infinity }}
+      />
+      <motion.div
+        className="absolute bottom-20 right-20 w-72 h-72 rounded-full blur-3xl pointer-events-none"
         style={{
           background: `radial-gradient(circle, ${mood.colors.secondary}20, transparent)`,
         }}
-        animate={{
-          x: [0, -50, 0],
-          y: [0, 50, 0],
-          scale: [1, 1.15, 1],
-        }}
-        transition={{ duration: 15, repeat: Infinity }}
+        animate={{ x: [0, -30, 0], y: [0, 30, 0] }}
+        transition={{ duration: 10, repeat: Infinity }}
       />
-
-      {/* Orbital rings */}
       <motion.div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full border border-dashed pointer-events-none"
-        style={{ borderColor: `${mood.colors.primary}15` }}
-        animate={{ rotate: [0, 360] }}
-        transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
-      />
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full border border-dashed pointer-events-none"
-        style={{ borderColor: `${mood.colors.secondary}10` }}
-        animate={{ rotate: [360, 0] }}
-        transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
+        style={{ borderColor: `${mood.colors.primary}12` }}
+        animate={{ rotate: 360 }}
+        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
       />
 
-      <div className="relative max-w-4xl mx-auto">
-        {/* Quote card - Premium design */}
-        <motion.div
-          className="relative"
-          initial={{ opacity: 0, scale: 0.85, y: 50 }}
-          animate={isInView ? { opacity: 1, scale: 1, y: 0 } : {}}
-          transition={{ duration: 1, type: "spring", stiffness: 60, damping: 15 }}
+      <div className="relative max-w-5xl mx-auto">
+        <SectionHeading eyebrow="Future" title="Vision" mood={mood} />
+
+        {/* Vision statement */}
+        <motion.p
+          className="text-xl sm:text-2xl md:text-3xl text-white text-center leading-relaxed font-light max-w-3xl mx-auto mb-16 sm:mb-24"
+          style={{ letterSpacing: "-0.01em" }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.15 }}
         >
-          {/* Outer glow */}
-          <motion.div
-            className="absolute -inset-12 rounded-[3rem] blur-3xl"
+          Building digital experiences that{" "}
+          <span
+            className="font-bold"
             style={{
-              background: `radial-gradient(ellipse at center, ${mood.colors.primary}30, ${mood.colors.secondary}20, transparent 70%)`,
-            }}
-            animate={{
-              opacity: [0.4, 0.7, 0.4],
-              scale: [0.95, 1.05, 0.95],
-            }}
-            transition={{ duration: 5, repeat: Infinity }}
-          />
-
-          {/* Main card */}
-          <div
-            className="relative px-12 py-16 md:px-16 md:py-20 rounded-[2rem] overflow-hidden"
-            style={{
-              background: `${mood.colors.surface}85`,
-              backdropFilter: 'blur(40px)',
-              border: `1px solid ${mood.colors.surfaceLight}`,
+              backgroundImage: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
             }}
           >
-            {/* Animated gradient border effect */}
-            <div className="absolute inset-0 rounded-[2rem] p-px" style={{
-              background: `linear-gradient(135deg, ${mood.colors.primary}60, transparent 30%, transparent 70%, ${mood.colors.secondary}60)`,
-              mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-              maskComposite: 'exclude',
-            }} />
+            inspire
+          </span>{" "}
+          and{" "}
+          <span
+            className="font-bold"
+            style={{
+              backgroundImage: `linear-gradient(135deg, ${mood.colors.secondary}, ${mood.colors.primary})`,
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+            }}
+          >
+            connect
+          </span>{" "}
+          people.
+        </motion.p>
 
-            {/* Decorative quote icon */}
-            <motion.div
-              className="absolute top-6 left-6 md:top-8 md:left-8"
-              animate={{ opacity: [0.1, 0.2, 0.1], scale: [1, 1.1, 1] }}
-              transition={{ duration: 4, repeat: Infinity }}
-            >
-              <div
-                className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center"
-                style={{
-                  background: `linear-gradient(135deg, ${mood.colors.primary}30, ${mood.colors.secondary}30)`,
+        {/* Floating badges — staircase on desktop, stacked on mobile */}
+        <div className="relative grid md:grid-cols-3 gap-12 md:gap-8 lg:gap-12">
+          {VISION_STEPS.map((step, i) => {
+            const Icon = step.Icon;
+            const offsetClass =
+              i === 0
+                ? "md:mt-0"
+                : i === 1
+                ? "md:mt-12"
+                : "md:mt-24";
+            return (
+              <motion.div
+                key={step.num}
+                className={`relative flex flex-col items-center text-center ${offsetClass}`}
+                initial={{ opacity: 0, y: 50 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{
+                  delay: 0.3 + i * 0.15,
+                  type: "spring",
+                  stiffness: 70,
                 }}
               >
-                <span
-                  className="text-4xl md:text-5xl"
-                  style={{
-                    filter: `drop-shadow(0 0 10px ${mood.colors.primary}50)`,
-                  }}
+                <MagneticTilt strength={10}>
+                  <motion.div
+                    className="relative w-32 h-32 sm:w-36 sm:h-36 rounded-full flex items-center justify-center mb-6"
+                    style={{
+                      background: `radial-gradient(circle, ${mood.colors.primary}30, ${mood.colors.secondary}15)`,
+                      boxShadow: `0 20px 60px ${mood.colors.primary}25, inset 0 0 0 1px ${mood.colors.primary}40`,
+                    }}
+                    animate={{ y: [0, -8, 0] }}
+                    transition={{
+                      duration: 4,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: i * 0.4,
+                    }}
+                  >
+                    {/* Step number ghost */}
+                    <span
+                      className="absolute -top-3 -left-1 text-5xl sm:text-6xl font-black"
+                      style={{
+                        color: "transparent",
+                        WebkitTextStroke: `1px ${mood.colors.primary}50`,
+                        letterSpacing: "-0.05em",
+                      }}
+                    >
+                      {step.num}
+                    </span>
+                    {/* Center icon */}
+                    <Icon
+                      className="text-4xl sm:text-5xl relative z-10"
+                      style={{ color: mood.colors.primary }}
+                    />
+                    {/* Rotating dashed ring */}
+                    <motion.div
+                      className="absolute -inset-3 rounded-full border border-dashed"
+                      style={{ borderColor: `${mood.colors.primary}30` }}
+                      animate={{ rotate: 360 }}
+                      transition={{
+                        duration: 20 + i * 5,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
+                    />
+                  </motion.div>
+                </MagneticTilt>
+                <h3
+                  className="text-2xl sm:text-3xl font-bold text-white mb-3"
+                  style={{ letterSpacing: "-0.02em" }}
                 >
-                  ❝
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Closing quote */}
-            <motion.div
-              className="absolute bottom-6 right-6 md:bottom-8 md:right-8"
-              animate={{ opacity: [0.1, 0.2, 0.1], scale: [1, 1.1, 1] }}
-              transition={{ duration: 4, repeat: Infinity }}
-            >
-              <div
-                className="w-16 h-16 md:w-20 md:h-20 rounded-2xl flex items-center justify-center"
-                style={{
-                  background: `linear-gradient(135deg, ${mood.colors.secondary}30, ${mood.colors.primary}30)`,
-                }}
-              >
-                <span
-                  className="text-4xl md:text-5xl"
-                  style={{
-                    filter: `drop-shadow(0 0 10px ${mood.colors.secondary}50)`,
-                  }}
+                  {step.title}
+                </h3>
+                <p
+                  className="text-sm sm:text-base leading-relaxed max-w-xs"
+                  style={{ color: mood.colors.textMuted }}
                 >
-                  ❞
-                </span>
-              </div>
-            </motion.div>
-
-            {/* Quote text */}
-            <motion.blockquote
-              className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-light text-white leading-snug text-center mb-10"
-              style={{
-                letterSpacing: "-0.02em",
-              }}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.3, duration: 1 }}
-            >
-              <span
-                className="text-transparent bg-clip-text"
-                style={{
-                  backgroundImage: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
-                }}
-              >
-                "
-              </span>
-              <span className="italic">
-                {displayedQuote || "Loading inspiration..."}
-              </span>
-              {isTyping && (
-                <motion.span
-                  className="inline-block w-0.5 h-8 ml-1"
-                  style={{ backgroundColor: mood.colors.primary }}
-                  animate={{ opacity: [1, 0, 1] }}
-                  transition={{ duration: 0.6, repeat: Infinity }}
-                />
-              )}
-              <span
-                className="text-transparent bg-clip-text"
-                style={{
-                  backgroundImage: `linear-gradient(135deg, ${mood.colors.secondary}, ${mood.colors.primary})`,
-                }}
-              >
-                "
-              </span>
-            </motion.blockquote>
-
-            {/* Animated divider */}
-            <motion.div
-              className="w-24 h-1 mx-auto mb-8 rounded-full"
-              style={{
-                background: `linear-gradient(90deg, ${mood.colors.primary}, ${mood.colors.secondary}, ${mood.colors.primary})`,
-                backgroundSize: '200% 100%',
-              }}
-              animate={{ backgroundPosition: ['0% center', '200% center'] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            />
-
-            {/* Author */}
-            <motion.cite
-              className="block text-center not-italic"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.5, duration: 0.8 }}
-            >
-              <span
-                className="text-lg md:text-xl font-medium"
-                style={{
-                  color: mood.colors.primary,
-                  textShadow: `0 0 20px ${mood.colors.primary}40`,
-                }}
-              >
-                — {author || "Anonymous"}
-              </span>
-            </motion.cite>
-
-            {/* Sparkle decorations */}
-            <motion.div
-              className="absolute top-1/2 left-4 -translate-y-1/2"
-              animate={{ rotate: [0, 360], scale: [0.8, 1.2, 0.8] }}
-              transition={{ duration: 6, repeat: Infinity }}
-            >
-              <span className="text-2xl" style={{ color: mood.colors.primary, opacity: 0.3 }}>
-                ✦
-              </span>
-            </motion.div>
-            <motion.div
-              className="absolute top-1/2 right-4 -translate-y-1/2"
-              animate={{ rotate: [360, 0], scale: [0.8, 1.2, 0.8] }}
-              transition={{ duration: 6, repeat: Infinity }}
-            >
-              <span className="text-2xl" style={{ color: mood.colors.secondary, opacity: 0.3 }}>
-                ✦
-              </span>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Bottom floating elements */}
-        <motion.div
-          className="flex justify-center items-center gap-6 mt-12"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.8, duration: 0.8 }}
-        >
-          {[...Array(5)].map((_, i) => (
-            <motion.div
-              key={i}
-              className="w-2 h-2 rounded-full"
-              style={{
-                background: i === 2 ? mood.colors.primary : `${mood.colors.primary}40`,
-              }}
-              animate={{
-                y: [0, -10, 0],
-                opacity: [0.3, 1, 0.3],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                delay: i * 0.2,
-              }}
-            />
-          ))}
-        </motion.div>
+                  {step.desc}
+                </p>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
     </motion.section>
   );
 };
 
-// ============ VISION SECTION ============
-const VisionSection = ({ mood, visionTextY1, visionTextY2 }) => {
+// =================== GREETING (massive typography time) ===================
+const GreetingSection = ({ mood, time, message, dayOfWeek }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-
-  const steps = [
-    { num: "01", title: "Create", desc: "Build innovative solutions that solve real problems", icon: "💡" },
-    { num: "02", title: "Innovate", desc: "Push boundaries with cutting-edge technologies", icon: "🚀" },
-    { num: "03", title: "Inspire", desc: "Create experiences that leave lasting impressions", icon: "✨" },
-  ];
+  const TimeIcon = useMemo(() => getTimeIcon(time?.hours), [time?.hours]);
+  const partOfDay = useMemo(() => timeGreeting(time?.hours), [time?.hours]);
 
   return (
     <motion.section
       ref={ref}
-      className="relative py-32 px-4 overflow-hidden"
+      className="relative py-28 sm:py-36 px-4 sm:px-6 overflow-hidden"
       style={{ backgroundColor: mood.colors.background }}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 1 }}
     >
-      {/* Animated particle field */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 rounded-full"
-            style={{
-              backgroundColor: mood.colors.primary,
-              left: `${10 + i * 5}%`,
-              top: `${20 + (i % 4) * 20}%`,
-            }}
-            animate={{
-              y: [0, -30, 0],
-              opacity: [0.1, 0.5, 0.1],
-              scale: [1, 1.5, 1],
-            }}
-            transition={{
-              duration: 3 + i * 0.3,
-              repeat: Infinity,
-              delay: i * 0.2,
-            }}
-          />
-        ))}
+      {/* Watermark "TIME" */}
+      <div
+        className="watermark"
+        style={{ fontSize: "clamp(10rem, 30vw, 24rem)" }}
+      >
+        Time
       </div>
 
-      {/* Animated gradient orbs */}
+      {/* Ambient orbs */}
       <motion.div
-        className="absolute top-20 left-20 w-64 h-64 rounded-full blur-3xl"
+        className="absolute top-10 left-10 w-72 h-72 rounded-full blur-3xl pointer-events-none"
         style={{
-          background: `radial-gradient(circle, ${mood.colors.primary}30, transparent)`,
+          background: `radial-gradient(circle, ${mood.colors.primary}18, transparent)`,
         }}
-        animate={{
-          x: [0, 50, 0],
-          y: [0, -30, 0],
-          scale: [1, 1.2, 1],
-        }}
-        transition={{ duration: 8, repeat: Infinity }}
+        animate={{ x: [0, 50, 0], y: [0, -30, 0], scale: [1, 1.1, 1] }}
+        transition={{ duration: 12, repeat: Infinity }}
       />
       <motion.div
-        className="absolute bottom-20 right-20 w-80 h-80 rounded-full blur-3xl"
+        className="absolute bottom-10 right-10 w-80 h-80 rounded-full blur-3xl pointer-events-none"
         style={{
-          background: `radial-gradient(circle, ${mood.colors.secondary}30, transparent)`,
+          background: `radial-gradient(circle, ${mood.colors.secondary}18, transparent)`,
         }}
-        animate={{
-          x: [0, -40, 0],
-          y: [0, 40, 0],
-          scale: [1, 1.1, 1],
-        }}
-        transition={{ duration: 10, repeat: Infinity }}
-      />
-
-      {/* Orbital ring decoration */}
-      <motion.div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full border border-dashed pointer-events-none"
-        style={{ borderColor: `${mood.colors.primary}20` }}
-        animate={{ rotate: [0, 360] }}
-        transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+        animate={{ x: [0, -50, 0], y: [0, 30, 0], scale: [1, 1.1, 1] }}
+        transition={{ duration: 14, repeat: Infinity }}
       />
 
       <div className="relative max-w-5xl mx-auto">
-        {/* Header - Premium with light sweep */}
+        {/* Top label row */}
         <motion.div
-          className="text-center mb-20"
-          initial={{ opacity: 0, y: 40 }}
+          className="flex items-center justify-center gap-3 sm:gap-4 mb-5"
+          initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1, type: "spring", stiffness: 50 }}
+          transition={{ duration: 0.6 }}
         >
-          <motion.p
-            className="text-sm uppercase tracking-[0.4em] mb-6"
-            style={{ color: mood.colors.primary }}
-            animate={{ opacity: [0.5, 1, 0.5] }}
-            transition={{ duration: 3, repeat: Infinity }}
-          >
-            Future
-          </motion.p>
-
-          <h2 className="text-6xl md:text-7xl lg:text-8xl font-bold text-white mb-6 vision-heading" style={{ letterSpacing: "-0.03em" }}>
-            Vision
-          </h2>
-
-          {/* Animated underline */}
           <motion.div
-            className="w-32 h-1 mx-auto rounded-full"
-            style={{
-              background: `linear-gradient(90deg, transparent, ${mood.colors.primary}, ${mood.colors.secondary}, transparent)`,
-            }}
-            animate={{ width: [100, 200, 100], backgroundPosition: ['0% center', '200% center'] }}
-            transition={{ duration: 3, repeat: Infinity }}
-          />
+            className="text-2xl sm:text-3xl"
+            style={{ color: mood.colors.primary }}
+            animate={{ rotate: [0, 8, -8, 0] }}
+            transition={{ duration: 4, repeat: Infinity }}
+          >
+            <TimeIcon />
+          </motion.div>
+          <span
+            className="text-xs sm:text-sm uppercase tracking-[0.5em] font-semibold"
+            style={{ color: mood.colors.primary }}
+          >
+            {partOfDay} — Live
+          </span>
         </motion.div>
 
-        {/* Vision statement - Glassmorphism card */}
+        {/* Massive time display */}
         <motion.div
-          className="relative mb-20"
-          initial={{ opacity: 0, y: 40, scale: 0.9 }}
-          animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-          transition={{ delay: 0.2, duration: 1, type: "spring", stiffness: 80 }}
+          className="relative flex items-center justify-center mb-8 sm:mb-10"
+          initial={{ opacity: 0, scale: 0.92 }}
+          animate={isInView ? { opacity: 1, scale: 1 } : {}}
+          transition={{ duration: 0.8, type: "spring", stiffness: 70 }}
         >
-          {/* Glow */}
+          {/* Outer rotating dashed dial */}
           <motion.div
-            className="absolute -inset-6 rounded-3xl blur-2xl"
-            style={{
-              background: `radial-gradient(ellipse at center, ${mood.colors.primary}25, transparent 70%)`,
-            }}
-            animate={{ opacity: [0.3, 0.6, 0.3] }}
-            transition={{ duration: 4, repeat: Infinity }}
+            className="absolute w-[88vw] max-w-[560px] aspect-square rounded-full border border-dashed pointer-events-none"
+            style={{ borderColor: `${mood.colors.primary}18` }}
+            animate={{ rotate: 360 }}
+            transition={{ duration: 80, repeat: Infinity, ease: "linear" }}
+          />
+          <motion.div
+            className="absolute w-[60vw] max-w-[380px] aspect-square rounded-full border border-dashed pointer-events-none"
+            style={{ borderColor: `${mood.colors.secondary}18` }}
+            animate={{ rotate: -360 }}
+            transition={{ duration: 100, repeat: Infinity, ease: "linear" }}
           />
 
-          {/* Card */}
           <div
-            className="relative px-12 py-10 rounded-3xl overflow-hidden"
+            className="relative flex items-baseline justify-center font-black select-none"
             style={{
-              background: `${mood.colors.surface}80`,
-              backdropFilter: 'blur(30px)',
-              border: `1px solid ${mood.colors.surfaceLight}`,
+              fontFamily: "'Irish Grover', cursive",
+              fontSize: "clamp(5rem, 18vw, 14rem)",
+              lineHeight: 0.95,
+              letterSpacing: "-0.05em",
             }}
           >
-            {/* Gradient borders */}
-            <div className="absolute inset-0 rounded-3xl p-px" style={{
-              background: `linear-gradient(135deg, ${mood.colors.primary}50, transparent, ${mood.colors.secondary}50)`,
-              mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-              maskComposite: 'exclude',
-            }} />
-
-            {/* Icon */}
-            <motion.div
-              className="flex justify-center mb-6"
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 5, repeat: Infinity }}
+            <span className="text-white">{time?.hours || "00"}</span>
+            <motion.span
+              className="mx-1 sm:mx-2"
+              style={{ color: mood.colors.primary }}
+              animate={{ opacity: [1, 0.3, 1] }}
+              transition={{ duration: 1, repeat: Infinity }}
             >
-              <div
-                className="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl"
-                style={{
-                  background: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
-                  boxShadow: `0 10px 40px ${mood.colors.primary}40`,
-                }}
-              >
-                🎯
-              </div>
-            </motion.div>
-
-            <p
-              className="text-2xl md:text-3xl lg:text-4xl text-white text-center leading-relaxed font-light"
-              style={{ letterSpacing: "-0.02em" }}
+              :
+            </motion.span>
+            <span className="text-white">{time?.minutes || "00"}</span>
+            <span
+              className="ml-2 sm:ml-3 font-bold"
+              style={{
+                fontSize: "clamp(2.5rem, 7vw, 5rem)",
+                color: mood.colors.primary,
+                textShadow: `0 0 24px ${mood.colors.primary}80, 0 0 40px ${mood.colors.primary}40`,
+              }}
             >
-              Building digital experiences that{" "}
-              <span
-                className="font-bold text-transparent bg-clip-text"
-                style={{
-                  backgroundImage: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
-                }}
-              >
-                inspire
-              </span>{" "}
-              and{" "}
-              <span
-                className="font-bold text-transparent bg-clip-text"
-                style={{
-                  backgroundImage: `linear-gradient(135deg, ${mood.colors.secondary}, ${mood.colors.primary})`,
-                }}
-              >
-                connect
-              </span>{" "}
-              people across the world.
-            </p>
+              <AnimatePresence mode="popLayout">
+                <motion.span
+                  key={time?.seconds}
+                  initial={{ y: 12, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -12, opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="inline-block"
+                >
+                  :{time?.seconds || "00"}
+                </motion.span>
+              </AnimatePresence>
+            </span>
           </div>
         </motion.div>
 
-        {/* Steps - Premium cards with icons */}
-        <div className="grid md:grid-cols-3 gap-8">
-          {steps.map((step, i) => (
-            <motion.div
-              key={step.num}
-              className="relative group"
-              initial={{ opacity: 0, y: 60, scale: 0.8 }}
-              animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-              transition={{ delay: 0.4 + i * 0.15, duration: 0.8, type: "spring", stiffness: 100 }}
-            >
-              {/* Glow effect */}
-              <motion.div
-                className="absolute -inset-4 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{
-                  background: `radial-gradient(ellipse at center, ${mood.colors.primary}30, transparent 70%)`,
-                }}
-              />
-
-              {/* Card */}
-              <div
-                className="relative p-8 rounded-3xl overflow-hidden"
-                style={{
-                  background: `${mood.colors.surface}90`,
-                  backdropFilter: 'blur(20px)',
-                  border: `1px solid ${mood.colors.surfaceLight}`,
-                }}
-              >
-                {/* Animated gradient top border */}
-                <motion.div
-                  className="absolute top-0 left-0 right-0 h-1"
-                  style={{
-                    background: `linear-gradient(90deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
-                  }}
-                  initial={{ scaleX: 0, originX: 0 }}
-                  animate={isInView ? { scaleX: 1 } : {}}
-                  transition={{ delay: 0.6 + i * 0.15, duration: 1, ease: "easeOut" }}
-                />
-
-                {/* Number with glow */}
-                <motion.div
-                  className="relative w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center text-3xl"
-                  style={{
-                    background: `linear-gradient(135deg, ${mood.colors.primary}20, ${mood.colors.secondary}20)`,
-                    border: `1px solid ${mood.colors.primary}30`,
-                  }}
-                  whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <span
-                    className="font-bold text-4xl"
-                    style={{
-                      color: mood.colors.primary,
-                      textShadow: `0 0 20px ${mood.colors.primary}50`,
-                    }}
-                  >
-                    {step.num}
-                  </span>
-                </motion.div>
-
-                {/* Icon */}
-                <motion.div
-                  className="text-5xl mb-4 flex justify-center"
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-                >
-                  {step.icon}
-                </motion.div>
-
-                {/* Title */}
-                <h3
-                  className="text-2xl font-bold text-white text-center mb-3"
-                  style={{ fontFamily: "'Irish Grover', cursive" }}
-                >
-                  {step.title}
-                </h3>
-
-                {/* Description */}
-                <p
-                  className="text-sm text-center leading-relaxed"
-                  style={{ color: mood.colors.textMuted }}
-                >
-                  {step.desc}
-                </p>
-
-                {/* Bottom gradient line */}
-                <motion.div
-                  className="absolute bottom-0 left-0 right-0 h-px"
-                  style={{
-                    background: `linear-gradient(90deg, transparent, ${mood.colors.primary}50, transparent)`,
-                  }}
-                  initial={{ scaleX: 0 }}
-                  animate={isInView ? { scaleX: 1 } : {}}
-                  transition={{ delay: 0.8 + i * 0.15, duration: 1 }}
-                />
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Bottom decorative element */}
-        <motion.div
-          className="flex justify-center mt-16"
-          initial={{ opacity: 0, scale: 0 }}
-          animate={isInView ? { opacity: 1, scale: 1 } : {}}
-          transition={{ delay: 1, duration: 0.8 }}
+        {/* Greeting message */}
+        <motion.p
+          className="text-base sm:text-lg md:text-xl text-center text-white font-light italic mb-8 px-2"
+          initial={{ opacity: 0, y: 10 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.4, duration: 0.6 }}
+          style={{ color: "rgba(255,255,255,0.75)" }}
         >
-          <div className="flex items-center gap-4">
-            <motion.div
-              className="w-20 h-px"
+          {message}
+        </motion.p>
+
+        {/* Day badge — minimal */}
+        <motion.div
+          className="flex justify-center"
+          initial={{ opacity: 0, y: 10 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ delay: 0.5, duration: 0.6 }}
+        >
+          <div className="flex items-center gap-3">
+            <span
+              className="h-px w-6 sm:w-8"
               style={{
                 background: `linear-gradient(90deg, transparent, ${mood.colors.primary})`,
               }}
             />
-            <motion.span
-              className="text-2xl"
+            <span
+              className="text-xs sm:text-sm uppercase tracking-[0.5em] font-bold"
               style={{ color: mood.colors.primary }}
-              animate={{ rotate: [0, 360], scale: [1, 1.2, 1] }}
-              transition={{ duration: 6, repeat: Infinity }}
             >
-              ✦
-            </motion.span>
-            <motion.div
-              className="w-20 h-px"
+              Happy {dayOfWeek}
+            </span>
+            <span
+              className="h-px w-6 sm:w-8"
               style={{
                 background: `linear-gradient(90deg, ${mood.colors.primary}, transparent)`,
               }}
             />
           </div>
-        </motion.div>
-      </div>
-    </motion.section>
-  );
-};
-
-// ============ GREETING SECTION ============
-const GreetingSection = ({ mood, time, message, dayOfWeek }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [prevSeconds, setPrevSeconds] = useState("00");
-  const [digitKey, setDigitKey] = useState(0);
-
-  // Animate digit changes
-  useEffect(() => {
-    if (time && time.seconds !== prevSeconds) {
-      setDigitKey((k) => k + 1);
-      setPrevSeconds(time.seconds);
-    }
-  }, [time?.seconds, prevSeconds]);
-
-  return (
-    <motion.section
-      ref={ref}
-      className="relative py-32 px-4 overflow-hidden"
-      style={{ backgroundColor: mood.colors.background }}
-      initial={{ opacity: 0 }}
-      whileInView={{ opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.8 }}
-    >
-      {/* Ambient glow */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `radial-gradient(ellipse 60% 50% at 50% 50%, ${mood.colors.primary}15, transparent)`,
-        }}
-        animate={{
-          opacity: [0.3, 0.6, 0.3],
-          scale: [1, 1.1, 1],
-        }}
-        transition={{ duration: 5, repeat: Infinity }}
-      />
-
-      <div className="relative max-w-2xl mx-auto text-center">
-        {/* Time card - Premium design */}
-        <motion.div
-          className="relative mb-10"
-          initial={{ opacity: 0, y: 30, scale: 0.9 }}
-          animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-          transition={{ delay: 0.1, duration: 0.8, type: "spring", stiffness: 100 }}
-        >
-          {/* Glow behind */}
-          <motion.div
-            className="absolute -inset-8 rounded-3xl blur-2xl"
-            style={{
-              background: `radial-gradient(ellipse at center, ${mood.colors.primary}30, transparent 70%)`,
-            }}
-            animate={{ opacity: [0.2, 0.5, 0.2] }}
-            transition={{ duration: 4, repeat: Infinity }}
-          />
-
-          {/* Main card */}
-          <div
-            className="relative px-10 py-8 rounded-3xl overflow-hidden"
-            style={{
-              background: `${mood.colors.surface}90`,
-              backdropFilter: 'blur(20px)',
-              border: `1px solid ${mood.colors.surfaceLight}`,
-            }}
-          >
-            {/* Animated top border */}
-            <motion.div
-              className="absolute top-0 left-0 right-0 h-1"
-              style={{
-                background: `linear-gradient(90deg, ${mood.colors.primary}, ${mood.colors.secondary}, ${mood.colors.primary})`,
-              }}
-              animate={{ backgroundPosition: ['0% center', '200% center'] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            />
-
-            {/* Clock icon with rotation */}
-            <motion.div
-              className="flex justify-center mb-4"
-              animate={{ rotate: [0, 360] }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            >
-              <div
-                className="w-20 h-20 rounded-full flex items-center justify-center"
-                style={{
-                  background: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
-                  boxShadow: `0 8px 30px ${mood.colors.primary}40`,
-                }}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="white"
-                  className="w-10 h-10"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-            </motion.div>
-
-            {/* Time */}
-            <motion.div
-              className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-2 flex items-center justify-center gap-1"
-              style={{
-                fontFamily: "'Irish Grover', cursive",
-                letterSpacing: "-0.02em",
-              }}
-              animate={{ scale: [1, 1.01, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              {time?.hours}:{time?.minutes}
-              <span className="relative inline-flex">
-                <motion.span
-                  key={digitKey}
-                  className="text-transparent bg-clip-text"
-                  style={{
-                    backgroundImage: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
-                  }}
-                  initial={{ y: 10, opacity: 0, rotateX: -90 }}
-                  animate={{ y: 0, opacity: 1, rotateX: 0 }}
-                  transition={{ duration: 0.3, type: "spring", stiffness: 300, damping: 20 }}
-                >
-                  :{time?.seconds}
-                </motion.span>
-              </span>
-            </motion.div>
-
-            {/* Subtitle */}
-            <div
-              className="text-sm uppercase tracking-[0.3em]"
-              style={{ color: mood.colors.textMuted }}
-            >
-              Current Time
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Message - Elegant card */}
-        <motion.div
-          className="relative mb-8"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.3, duration: 0.8 }}
-        >
-          <div
-            className="relative px-8 py-6 rounded-2xl"
-            style={{
-              background: `${mood.colors.surface}60`,
-              backdropFilter: 'blur(10px)',
-              border: `1px solid ${mood.colors.primary}20`,
-            }}
-          >
-            {/* Quote marks */}
-            <span
-              className="absolute top-2 left-4 text-4xl opacity-20"
-              style={{ color: mood.colors.primary }}
-            >
-              "
-            </span>
-
-            <p
-              className="text-xl md:text-2xl text-white font-light italic"
-              style={{ letterSpacing: "-0.01em" }}
-            >
-              {message}
-            </p>
-
-            <span
-              className="absolute bottom-2 right-4 text-4xl opacity-20"
-              style={{ color: mood.colors.primary }}
-            >
-              "
-            </span>
-          </div>
-        </motion.div>
-
-        {/* Day badge - Sparkle style */}
-        <motion.div
-          className="relative inline-block"
-          initial={{ opacity: 0, y: 20, scale: 0.8 }}
-          animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-          transition={{ delay: 0.5, duration: 0.8, type: "spring", stiffness: 150 }}
-        >
-          {/* Glow */}
-          <motion.div
-            className="absolute -inset-4 rounded-full opacity-50"
-            style={{
-              background: `radial-gradient(ellipse at center, ${mood.colors.primary}40, transparent 70%)`,
-            }}
-            animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.6, 0.3] }}
-            transition={{ duration: 3, repeat: Infinity }}
-          />
-
-          {/* Badge */}
-          <div
-            className="relative px-8 py-4 rounded-full flex items-center gap-3"
-            style={{
-              background: `linear-gradient(135deg, ${mood.colors.primary}, ${mood.colors.secondary})`,
-              boxShadow: `0 8px 30px ${mood.colors.primary}40`,
-            }}
-          >
-            {/* Sparkle icon */}
-            <motion.span
-              animate={{ rotate: [0, 360], scale: [1, 1.2, 1] }}
-              transition={{ duration: 4, repeat: Infinity }}
-              className="text-xl"
-            >
-              ✦
-            </motion.span>
-
-            <span className="text-xl md:text-2xl font-bold text-white">
-              Happy {dayOfWeek}
-            </span>
-
-            <motion.span
-              animate={{ rotate: [0, -360], scale: [1, 1.2, 1] }}
-              transition={{ duration: 4, repeat: Infinity }}
-              className="text-xl"
-            >
-              ✦
-            </motion.span>
-          </div>
-        </motion.div>
-
-        {/* Decorative elements */}
-        <motion.div
-          className="flex justify-center items-center gap-4 mt-12"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.7, duration: 0.5 }}
-        >
-          <motion.div
-            className="w-16 h-px"
-            style={{
-              background: `linear-gradient(90deg, transparent, ${mood.colors.primary})`,
-            }}
-          />
-          <motion.div
-            animate={{ y: [-3, 3, -3] }}
-            transition={{ duration: 2, repeat: Infinity }}
-          >
-            <span className="text-2xl" style={{ color: mood.colors.primary }}>
-              ☀️
-            </span>
-          </motion.div>
-          <motion.div
-            className="w-16 h-px"
-            style={{
-              background: `linear-gradient(90deg, ${mood.colors.primary}, transparent)`,
-            }}
-          />
         </motion.div>
       </div>
     </motion.section>
