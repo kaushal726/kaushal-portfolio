@@ -8,7 +8,7 @@ const BOUNDS = 40;
 const GUY_R = 0.5;
 const GRAVITY = 24;
 const JUMP = 9.4;
-const DISCOVERY_RADIUS = 13; // coins stay hidden until the player is this close
+const DISCOVERY_RADIUS = 13;
 const COIN_COUNT = 12;
 
 const GAME_KEYS = [
@@ -23,7 +23,6 @@ const GAME_KEYS = [
   "Space",
 ];
 
-// Designed obstacle layout — used for BOTH the meshes and collision.
 const OBSTACLES = [
   { x: 9, z: -7, hx: 0.8, hz: 0.8, height: 1.5, type: "crate" },
   { x: 11, z: -7, hx: 0.8, hz: 0.8, height: 1.5, type: "crate" },
@@ -37,26 +36,25 @@ const OBSTACLES = [
   { x: 16, z: -22, hx: 3.2, hz: 0.55, height: 1.0, type: "log" },
 ];
 
-// Each snake roams its own looping path and can reset your coins on contact.
 const SNAKE_CONFIGS = [
   {
     fx: 0.45, fz: 0.38, wx: 1.1, wz: 0.8, rx: 25, rz: 25, wob: 5,
-    speed: 1.0, seg: 9, phase: 0,
+    speed: 1.0, seg: 11, phase: 0,
     head: "#3f9b3a", body1: "#4caf44", body2: "#3a8a35",
   },
   {
     fx: 0.62, fz: 0.5, wx: 0.9, wz: 1.3, rx: 17, rz: 30, wob: 4,
-    speed: 1.3, seg: 8, phase: 14,
+    speed: 1.3, seg: 9, phase: 14,
     head: "#7a9a3a", body1: "#8aab44", body2: "#647e2c",
   },
   {
     fx: 0.34, fz: 0.58, wx: 1.4, wz: 0.7, rx: 31, rz: 15, wob: 6,
-    speed: 0.9, seg: 11, phase: 27,
+    speed: 0.9, seg: 13, phase: 27,
     head: "#2e8b57", body1: "#34a065", body2: "#236b43",
   },
   {
     fx: 0.72, fz: 0.44, wx: 0.6, wz: 1.7, rx: 21, rz: 21, wob: 7,
-    speed: 1.55, seg: 7, phase: 41,
+    speed: 1.55, seg: 8, phase: 41,
     head: "#9bbf3f", body1: "#a8c94f", body2: "#7c9e2e",
   },
 ];
@@ -101,66 +99,114 @@ function useKeyboard() {
   return keys;
 }
 
-/* ---------------- shared character body ---------------- */
+/* ---------------- realistic humanoid body ---------------- */
 function CharacterBody({
   legL,
   legR,
   armL,
   armR,
-  primary,
-  secondary,
-  skin = "#f1c9a5",
+  shirt,
+  sleeve,
+  pants = "#33405e",
+  shoe = "#222633",
+  skin = "#e8b88f",
   hair = "#3a2a1a",
 }) {
   return (
     <>
+      {/* soft contact shadow */}
       <mesh rotation-x={-Math.PI / 2} position-y={0.02}>
-        <circleGeometry args={[0.72, 24]} />
-        <meshBasicMaterial color="#000000" transparent opacity={0.18} />
+        <circleGeometry args={[0.62, 24]} />
+        <meshBasicMaterial color="#000000" transparent opacity={0.22} />
       </mesh>
 
-      <group ref={legL} position={[-0.18, 0.7, 0]}>
-        <mesh position={[0, -0.35, 0]} castShadow>
-          <boxGeometry args={[0.22, 0.7, 0.22]} />
-          <meshStandardMaterial color="#2b2f45" />
-        </mesh>
-      </group>
-      <group ref={legR} position={[0.18, 0.7, 0]}>
-        <mesh position={[0, -0.35, 0]} castShadow>
-          <boxGeometry args={[0.22, 0.7, 0.22]} />
-          <meshStandardMaterial color="#2b2f45" />
-        </mesh>
-      </group>
-
-      <mesh position={[0, 1.15, 0]} castShadow>
-        <boxGeometry args={[0.62, 0.82, 0.42]} />
-        <meshStandardMaterial color={primary} />
-      </mesh>
-
-      <group ref={armL} position={[-0.42, 1.46, 0]}>
+      {/* legs — pivot at the hip */}
+      <group ref={legL} position={[-0.15, 0.74, 0]}>
         <mesh position={[0, -0.3, 0]} castShadow>
-          <boxGeometry args={[0.16, 0.62, 0.16]} />
-          <meshStandardMaterial color={secondary} />
+          <capsuleGeometry args={[0.125, 0.44, 4, 12]} />
+          <meshStandardMaterial color={pants} roughness={0.95} />
+        </mesh>
+        <mesh position={[0, -0.6, 0.05]} castShadow>
+          <boxGeometry args={[0.2, 0.13, 0.34]} />
+          <meshStandardMaterial color={shoe} roughness={0.6} />
         </mesh>
       </group>
-      <group ref={armR} position={[0.42, 1.46, 0]}>
+      <group ref={legR} position={[0.15, 0.74, 0]}>
         <mesh position={[0, -0.3, 0]} castShadow>
-          <boxGeometry args={[0.16, 0.62, 0.16]} />
-          <meshStandardMaterial color={secondary} />
+          <capsuleGeometry args={[0.125, 0.44, 4, 12]} />
+          <meshStandardMaterial color={pants} roughness={0.95} />
+        </mesh>
+        <mesh position={[0, -0.6, 0.05]} castShadow>
+          <boxGeometry args={[0.2, 0.13, 0.34]} />
+          <meshStandardMaterial color={shoe} roughness={0.6} />
         </mesh>
       </group>
 
-      <mesh position={[0, 1.96, 0]} castShadow>
-        <sphereGeometry args={[0.32, 24, 24]} />
-        <meshStandardMaterial color={skin} />
+      {/* hips */}
+      <mesh position={[0, 0.84, 0]} castShadow>
+        <capsuleGeometry args={[0.2, 0.1, 4, 12]} />
+        <meshStandardMaterial color={pants} roughness={0.95} />
       </mesh>
-      <mesh position={[0, 2.04, 0]} castShadow>
-        <sphereGeometry args={[0.34, 20, 20, 0, Math.PI * 2, 0, Math.PI / 2]} />
-        <meshStandardMaterial color={hair} />
+
+      {/* torso */}
+      <mesh position={[0, 1.22, 0]} castShadow>
+        <capsuleGeometry args={[0.24, 0.4, 5, 16]} />
+        <meshStandardMaterial color={shirt} roughness={0.8} />
       </mesh>
-      <mesh position={[0, 1.95, 0.31]}>
-        <boxGeometry args={[0.09, 0.09, 0.13]} />
-        <meshStandardMaterial color="#e3aa80" />
+
+      {/* arms — pivot at the shoulder */}
+      <group ref={armL} position={[-0.33, 1.48, 0]}>
+        <mesh position={[0, -0.24, 0]} castShadow>
+          <capsuleGeometry args={[0.082, 0.4, 4, 10]} />
+          <meshStandardMaterial color={sleeve} roughness={0.8} />
+        </mesh>
+        <mesh position={[0, -0.5, 0]} castShadow>
+          <sphereGeometry args={[0.1, 14, 14]} />
+          <meshStandardMaterial color={skin} roughness={0.7} />
+        </mesh>
+      </group>
+      <group ref={armR} position={[0.33, 1.48, 0]}>
+        <mesh position={[0, -0.24, 0]} castShadow>
+          <capsuleGeometry args={[0.082, 0.4, 4, 10]} />
+          <meshStandardMaterial color={sleeve} roughness={0.8} />
+        </mesh>
+        <mesh position={[0, -0.5, 0]} castShadow>
+          <sphereGeometry args={[0.1, 14, 14]} />
+          <meshStandardMaterial color={skin} roughness={0.7} />
+        </mesh>
+      </group>
+
+      {/* neck */}
+      <mesh position={[0, 1.54, 0]} castShadow>
+        <cylinderGeometry args={[0.085, 0.1, 0.14, 12]} />
+        <meshStandardMaterial color={skin} roughness={0.7} />
+      </mesh>
+
+      {/* head */}
+      <mesh position={[0, 1.78, 0]} castShadow>
+        <sphereGeometry args={[0.27, 28, 28]} />
+        <meshStandardMaterial color={skin} roughness={0.62} />
+      </mesh>
+      {/* hair cap */}
+      <mesh position={[0, 1.83, -0.02]} castShadow>
+        <sphereGeometry
+          args={[0.29, 24, 24, 0, Math.PI * 2, 0, Math.PI * 0.6]}
+        />
+        <meshStandardMaterial color={hair} roughness={0.95} />
+      </mesh>
+      {/* eyes */}
+      <mesh position={[0.095, 1.8, 0.23]}>
+        <sphereGeometry args={[0.042, 12, 12]} />
+        <meshStandardMaterial color="#1b1b24" roughness={0.3} />
+      </mesh>
+      <mesh position={[-0.095, 1.8, 0.23]}>
+        <sphereGeometry args={[0.042, 12, 12]} />
+        <meshStandardMaterial color="#1b1b24" roughness={0.3} />
+      </mesh>
+      {/* nose */}
+      <mesh position={[0, 1.74, 0.26]}>
+        <sphereGeometry args={[0.04, 10, 10]} />
+        <meshStandardMaterial color={skin} roughness={0.7} />
       </mesh>
     </>
   );
@@ -194,7 +240,6 @@ function Guy({
     const k = keysRef.current;
     const dt = Math.min(delta, 0.05);
 
-    // jump
     if (k._jumpQueued && grounded.current) {
       vy.current = JUMP;
       grounded.current = false;
@@ -210,7 +255,6 @@ function Guy({
       grounded.current = false;
     }
 
-    // movement
     let dx = 0;
     let dz = 0;
     if (k.KeyW || k.ArrowUp) dz -= 1;
@@ -251,7 +295,6 @@ function Guy({
       moving && grounded.current ? Math.abs(Math.sin(phase.current)) * 0.12 : 0;
     g.position.y = baseY.current + bob;
 
-    // share player position + run the coin radar
     playerPosRef.current.set(g.position.x, baseY.current, g.position.z);
     let nearest = Infinity;
     for (let i = 0; i < coins.length; i++) {
@@ -261,12 +304,10 @@ function Guy({
       const ddz = g.position.z - c.position[2];
       const d = Math.sqrt(ddx * ddx + ddz * ddz);
       if (d < nearest) nearest = d;
-      // collect — perched coins need you to be jumping at the right height
       if (d < 1.8 && baseY.current > c.reqFeet - 0.45) onCollect(c.id);
     }
     radarRef.current = nearest;
 
-    // follow camera
     const cam = state.camera;
     cam.position.lerp(
       new THREE.Vector3(g.position.x, 8, g.position.z + 13),
@@ -282,15 +323,15 @@ function Guy({
         legR={legR}
         armL={armL}
         armR={armR}
-        primary={primary}
-        secondary={secondary}
+        shirt={primary}
+        sleeve={secondary}
       />
     </group>
   );
 }
 
 /* ---------------- wandering NPC ---------------- */
-function NPC({ start, primary, secondary, skin, hair }) {
+function NPC({ start, shirt, sleeve, pants, shoe, skin, hair }) {
   const group = useRef();
   const legL = useRef();
   const legR = useRef();
@@ -343,8 +384,10 @@ function NPC({ start, primary, secondary, skin, hair }) {
         legR={legR}
         armL={armL}
         armR={armR}
-        primary={primary}
-        secondary={secondary}
+        shirt={shirt}
+        sleeve={sleeve}
+        pants={pants}
+        shoe={shoe}
         skin={skin}
         hair={hair}
       />
@@ -352,15 +395,17 @@ function NPC({ start, primary, secondary, skin, hair }) {
   );
 }
 
-/* ---------------- slithering snakes ---------------- */
+/* ---------------- realistic slithering snakes ---------------- */
 function Snake({ config, playerPosRef, onHitPlayer }) {
   const SEG = config.seg;
+  const GAP = 5;
   const headRef = useRef();
+  const tongueRef = useRef();
   const segRefs = useRef([]);
   const trail = useRef([]);
   const t = useRef(config.phase);
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     const dt = Math.min(delta, 0.05);
     t.current += dt * config.speed;
     const T = t.current;
@@ -376,21 +421,24 @@ function Snake({ config, playerPosRef, onHitPlayer }) {
     );
 
     trail.current.unshift([hx, hz]);
-    const maxLen = SEG * 7 + 12;
+    const maxLen = SEG * GAP + 10;
     if (trail.current.length > maxLen) trail.current.length = maxLen;
 
     if (headRef.current) {
-      headRef.current.position.set(hx, 0.34, hz);
+      headRef.current.position.set(hx, 0.36, hz);
       const p = trail.current[3] || [hx, hz];
       headRef.current.rotation.y = Math.atan2(hx - p[0], hz - p[1]);
     }
+    if (tongueRef.current) {
+      tongueRef.current.visible =
+        Math.sin(state.clock.elapsedTime * 6 + config.phase) > 0.55;
+    }
     for (let i = 0; i < segRefs.current.length; i++) {
-      const p = trail.current[(i + 1) * 7];
+      const p = trail.current[(i + 1) * GAP];
       const s = segRefs.current[i];
-      if (p && s) s.position.set(p[0], 0.3, p[1]);
+      if (p && s) s.position.set(p[0], 0.32 - i * 0.004, p[1]);
     }
 
-    // contact with the player — but jumping over (y > 0.85) keeps you safe
     if (onHitPlayer && playerPosRef && playerPosRef.current.y < 0.85) {
       const px = playerPosRef.current.x;
       const pz = playerPosRef.current.z;
@@ -416,28 +464,44 @@ function Snake({ config, playerPosRef, onHitPlayer }) {
   return (
     <group>
       <group ref={headRef}>
-        <mesh castShadow>
-          <sphereGeometry args={[0.42, 14, 14]} />
-          <meshStandardMaterial color={config.head} flatShading />
+        {/* elongated head */}
+        <mesh castShadow scale={[1, 0.82, 1.5]}>
+          <sphereGeometry args={[0.34, 18, 18]} />
+          <meshStandardMaterial color={config.head} roughness={0.55} />
         </mesh>
-        <mesh position={[0.16, 0.12, 0.34]}>
-          <sphereGeometry args={[0.07, 8, 8]} />
-          <meshStandardMaterial color="#10160f" />
+        {/* eyes */}
+        <mesh position={[0.16, 0.13, 0.26]}>
+          <sphereGeometry args={[0.07, 12, 12]} />
+          <meshStandardMaterial color="#15110a" roughness={0.3} />
         </mesh>
-        <mesh position={[-0.16, 0.12, 0.34]}>
-          <sphereGeometry args={[0.07, 8, 8]} />
-          <meshStandardMaterial color="#10160f" />
+        <mesh position={[-0.16, 0.13, 0.26]}>
+          <sphereGeometry args={[0.07, 12, 12]} />
+          <meshStandardMaterial color="#15110a" roughness={0.3} />
         </mesh>
+        {/* flicking forked tongue */}
+        <group ref={tongueRef} position={[0, -0.04, 0.5]}>
+          <mesh position={[0.05, 0, 0.09]} rotation-y={0.32}>
+            <boxGeometry args={[0.03, 0.02, 0.24]} />
+            <meshStandardMaterial color="#d23b5a" />
+          </mesh>
+          <mesh position={[-0.05, 0, 0.09]} rotation-y={-0.32}>
+            <boxGeometry args={[0.03, 0.02, 0.24]} />
+            <meshStandardMaterial color="#d23b5a" />
+          </mesh>
+        </group>
       </group>
-      {Array.from({ length: SEG }).map((_, i) => (
-        <mesh key={i} ref={(el) => (segRefs.current[i] = el)} castShadow>
-          <sphereGeometry args={[0.36 - i * 0.022, 12, 12]} />
-          <meshStandardMaterial
-            color={i % 2 === 0 ? config.body1 : config.body2}
-            flatShading
-          />
-        </mesh>
-      ))}
+      {Array.from({ length: SEG }).map((_, i) => {
+        const r = 0.34 * (1 - i / (SEG + 2));
+        return (
+          <mesh key={i} ref={(el) => (segRefs.current[i] = el)} castShadow>
+            <sphereGeometry args={[Math.max(0.06, r), 16, 16]} />
+            <meshStandardMaterial
+              color={i % 2 === 0 ? config.body1 : config.body2}
+              roughness={0.5}
+            />
+          </mesh>
+        );
+      })}
     </group>
   );
 }
@@ -459,15 +523,15 @@ function Waterfall() {
     <group position={[-32, 0, -33]}>
       <mesh position={[0, 4.5, -1]} castShadow receiveShadow>
         <boxGeometry args={[12, 9, 7]} />
-        <meshStandardMaterial color="#6b6f78" flatShading />
+        <meshStandardMaterial color="#6b6f78" roughness={1} flatShading />
       </mesh>
       <mesh position={[-4.5, 2.2, 2]} castShadow>
         <dodecahedronGeometry args={[2.4, 0]} />
-        <meshStandardMaterial color="#777b84" flatShading />
+        <meshStandardMaterial color="#777b84" roughness={1} flatShading />
       </mesh>
       <mesh position={[4.8, 2, 2.2]} castShadow>
         <dodecahedronGeometry args={[2.8, 0]} />
-        <meshStandardMaterial color="#5f636b" flatShading />
+        <meshStandardMaterial color="#5f636b" roughness={1} flatShading />
       </mesh>
 
       <mesh position={[0, 4.6, 1.7]}>
@@ -475,9 +539,10 @@ function Waterfall() {
         <meshStandardMaterial
           color="#7ec8e3"
           transparent
-          opacity={0.55}
+          opacity={0.5}
           emissive="#3a9bd1"
           emissiveIntensity={0.25}
+          roughness={0.2}
         />
       </mesh>
       {[0, 1, 2, 3, 4].map((i) => (
@@ -496,9 +561,11 @@ function Waterfall() {
         <meshStandardMaterial
           color="#3a9bd1"
           transparent
-          opacity={0.82}
+          opacity={0.85}
           emissive="#1f6f9e"
           emissiveIntensity={0.2}
+          roughness={0.15}
+          metalness={0.1}
         />
       </mesh>
       {[
@@ -507,7 +574,7 @@ function Waterfall() {
         [0, 0.9, 4.2],
       ].map((p, i) => (
         <mesh key={i} position={p}>
-          <sphereGeometry args={[0.9, 10, 10]} />
+          <sphereGeometry args={[0.9, 12, 12]} />
           <meshStandardMaterial color="#ffffff" transparent opacity={0.22} />
         </mesh>
       ))}
@@ -525,20 +592,20 @@ function Road() {
     <group>
       <mesh rotation-x={-Math.PI / 2} position={[0, 0.02, 18]} receiveShadow>
         <planeGeometry args={[120, 7.5]} />
-        <meshStandardMaterial color="#3a3a42" />
+        <meshStandardMaterial color="#3a3a42" roughness={1} />
       </mesh>
       <mesh rotation-x={-Math.PI / 2} position={[0, 0.03, 14.1]}>
         <planeGeometry args={[120, 0.3]} />
-        <meshStandardMaterial color="#cfcfd4" />
+        <meshStandardMaterial color="#cfcfd4" roughness={0.9} />
       </mesh>
       <mesh rotation-x={-Math.PI / 2} position={[0, 0.03, 21.9]}>
         <planeGeometry args={[120, 0.3]} />
-        <meshStandardMaterial color="#cfcfd4" />
+        <meshStandardMaterial color="#cfcfd4" roughness={0.9} />
       </mesh>
       {dashes.map((x, i) => (
         <mesh key={i} rotation-x={-Math.PI / 2} position={[x, 0.03, 18]}>
           <planeGeometry args={[2.4, 0.36]} />
-          <meshStandardMaterial color="#e8d24a" />
+          <meshStandardMaterial color="#e8d24a" roughness={0.8} />
         </mesh>
       ))}
     </group>
@@ -552,32 +619,63 @@ function Obstacles() {
       {OBSTACLES.map((o, i) => {
         if (o.type === "log") {
           return (
+            <group key={i} position={[o.x, o.hz, o.z]} rotation-z={Math.PI / 2}>
+              <mesh castShadow receiveShadow>
+                <cylinderGeometry args={[o.hz, o.hz, o.hx * 2, 16]} />
+                <meshStandardMaterial color="#6e4427" roughness={1} />
+              </mesh>
+              {/* cut ends */}
+              <mesh position={[0, o.hx, 0]}>
+                <cylinderGeometry args={[o.hz, o.hz, 0.04, 16]} />
+                <meshStandardMaterial color="#a5774a" roughness={0.9} />
+              </mesh>
+              <mesh position={[0, -o.hx, 0]}>
+                <cylinderGeometry args={[o.hz, o.hz, 0.04, 16]} />
+                <meshStandardMaterial color="#a5774a" roughness={0.9} />
+              </mesh>
+            </group>
+          );
+        }
+        if (o.type === "hedge") {
+          return (
             <mesh
               key={i}
-              position={[o.x, o.hz, o.z]}
-              rotation-z={Math.PI / 2}
+              position={[o.x, o.height / 2, o.z]}
               castShadow
               receiveShadow
             >
-              <cylinderGeometry args={[o.hz, o.hz, o.hx * 2, 14]} />
-              <meshStandardMaterial color="#7a4f2a" flatShading />
+              <boxGeometry args={[o.hx * 2, o.height, o.hz * 2]} />
+              <meshStandardMaterial color="#357031" roughness={1} flatShading />
             </mesh>
           );
         }
-        const color = o.type === "hedge" ? "#357031" : "#9a6a3a";
+        // crate
         return (
-          <mesh
-            key={i}
-            position={[o.x, o.height / 2, o.z]}
-            castShadow
-            receiveShadow
-          >
-            <boxGeometry args={[o.hx * 2, o.height, o.hz * 2]} />
-            <meshStandardMaterial
-              color={color}
-              flatShading={o.type === "hedge"}
-            />
-          </mesh>
+          <group key={i} position={[o.x, o.height / 2, o.z]}>
+            <mesh castShadow receiveShadow>
+              <boxGeometry args={[o.hx * 2, o.height, o.hz * 2]} />
+              <meshStandardMaterial color="#b07d42" roughness={0.85} />
+            </mesh>
+            {/* dark plank frame */}
+            <mesh>
+              <boxGeometry
+                args={[o.hx * 2 + 0.03, o.height * 0.16, o.hz * 2 + 0.03]}
+              />
+              <meshStandardMaterial color="#6f4a24" roughness={0.9} />
+            </mesh>
+            <mesh position={[0, o.height * 0.42, 0]}>
+              <boxGeometry
+                args={[o.hx * 2 + 0.03, o.height * 0.13, o.hz * 2 + 0.03]}
+              />
+              <meshStandardMaterial color="#6f4a24" roughness={0.9} />
+            </mesh>
+            <mesh position={[0, -o.height * 0.42, 0]}>
+              <boxGeometry
+                args={[o.hx * 2 + 0.03, o.height * 0.13, o.hz * 2 + 0.03]}
+              />
+              <meshStandardMaterial color="#6f4a24" roughness={0.9} />
+            </mesh>
+          </group>
         );
       })}
     </>
@@ -588,8 +686,8 @@ function Obstacles() {
 function Coin({ position, collected, playerPosRef }) {
   const ref = useRef();
   const mat = useRef();
-  const vis = useRef(0); // discovery fade 0..1
-  const pop = useRef(0); // collection animation 0..1
+  const vis = useRef(0);
+  const pop = useRef(0);
 
   useFrame((state, delta) => {
     const grp = ref.current;
@@ -611,10 +709,8 @@ function Coin({ position, collected, playerPosRef }) {
       return;
     }
 
-    // not collected — keep the pop animation reset (coins can be reset by snakes)
     pop.current = 0;
 
-    // hidden until the player gets within DISCOVERY_RADIUS
     const dx = playerPosRef.current.x - position[0];
     const dz = playerPosRef.current.z - position[2];
     const dist = Math.hypot(dx, dz);
@@ -633,7 +729,7 @@ function Coin({ position, collected, playerPosRef }) {
   return (
     <group ref={ref} position={position} visible={false}>
       <mesh rotation-x={Math.PI / 2} castShadow>
-        <cylinderGeometry args={[0.42, 0.42, 0.09, 20]} />
+        <cylinderGeometry args={[0.42, 0.42, 0.09, 22]} />
         <meshStandardMaterial
           ref={mat}
           color="#fcd34d"
@@ -641,8 +737,8 @@ function Coin({ position, collected, playerPosRef }) {
           emissiveIntensity={0.7}
           transparent
           opacity={0}
-          metalness={0.4}
-          roughness={0.3}
+          metalness={0.55}
+          roughness={0.25}
         />
       </mesh>
     </group>
@@ -650,25 +746,44 @@ function Coin({ position, collected, playerPosRef }) {
 }
 
 /* ---------------- garden props ---------------- */
-function Tree({ position, scale }) {
+function Tree({ position, scale, phase }) {
+  const canopy = useRef();
+  useFrame((state) => {
+    if (!canopy.current) return;
+    const t = state.clock.elapsedTime;
+    canopy.current.rotation.z = Math.sin(t * 0.8 + phase) * 0.05;
+    canopy.current.rotation.x = Math.cos(t * 0.6 + phase) * 0.035;
+  });
   return (
     <group position={position} scale={scale}>
-      <mesh position={[0, 0.6, 0]} castShadow>
-        <cylinderGeometry args={[0.18, 0.26, 1.2, 8]} />
-        <meshStandardMaterial color="#6b4423" />
+      {/* tapered trunk */}
+      <mesh position={[0, 0.7, 0]} castShadow>
+        <cylinderGeometry args={[0.15, 0.32, 1.45, 10]} />
+        <meshStandardMaterial color="#5a3d22" roughness={1} />
       </mesh>
-      <mesh position={[0, 1.7, 0]} castShadow>
-        <sphereGeometry args={[0.95, 16, 16]} />
-        <meshStandardMaterial color="#3f7d3a" flatShading />
-      </mesh>
-      <mesh position={[0.45, 2.15, 0.2]} castShadow>
-        <sphereGeometry args={[0.6, 14, 14]} />
-        <meshStandardMaterial color="#4f9a47" flatShading />
-      </mesh>
-      <mesh position={[-0.4, 2.05, -0.15]} castShadow>
-        <sphereGeometry args={[0.5, 14, 14]} />
-        <meshStandardMaterial color="#357031" flatShading />
-      </mesh>
+      {/* swaying layered canopy */}
+      <group ref={canopy} position={[0, 1.42, 0]}>
+        <mesh position={[0, 0.55, 0]} castShadow>
+          <sphereGeometry args={[0.98, 18, 18]} />
+          <meshStandardMaterial color="#3f7d3a" roughness={0.9} />
+        </mesh>
+        <mesh position={[0.58, 0.95, 0.22]} castShadow>
+          <sphereGeometry args={[0.64, 16, 16]} />
+          <meshStandardMaterial color="#4f9a47" roughness={0.9} />
+        </mesh>
+        <mesh position={[-0.52, 0.86, -0.18]} castShadow>
+          <sphereGeometry args={[0.6, 16, 16]} />
+          <meshStandardMaterial color="#34692f" roughness={0.9} />
+        </mesh>
+        <mesh position={[0.08, 1.42, -0.12]} castShadow>
+          <sphereGeometry args={[0.57, 16, 16]} />
+          <meshStandardMaterial color="#46893f" roughness={0.9} />
+        </mesh>
+        <mesh position={[-0.22, 0.5, 0.52]} castShadow>
+          <sphereGeometry args={[0.52, 16, 16]} />
+          <meshStandardMaterial color="#3a7335" roughness={0.9} />
+        </mesh>
+      </group>
     </group>
   );
 }
@@ -676,13 +791,23 @@ function Tree({ position, scale }) {
 function Flower({ position, color }) {
   return (
     <group position={position}>
-      <mesh position={[0, 0.2, 0]}>
-        <cylinderGeometry args={[0.03, 0.03, 0.4, 5]} />
-        <meshStandardMaterial color="#3f7d3a" />
+      <mesh position={[0, 0.22, 0]}>
+        <cylinderGeometry args={[0.025, 0.035, 0.44, 6]} />
+        <meshStandardMaterial color="#3f7d3a" roughness={1} />
       </mesh>
-      <mesh position={[0, 0.43, 0]}>
-        <sphereGeometry args={[0.13, 10, 10]} />
-        <meshStandardMaterial color={color} />
+      <mesh position={[0.08, 0.16, 0]} rotation-z={-0.7} scale={[1, 0.32, 0.5]}>
+        <sphereGeometry args={[0.11, 8, 8]} />
+        <meshStandardMaterial color="#4a9442" roughness={0.95} />
+      </mesh>
+      {/* petals */}
+      <mesh position={[0, 0.46, 0]} scale={[1, 0.42, 1]}>
+        <sphereGeometry args={[0.16, 14, 14]} />
+        <meshStandardMaterial color={color} roughness={0.7} />
+      </mesh>
+      {/* pollen centre */}
+      <mesh position={[0, 0.5, 0]}>
+        <sphereGeometry args={[0.07, 10, 10]} />
+        <meshStandardMaterial color="#f7e06b" roughness={0.6} />
       </mesh>
     </group>
   );
@@ -690,10 +815,33 @@ function Flower({ position, color }) {
 
 function Rock({ position, scale }) {
   return (
-    <mesh position={position} scale={scale} castShadow>
-      <dodecahedronGeometry args={[0.5, 0]} />
-      <meshStandardMaterial color="#8a8d93" flatShading />
-    </mesh>
+    <group position={position} scale={scale}>
+      <mesh castShadow receiveShadow>
+        <dodecahedronGeometry args={[0.5, 0]} />
+        <meshStandardMaterial color="#8a8d93" roughness={1} flatShading />
+      </mesh>
+      <mesh position={[0.32, -0.18, 0.22]} castShadow>
+        <icosahedronGeometry args={[0.3, 0]} />
+        <meshStandardMaterial color="#787c83" roughness={1} flatShading />
+      </mesh>
+    </group>
+  );
+}
+
+function GrassTuft({ position }) {
+  return (
+    <group position={position}>
+      {[-0.06, 0, 0.07].map((x, i) => (
+        <mesh
+          key={i}
+          position={[x, 0.16, (i - 1) * 0.05]}
+          rotation-z={(i - 1) * 0.25}
+        >
+          <coneGeometry args={[0.035, 0.34, 5]} />
+          <meshStandardMaterial color="#4f9a3f" roughness={1} />
+        </mesh>
+      ))}
+    </group>
   );
 }
 
@@ -731,16 +879,16 @@ function Clouds() {
           scale={c.s}
         >
           <mesh>
-            <sphereGeometry args={[2, 10, 10]} />
-            <meshStandardMaterial color="#ffffff" />
+            <sphereGeometry args={[2, 12, 12]} />
+            <meshStandardMaterial color="#ffffff" roughness={1} />
           </mesh>
           <mesh position={[2, 0.3, 0]}>
-            <sphereGeometry args={[1.5, 10, 10]} />
-            <meshStandardMaterial color="#ffffff" />
+            <sphereGeometry args={[1.5, 12, 12]} />
+            <meshStandardMaterial color="#ffffff" roughness={1} />
           </mesh>
           <mesh position={[-2, 0, 0.4]}>
-            <sphereGeometry args={[1.6, 10, 10]} />
-            <meshStandardMaterial color="#f3f7fb" />
+            <sphereGeometry args={[1.6, 12, 12]} />
+            <meshStandardMaterial color="#f3f7fb" roughness={1} />
           </mesh>
         </group>
       ))}
@@ -766,14 +914,18 @@ function Garden() {
       const z = (Math.random() - 0.5) * 78;
       if (Math.hypot(x, z) < 6) continue;
       if (z > 13 && z < 23) continue;
-      arr.push({ position: [x, 0, z], scale: 0.8 + Math.random() * 1 });
+      arr.push({
+        position: [x, 0, z],
+        scale: 0.85 + Math.random() * 1,
+        phase: Math.random() * Math.PI * 2,
+      });
     }
     return arr;
   }, []);
 
   const flowers = useMemo(() => {
     const arr = [];
-    for (let i = 0; i < 64; i++) {
+    for (let i = 0; i < 50; i++) {
       const x = (Math.random() - 0.5) * 76;
       const z = (Math.random() - 0.5) * 76;
       if (z > 13 && z < 23) continue;
@@ -784,6 +936,17 @@ function Garden() {
     }
     return arr;
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const grass = useMemo(() => {
+    const arr = [];
+    for (let i = 0; i < 28; i++) {
+      const x = (Math.random() - 0.5) * 76;
+      const z = (Math.random() - 0.5) * 76;
+      if (z > 13 && z < 23) continue;
+      arr.push([x, 0, z]);
+    }
+    return arr;
   }, []);
 
   const rocks = useMemo(() => {
@@ -806,29 +969,58 @@ function Garden() {
     return posts;
   }, []);
 
+  const patches = [
+    [15, -10, 7, "#57a047"],
+    [-20, 12, 9, "#68b855"],
+    [9, 30, 6, "#5aa24a"],
+    [-14, -24, 8, "#63b050"],
+    [28, 22, 7, "#579e46"],
+  ];
+
   return (
     <>
+      {/* ground */}
       <mesh rotation-x={-Math.PI / 2} receiveShadow>
         <planeGeometry args={[130, 130]} />
-        <meshStandardMaterial color="#5fa84e" />
+        <meshStandardMaterial color="#5fa84e" roughness={1} />
       </mesh>
-      <mesh rotation-x={-Math.PI / 2} position-y={0.01}>
+      {/* subtle colour patches for variation */}
+      {patches.map(([x, z, r, c], i) => (
+        <mesh
+          key={`patch-${i}`}
+          rotation-x={-Math.PI / 2}
+          position={[x, 0.012, z]}
+        >
+          <circleGeometry args={[r, 26]} />
+          <meshStandardMaterial color={c} roughness={1} />
+        </mesh>
+      ))}
+      <mesh rotation-x={-Math.PI / 2} position-y={0.014}>
         <circleGeometry args={[9, 36]} />
-        <meshStandardMaterial color="#6cbb59" />
+        <meshStandardMaterial color="#6cbb59" roughness={1} />
       </mesh>
 
+      {/* fence posts */}
       {fence.map((p, i) => (
         <mesh key={`f-${i}`} position={[p[0], 0.5, p[2]]} castShadow>
-          <boxGeometry args={[0.18, 1, 0.18]} />
-          <meshStandardMaterial color="#7a5230" />
+          <cylinderGeometry args={[0.1, 0.14, 1, 7]} />
+          <meshStandardMaterial color="#7a5230" roughness={1} />
         </mesh>
       ))}
 
       {trees.map((t, i) => (
-        <Tree key={`t-${i}`} position={t.position} scale={t.scale} />
+        <Tree
+          key={`t-${i}`}
+          position={t.position}
+          scale={t.scale}
+          phase={t.phase}
+        />
       ))}
       {flowers.map((f, i) => (
         <Flower key={`fl-${i}`} position={f.position} color={f.color} />
+      ))}
+      {grass.map((p, i) => (
+        <GrassTuft key={`g-${i}`} position={p} />
       ))}
       {rocks.map((r, i) => (
         <Rock key={`r-${i}`} position={r.position} scale={r.scale} />
@@ -868,7 +1060,6 @@ export default function GardenScene({
     };
     const arr = [];
     let id = 0;
-    // 3 coins perched on obstacles — you have to jump for these
     [0, 4, 7].forEach((oi) => {
       const o = OBSTACLES[oi];
       arr.push({
@@ -877,7 +1068,6 @@ export default function GardenScene({
         reqFeet: o.height,
       });
     });
-    // the rest scattered far and wide across the whole garden
     while (id < COIN_COUNT) {
       let x;
       let z;
@@ -900,11 +1090,10 @@ export default function GardenScene({
     onCollect?.(collectedRef.current.size, coins.length);
   };
 
-  // a snake touched the player — reset every collected coin
   const handleSnakeHit = () => {
     if (!active) return;
     const now = performance.now();
-    if (now - hitCdRef.current < 1800) return; // brief immunity window
+    if (now - hitCdRef.current < 1800) return;
     hitCdRef.current = now;
     const had = collectedRef.current.size;
     if (had > 0) {
@@ -915,7 +1104,6 @@ export default function GardenScene({
     onSnakeHit?.(had);
   };
 
-  // throttled hot/cold radar feed to the HUD
   useEffect(() => {
     if (!onRadar) return undefined;
     const iv = setInterval(() => {
@@ -932,21 +1120,25 @@ export default function GardenScene({
       style={{ width: "100%", height: "100%" }}
     >
       <fog attach="fog" args={["#cfe8f5", 45, 110]} />
-      <Sky sunPosition={[20, 16, 12]} turbidity={6} rayleigh={1.2} />
+      <Sky sunPosition={[20, 16, 12]} turbidity={5} rayleigh={1.1} />
 
-      <ambientLight intensity={0.75} />
+      {/* natural sky/ground bounce + warm sun */}
+      <hemisphereLight args={["#cfe8f5", "#4f7a3e", 0.9]} />
+      <ambientLight intensity={0.22} />
       <directionalLight
-        position={[18, 24, 12]}
-        intensity={1.5}
+        position={[18, 26, 12]}
+        intensity={1.65}
+        color="#fff4e0"
         castShadow
-        shadow-mapSize-width={1024}
-        shadow-mapSize-height={1024}
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+        shadow-bias={-0.0004}
         shadow-camera-left={-55}
         shadow-camera-right={55}
         shadow-camera-top={55}
         shadow-camera-bottom={-55}
         shadow-camera-near={1}
-        shadow-camera-far={110}
+        shadow-camera-far={120}
       />
 
       <Garden />
@@ -966,15 +1158,19 @@ export default function GardenScene({
 
       <NPC
         start={[14, 0, 10]}
-        primary="#e2574c"
-        secondary="#f0a04b"
+        shirt="#e2574c"
+        sleeve="#c8443a"
+        pants="#3a3f52"
+        shoe="#23262f"
         skin="#e8b48f"
         hair="#1a1a1a"
       />
       <NPC
         start={[-16, 0, -8]}
-        primary="#3aa6a0"
-        secondary="#f4d35e"
+        shirt="#3aa6a0"
+        sleeve="#2f8c87"
+        pants="#4a3f2a"
+        shoe="#2a241a"
         skin="#caa07a"
         hair="#2a1c10"
       />
