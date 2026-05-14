@@ -1,14 +1,18 @@
 import React, { useRef } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useMood } from "../../context/MoodContext";
+import { useIsTouch } from "../../hooks/useIsTouch";
 
 /* ---------- Magnetic wrapper ---------- */
 function Magnetic({ children, strength = 10 }) {
+  const isTouch = useIsTouch();
   const ref = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const sx = useSpring(x, { stiffness: 220, damping: 18 });
   const sy = useSpring(y, { stiffness: 220, damping: 18 });
+
+  if (isTouch) return <>{children}</>;
 
   const onMove = (e) => {
     const el = ref.current;

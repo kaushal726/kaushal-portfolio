@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useMood } from "../../context/MoodContext";
+import { useIsTouch } from "../../hooks/useIsTouch";
 
 const MouseFollower = () => {
   const { mood } = useMood();
+  const isTouch = useIsTouch();
   const [isVisible, setIsVisible] = useState(false);
 
   // Motion values for smooth cursor tracking
@@ -21,6 +23,8 @@ const MouseFollower = () => {
   const cursor3Y = useSpring(cursorY, { damping: 15, stiffness: 100 });
 
   useEffect(() => {
+    if (isTouch) return;
+
     const handleMouseMove = (e) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
@@ -38,9 +42,10 @@ const MouseFollower = () => {
       window.removeEventListener("mousemove", handleMouseMove);
       document.body.removeEventListener("mouseleave", handleMouseLeave);
     };
-  }, [cursorX, cursorY, isVisible]);
+  }, [cursorX, cursorY, isVisible, isTouch]);
 
-  if (!isVisible) return null;
+  // No cursor follower on touch devices
+  if (isTouch || !isVisible) return null;
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">

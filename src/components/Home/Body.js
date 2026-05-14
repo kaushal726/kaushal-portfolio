@@ -63,6 +63,7 @@ import {
 } from "react-icons/si";
 import { useMood } from "../../context/MoodContext";
 import { usePortfolioScroll } from "../../hooks/usePortfolioScroll";
+import { useIsTouch } from "../../hooks/useIsTouch";
 import CentralDottedCircle from "../Common/CentralDottedCircle";
 import OrganicBlobBackground from "../Common/OrganicBlobBackground";
 
@@ -269,11 +270,21 @@ function SweepText({ children, mood, className = "", style = {} }) {
 }
 
 function MagneticTilt({ children, strength = 18, className = "", style = {} }) {
+  const isTouch = useIsTouch();
   const ref = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const sx = useSpring(x, { stiffness: 220, damping: 18 });
   const sy = useSpring(y, { stiffness: 220, damping: 18 });
+
+  // On touch devices, skip all the motion-value/spring tracking — just render plainly.
+  if (isTouch) {
+    return (
+      <div className={className} style={style}>
+        {children}
+      </div>
+    );
+  }
 
   const onMove = (e) => {
     const el = ref.current;
@@ -485,6 +496,7 @@ export const Body = () => {
 
 // =================== HERO ===================
 const HeroSection = ({ mood, scrollYProgress, index, stats, heroOpacity, heroY }) => {
+  const isTouch = useIsTouch();
   const eyebrowY = useTransform(scrollYProgress, [0, 0.15], [0, -60]);
   const nameY = useTransform(scrollYProgress, [0, 0.15], [0, -30]);
   const nameScale = useTransform(scrollYProgress, [0, 0.15], [1, 1.1]);
@@ -493,6 +505,8 @@ const HeroSection = ({ mood, scrollYProgress, index, stats, heroOpacity, heroY }
 
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
+  const spotX = useTransform(mx, (v) => v - 250);
+  const spotY = useTransform(my, (v) => v - 250);
   const onHeroMove = (e) => {
     const r = e.currentTarget.getBoundingClientRect();
     mx.set(e.clientX - r.left);
@@ -501,20 +515,22 @@ const HeroSection = ({ mood, scrollYProgress, index, stats, heroOpacity, heroY }
 
   return (
     <motion.section
-      onMouseMove={onHeroMove}
+      onMouseMove={isTouch ? undefined : onHeroMove}
       className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 overflow-hidden"
       style={{ opacity: heroOpacity, y: heroY, backgroundColor: mood.colors.background }}
     >
-      <motion.div
-        className="absolute pointer-events-none rounded-full blur-3xl hidden md:block"
-        style={{
-          width: 500,
-          height: 500,
-          x: useTransform(mx, (v) => v - 250),
-          y: useTransform(my, (v) => v - 250),
-          background: `radial-gradient(circle, ${mood.colors.primary}18, transparent 60%)`,
-        }}
-      />
+      {!isTouch && (
+        <motion.div
+          className="absolute pointer-events-none rounded-full blur-3xl hidden md:block"
+          style={{
+            width: 500,
+            height: 500,
+            x: spotX,
+            y: spotY,
+            background: `radial-gradient(circle, ${mood.colors.primary}18, transparent 60%)`,
+          }}
+        />
+      )}
 
       <div
         className="absolute inset-0 pointer-events-none"

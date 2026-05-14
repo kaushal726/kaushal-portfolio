@@ -8,6 +8,7 @@ import {
 } from "framer-motion";
 import { FaTimes, FaArrowRight } from "react-icons/fa";
 import { useMood } from "../../context/MoodContext";
+import { useIsTouch } from "../../hooks/useIsTouch";
 
 const NAV_ITEMS = [
   { to: "/", label: "Home", num: "01", hint: "The story so far" },
@@ -129,11 +130,20 @@ const NAV_STYLES = `
 
 /* --------- Magnetic wrapper --------- */
 function Magnetic({ children, strength = 22, className = "", style = {} }) {
+  const isTouch = useIsTouch();
   const ref = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const sx = useSpring(x, { stiffness: 240, damping: 18 });
   const sy = useSpring(y, { stiffness: 240, damping: 18 });
+
+  if (isTouch) {
+    return (
+      <div className={className} style={style}>
+        {children}
+      </div>
+    );
+  }
 
   const onMove = (e) => {
     const el = ref.current;
@@ -198,6 +208,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { mood } = useMood();
   const location = useLocation();
+  const isTouch = useIsTouch();
   const currentPageLabel = PATH_TO_LABEL[location.pathname] || null;
 
   // Close on route change
@@ -405,37 +416,51 @@ const Navbar = () => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
           >
-            {/* Background — solid + light blur to keep paints cheap */}
+            {/* Background — clip-path reveal on desktop, plain fade on touch (clip-path
+                animation on a fullscreen layer is janky on mobile GPUs) */}
             <motion.div
               className="absolute inset-0"
               style={{
                 background: `linear-gradient(135deg, ${mood.colors.background}fa, ${mood.colors.background}ff)`,
               }}
-              initial={{ clipPath: "circle(0% at 8% 92%)" }}
-              animate={{ clipPath: "circle(150% at 8% 92%)" }}
-              exit={{ clipPath: "circle(0% at 8% 92%)" }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              initial={
+                isTouch ? { opacity: 0 } : { clipPath: "circle(0% at 8% 92%)" }
+              }
+              animate={
+                isTouch
+                  ? { opacity: 1 }
+                  : { clipPath: "circle(150% at 8% 92%)" }
+              }
+              exit={
+                isTouch ? { opacity: 0 } : { clipPath: "circle(0% at 8% 92%)" }
+              }
+              transition={{
+                duration: isTouch ? 0.25 : 0.7,
+                ease: [0.22, 1, 0.36, 1],
+              }}
             />
 
-            {/* Single marquee strip — keeps the wow without doubling paint cost */}
-            <div
-              className="absolute pointer-events-none whitespace-nowrap select-none w-full"
-              style={{ top: "22%" }}
-            >
+            {/* Marquee strip — desktop only (huge stroked text is paint-heavy on mobile) */}
+            {!isTouch && (
               <div
-                className="nav-marquee font-black"
-                style={{
-                  fontSize: "clamp(4rem, 12vw, 10rem)",
-                  letterSpacing: "-0.05em",
-                  color: "transparent",
-                  WebkitTextStroke: `1px ${mood.colors.primary}1f`,
-                  lineHeight: 1,
-                }}
+                className="absolute pointer-events-none whitespace-nowrap select-none w-full"
+                style={{ top: "22%" }}
               >
-                <span className="pr-12">{MARQUEE_TEXT}</span>
-                <span className="pr-12">{MARQUEE_TEXT}</span>
+                <div
+                  className="nav-marquee font-black"
+                  style={{
+                    fontSize: "clamp(4rem, 12vw, 10rem)",
+                    letterSpacing: "-0.05em",
+                    color: "transparent",
+                    WebkitTextStroke: `1px ${mood.colors.primary}1f`,
+                    lineHeight: 1,
+                  }}
+                >
+                  <span className="pr-12">{MARQUEE_TEXT}</span>
+                  <span className="pr-12">{MARQUEE_TEXT}</span>
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Ambient orb — static, no continuous animation while menu open */}
             <div

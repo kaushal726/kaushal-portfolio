@@ -19,6 +19,7 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useMood } from "../../context/MoodContext";
+import { useIsTouch } from "../../hooks/useIsTouch";
 
 const MARQUEE_PHRASE =
   "LET'S CONNECT · AVAILABLE · LET'S BUILD · OPEN TO COLLAB · LET'S CONNECT · AVAILABLE · LET'S BUILD · OPEN TO COLLAB · ";
@@ -76,11 +77,20 @@ const CONNECT_STYLES = `
 `;
 
 function Magnetic({ children, strength = 25, className = "", style = {} }) {
+  const isTouch = useIsTouch();
   const ref = useRef(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const sx = useSpring(x, { stiffness: 220, damping: 18 });
   const sy = useSpring(y, { stiffness: 220, damping: 18 });
+
+  if (isTouch) {
+    return (
+      <div className={className} style={style}>
+        {children}
+      </div>
+    );
+  }
 
   const onMove = (e) => {
     const el = ref.current;
@@ -113,6 +123,7 @@ const Connect = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const { mood } = useMood();
+  const isTouch = useIsTouch();
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -124,6 +135,8 @@ const Connect = () => {
   // Cursor spotlight
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
+  const spotX = useTransform(mx, (v) => v - 300);
+  const spotY = useTransform(my, (v) => v - 300);
   const onMove = (e) => {
     const r = e.currentTarget.getBoundingClientRect();
     mx.set(e.clientX - r.left);
@@ -133,7 +146,7 @@ const Connect = () => {
   return (
     <motion.section
       ref={ref}
-      onMouseMove={onMove}
+      onMouseMove={isTouch ? undefined : onMove}
       className="relative py-28 sm:py-36 px-4 overflow-hidden"
       style={{ backgroundColor: mood.colors.background }}
     >
@@ -206,17 +219,19 @@ const Connect = () => {
         transition={{ duration: 14, repeat: Infinity }}
       />
 
-      {/* Cursor spotlight */}
-      <motion.div
-        className="absolute pointer-events-none rounded-full blur-3xl hidden md:block"
-        style={{
-          width: 600,
-          height: 600,
-          x: useTransform(mx, (v) => v - 300),
-          y: useTransform(my, (v) => v - 300),
-          background: `radial-gradient(circle, ${mood.colors.primary}15, transparent 60%)`,
-        }}
-      />
+      {/* Cursor spotlight — desktop only */}
+      {!isTouch && (
+        <motion.div
+          className="absolute pointer-events-none rounded-full blur-3xl hidden md:block"
+          style={{
+            width: 600,
+            height: 600,
+            x: spotX,
+            y: spotY,
+            background: `radial-gradient(circle, ${mood.colors.primary}15, transparent 60%)`,
+          }}
+        />
+      )}
 
       <div className="relative max-w-5xl mx-auto text-center">
         {/* Eyebrow */}
