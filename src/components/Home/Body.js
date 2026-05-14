@@ -496,42 +496,17 @@ export const Body = () => {
 
 // =================== HERO ===================
 const HeroSection = ({ mood, scrollYProgress, index, stats, heroOpacity, heroY }) => {
-  const isTouch = useIsTouch();
   const eyebrowY = useTransform(scrollYProgress, [0, 0.15], [0, -60]);
   const nameY = useTransform(scrollYProgress, [0, 0.15], [0, -30]);
   const nameScale = useTransform(scrollYProgress, [0, 0.15], [1, 1.1]);
   const roleY = useTransform(scrollYProgress, [0, 0.15], [0, -20]);
   const statsY = useTransform(scrollYProgress, [0, 0.15], [0, 40]);
 
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const spotX = useTransform(mx, (v) => v - 250);
-  const spotY = useTransform(my, (v) => v - 250);
-  const onHeroMove = (e) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    mx.set(e.clientX - r.left);
-    my.set(e.clientY - r.top);
-  };
-
   return (
     <motion.section
-      onMouseMove={isTouch ? undefined : onHeroMove}
       className="relative min-h-screen flex items-center justify-center px-4 sm:px-6 overflow-hidden"
       style={{ opacity: heroOpacity, y: heroY, backgroundColor: mood.colors.background }}
     >
-      {!isTouch && (
-        <motion.div
-          className="absolute pointer-events-none rounded-full blur-3xl hidden md:block"
-          style={{
-            width: 500,
-            height: 500,
-            x: spotX,
-            y: spotY,
-            background: `radial-gradient(circle, ${mood.colors.primary}18, transparent 60%)`,
-          }}
-        />
-      )}
-
       <div
         className="absolute inset-0 pointer-events-none"
         style={{

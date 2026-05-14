@@ -16,6 +16,7 @@ import { MoodProvider, useMood } from "./context/MoodContext";
 import MoodSelector from "./components/MoodSelector/MoodSelector";
 import MoodSwitcher from "./components/MoodSelector/MoodSwitcher";
 import MouseFollower from "./components/Common/MouseFollower";
+import CursorTorch from "./components/Common/CursorTorch";
 
 // Scroll to top on route change — resets every possible scroll container
 // (window + html + body + any inner .fancy-scrollbar div) synchronously
@@ -151,6 +152,9 @@ function AppContent() {
 
       {/* Mouse Follower */}
       <MouseFollower />
+
+      {/* Global cursor torch — highlights wherever the mouse goes (desktop) */}
+      <CursorTorch />
 
       {/* Scroll to top button */}
       <div className="flex">

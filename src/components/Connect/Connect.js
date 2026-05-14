@@ -123,7 +123,6 @@ const Connect = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const { mood } = useMood();
-  const isTouch = useIsTouch();
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -132,21 +131,9 @@ const Connect = () => {
   const marqueeOffset = useTransform(scrollYProgress, [0, 1], [-40, 40]);
   const marqueeOffset2 = useTransform(scrollYProgress, [0, 1], [40, -40]);
 
-  // Cursor spotlight
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const spotX = useTransform(mx, (v) => v - 300);
-  const spotY = useTransform(my, (v) => v - 300);
-  const onMove = (e) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    mx.set(e.clientX - r.left);
-    my.set(e.clientY - r.top);
-  };
-
   return (
     <motion.section
       ref={ref}
-      onMouseMove={isTouch ? undefined : onMove}
       className="relative py-28 sm:py-36 px-4 overflow-hidden"
       style={{ backgroundColor: mood.colors.background }}
     >
@@ -219,19 +206,6 @@ const Connect = () => {
         transition={{ duration: 14, repeat: Infinity }}
       />
 
-      {/* Cursor spotlight — desktop only */}
-      {!isTouch && (
-        <motion.div
-          className="absolute pointer-events-none rounded-full blur-3xl hidden md:block"
-          style={{
-            width: 600,
-            height: 600,
-            x: spotX,
-            y: spotY,
-            background: `radial-gradient(circle, ${mood.colors.primary}15, transparent 60%)`,
-          }}
-        />
-      )}
 
       <div className="relative max-w-5xl mx-auto text-center">
         {/* Eyebrow */}
