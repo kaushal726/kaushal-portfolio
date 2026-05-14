@@ -494,6 +494,8 @@ export const Body = () => {
   );
 };
 
+const MotionLink = motion(Link);
+
 // =================== HERO ===================
 const HeroSection = ({ mood, scrollYProgress, index, stats, heroOpacity, heroY }) => {
   const eyebrowY = useTransform(scrollYProgress, [0, 0.15], [0, -60]);
@@ -518,9 +520,9 @@ const HeroSection = ({ mood, scrollYProgress, index, stats, heroOpacity, heroY }
       />
 
       <div className="relative z-10 max-w-5xl mx-auto text-center w-full">
-        {/* Coming soon announcement */}
-        <motion.a
-          href="#"
+        {/* 3D game announcement — links to /game */}
+        <MotionLink
+          to="/game"
           initial={{ opacity: 0, y: -10, scale: 0.9 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ delay: 0.1, type: "spring", stiffness: 120, damping: 14 }}
@@ -531,7 +533,6 @@ const HeroSection = ({ mood, scrollYProgress, index, stats, heroOpacity, heroY }
             border: `1px solid ${mood.colors.primary}45`,
             backdropFilter: "blur(10px)",
           }}
-          onClick={(e) => e.preventDefault()}
         >
           {/* Sweep highlight */}
           <motion.span
@@ -558,7 +559,7 @@ const HeroSection = ({ mood, scrollYProgress, index, stats, heroOpacity, heroY }
             className="relative text-[9px] sm:text-[10px] uppercase tracking-[0.3em] font-bold"
             style={{ color: mood.colors.primary }}
           >
-            Coming Soon
+            New
           </span>
 
           <span
@@ -576,16 +577,17 @@ const HeroSection = ({ mood, scrollYProgress, index, stats, heroOpacity, heroY }
           </motion.span>
 
           <span className="relative text-xs sm:text-sm font-bold text-white whitespace-nowrap">
-            3D View Game
+            3D Garden Game
           </span>
 
           <span
-            className="relative hidden sm:inline text-[9px] uppercase tracking-[0.3em] font-bold"
-            style={{ color: "rgba(255,255,255,0.4)" }}
+            className="relative inline-flex items-center gap-1 text-[9px] uppercase tracking-[0.3em] font-bold transition-transform group-hover:translate-x-0.5"
+            style={{ color: mood.colors.primary }}
           >
-            · Dropping Soon
+            · Play Now
+            <FaArrowRight className="text-[8px]" />
           </span>
-        </motion.a>
+        </MotionLink>
 
         <motion.p
           className="text-xs sm:text-sm uppercase tracking-[0.4em] mb-5"

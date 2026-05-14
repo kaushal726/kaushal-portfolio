@@ -8,6 +8,7 @@ import scrollImage from "./assets/arrowA.png";
 import Mainnav from "./components/Navbar/Mainnav";
 import Index from "./components/Index";
 import Project from "./components/Projects/Project";
+import Game from "./components/Game/Game";
 import "./fonts/AmsterdamBright-DOPmD.woff";
 import { Toaster } from "react-hot-toast";
 import { ThemeProvider } from "./context/ThemeContext";
@@ -116,6 +117,7 @@ function AppContent() {
             <Route path="about" element={<About />} />
             <Route path="contact" element={<Contact />} />
             <Route path="project" element={<Project />} />
+            <Route path="game" element={<Game />} />
           </Route>
         </Routes>
       </BrowserRouter>

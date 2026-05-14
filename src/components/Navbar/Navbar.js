@@ -15,6 +15,7 @@ const NAV_ITEMS = [
   { to: "/project", label: "Project", num: "02", hint: "e-BillX — full case study" },
   { to: "/about", label: "About", num: "03", hint: "Who I am, what I value" },
   { to: "/contact", label: "Contact", num: "04", hint: "Let's start a conversation" },
+  { to: "/game", label: "Game", num: "05", hint: "3D garden — walk around" },
 ];
 
 const PATH_TO_LABEL = {
@@ -22,6 +23,7 @@ const PATH_TO_LABEL = {
   "/project": "Project",
   "/about": "About",
   "/contact": "Contact",
+  "/game": "Game",
 };
 
 const MARQUEE_TEXT =
