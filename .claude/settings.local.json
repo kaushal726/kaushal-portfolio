@@ -5,7 +5,9 @@
       "Bash(npm start:*)",
       "Bash(curl -s http://localhost:3000)",
       "Bash(node -e \"const i = require\\('react-icons/si'\\); console.log\\('SiChakraui:', typeof i.SiChakraui\\); console.log\\('SiSpringboot:', typeof i.SiSpringboot\\); console.log\\('SiMysql:', typeof i.SiMysql\\); console.log\\('SiAngular:', typeof i.SiAngular\\); console.log\\('SiJest:', typeof i.SiJest\\); console.log\\('SiMocha:', typeof i.SiMocha\\); console.log\\('SiHtml5:', typeof i.SiHtml5\\); console.log\\('SiCss3:', typeof i.SiCss3\\); console.log\\('SiExpress:', typeof i.SiExpress\\);\")",
-      "Bash(node -e \"const i = require\\('react-icons/si'\\); console.log\\('SiPostman:', typeof i.SiPostman\\);\")"
+      "Bash(node -e \"const i = require\\('react-icons/si'\\); console.log\\('SiPostman:', typeof i.SiPostman\\);\")",
+      "Bash(sed -n '420,470p' src/components/About/About.js)",
+      "Bash(sed -n '644,680p' src/components/Projects/Project.js)"
     ]
   }
 }

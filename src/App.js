@@ -2,7 +2,6 @@ import "./App.css";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { animateScroll as scroll } from "react-scroll";
-import Particles from "react-tsparticles";
 import About from "./components/About/About";
 import Contact from "./components/Contact/Contact";
 import scrollImage from "./assets/arrowA.png";
@@ -17,6 +16,7 @@ import MoodSelector from "./components/MoodSelector/MoodSelector";
 import MoodSwitcher from "./components/MoodSelector/MoodSwitcher";
 import MouseFollower from "./components/Common/MouseFollower";
 import CursorTorch from "./components/Common/CursorTorch";
+import ParticleField from "./components/Common/ParticleField";
 
 // Scroll to top on route change — resets every possible scroll container
 // (window + html + body + any inner .fancy-scrollbar div) synchronously
@@ -51,65 +51,6 @@ function ScrollToTop() {
   return null;
 }
 
-function ParticlesBg() {
-  const { mood } = useMood();
-
-  // Reduce particles for better performance
-  const particlesIntensity = mood.animation.intensity === "high" || mood.animation.intensity === "maximum" ? 40 : 25;
-  const particleSpeed = mood.animation.speed === "fast" || mood.animation.speed === "dynamic" ? 1.5 : 0.8;
-
-  const particlesOptions = {
-    background: { color: { value: "transparent" } },
-    fullScreen: { enable: true, zIndex: 0 },
-    fpsLimit: 40, // Reduced for performance
-    interactivity: {
-      events: {
-        onHover: { enable: true, mode: "grab" },
-        onClick: { enable: false },
-        resize: false, // Disabled for performance
-      },
-      modes: {
-        grab: {
-          distance: 150,
-          duration: 0.3,
-          links: {
-            opacity: 0.4,
-          },
-        },
-      },
-    },
-    particles: {
-      color: { value: mood.colors.primary },
-      links: {
-        color: mood.colors.primary,
-        distance: 80,
-        enable: true,
-        opacity: 0.3,
-        width: 1,
-      },
-      move: {
-        enable: true,
-        speed: particleSpeed,
-      },
-      number: { value: particlesIntensity },
-      opacity: { value: 0.5 },
-      size: { value: 2 },
-    },
-    detectRetina: true,
-  };
-
-  return (
-    <Particles
-      key={mood.id} // Force re-render on mood change
-      id="tsparticles"
-      init={async (engine) => {
-        await import("tsparticles").then(({ loadFull }) => loadFull(engine));
-      }}
-      options={particlesOptions}
-    />
-  );
-}
-
 function AppContent() {
   const { mood, isRevealed } = useMood();
   const [scrolling, setScrolling] = useState(false);
@@ -130,8 +71,8 @@ function AppContent() {
     <div className="App relative" style={{ backgroundColor: mood.colors.background }}>
       <Toaster />
 
-      {/* Particles - key forces recreation on mood change */}
-      <ParticlesBg />
+      {/* Canvas constellation background */}
+      <ParticleField />
 
       {/* Minimal overlay */}
       <div
